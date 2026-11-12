@@ -198,11 +198,162 @@ html.mob .btn{ min-height:44px; }
 html.mob .spic{ width:56px; height:56px; }
 html.mob .reccard{ flex-wrap:wrap; }
 html.mob .reccard .btn{ width:100%; }
+
+/* ===================== v0.3 painted theme: parchment, wood, fonts, icons ===================== */
+@font-face{ font-family:'Pirata One'; src:url(assets/fonts/pirata-one.woff2) format('woff2'); font-display:swap; }
+@font-face{ font-family:'IM Fell SC'; src:url(assets/fonts/im-fell-sc.woff2) format('woff2'); font-display:swap; }
+:root{ --parch:#ead8ae; --parchInk:#2b1a0c; --parchDim:#6b5233; --wood1:#5c3818; --wood2:#2e1a0a; --brass:#c9a24a; }
+html,body{ font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; }
+h1,h2,h3,.btn,.hname,.mbtn,.tut-title,.ptabs .btn{ font-family:'IM Fell SC','Iowan Old Style',Palatino,Georgia,serif; letter-spacing:0.02em; }
+.ico{ display:inline-flex; width:1.3em; height:1.3em; vertical-align:-0.3em; flex:none; } .ico svg{ width:100%; height:100%; display:block; } .ico.in{ width:1.1em; height:1.1em; vertical-align:-0.22em; }
+
+/* parchment panels with dark ink */
+.panel{ --ink:var(--parchInk); --dim:var(--parchDim); --good:#2a6e32; --bad:#a3301c; color:var(--parchInk);
+  background:url(assets/parchment.webp) center/420px repeat, var(--parch);
+  border:3px solid #4a2c12; border-radius:10px;
+  box-shadow: inset 0 0 0 2px rgba(201,162,74,0.55), inset 0 0 46px rgba(120,76,24,0.38), 0 10px 32px rgba(0,0,0,0.62); }
+.panel h1,.panel h2{ color:#5a1a0e; text-shadow:0 1px 0 rgba(255,245,215,0.7); }
+.panel h3{ color:#6a2a10; }
+.panel h2{ font-size:25px; }
+.panel input:not([type=radio]):not([type=checkbox]){ background:#fff8e6 !important; color:#2b1a0c !important; border:1.5px solid #8a6a3a !important; border-radius:5px; padding:7px 9px; font:inherit; }
+.panel .shipcard,.panel .perk,.panel .sailorrow,.panel .reccard,.panel .hcard,.panel .hdetail,.panel .casrep,.panel .newsetup,.panel .mission,.panel .offer,.panel .goal,.panel .loadrow{
+  background:rgba(255,250,234,0.55); border:1px solid rgba(90,58,28,0.5); color:var(--parchInk); box-shadow:0 1px 3px rgba(70,40,10,0.18); }
+.panel .offer{ border-width:2px; }
+.panel .offer:hover,.panel .offer.selected,.panel .sailorrow:hover,.panel .hcard.on{ border-color:#a8761c; box-shadow:0 0 0 2px rgba(201,162,74,0.6); }
+.panel .hcard.built{ border-color:#2f7a38; }
+.panel .goodcard{ border-bottom:1px solid rgba(90,58,28,0.3); }
+.panel .stattab td{ border-bottom:1px solid rgba(90,58,28,0.3); }
+.panel .bar{ background:rgba(60,40,20,0.22); border-color:#8a6a3a; }
+.panel .perk .down,.panel .offer .tradeoff,.panel .offer-down,.panel .either,.panel .hcard .either{ color:#8a3a10; }
+.panel .smeta .price{ color:#7a4a00; font-weight:bold; }
+.panel .tag{ border-color:#8a6a3a; } .panel .tag.bad{ border-color:#a3301c; color:#a3301c; }
+.panel .rep{ background:rgba(255,250,234,0.6); border-color:#8a6a3a; color:#4a3018; }
+.panel .rep.allied,.panel .rep.friendly{ border-color:#2f7a38; color:#1f5a28; } .panel .rep.hostile{ border-color:#a3301c; color:#8a2010; } .panel .rep.unfriendly{ border-color:#b86a20; color:#8a4a10; } .panel .rep.haven{ border-color:#8a6a1a; color:#5a4010; }
+.panel #side-log{ border-top-color:rgba(90,58,28,0.4); }
+.panel .dim{ color:var(--parchDim); }
+.panel a{ color:#7a2a10; }
+
+/* wood buttons */
+.btn{ background:linear-gradient(180deg,rgba(255,220,160,0.10),rgba(0,0,0,0.15)), repeating-linear-gradient(92deg,#6a4220 0 7px,#5c381a 7px 11px,#6e4624 11px 19px), #5c3818;
+  color:#fff0c8; border:1.5px solid #c9a24a; border-radius:7px; padding:7px 13px; font-size:15px; text-shadow:0 1px 1px #000;
+  box-shadow: inset 0 1px 0 rgba(255,230,170,0.45), inset 0 -2px 0 rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.45); }
+.btn:hover:not([disabled]){ filter:brightness(1.12); color:#fff; background:linear-gradient(180deg,rgba(255,220,160,0.10),rgba(0,0,0,0.15)), repeating-linear-gradient(92deg,#7a4e26 0 7px,#6a4220 7px 11px,#7e5228 11px 19px); }
+.btn.primary{ background:linear-gradient(180deg,#f2cf6a,#c08a26 55%,#8a5a12); color:#2a1606; text-shadow:0 1px 0 rgba(255,240,190,0.6); border-color:#fff0b0; }
+.btn.primary:hover:not([disabled]){ background:linear-gradient(180deg,#ffdc7a,#d09a30 55%,#9a6a1a); color:#1a0e02; }
+.btn.small{ font-size:13px; padding:5px 9px; } .btn.big{ font-size:19px; padding:11px 22px; }
+.btn .ico{ margin-right:4px; }
+.btnsub{ display:block; font-size:12px; opacity:0.85; font-family:'Iowan Old Style',Georgia,serif; letter-spacing:0; }
+
+/* top bar & mobile bar: dark wood with brass trim */
+#topbar{ background:linear-gradient(180deg,rgba(255,220,160,0.08),rgba(0,0,0,0.3)), repeating-linear-gradient(180deg,#3e2410 0 3px,#341e0c 3px 6px), #3a220e; border-bottom:2px solid var(--brass); color:#fff0c8; }
+.logo{ font-family:'Pirata One',Georgia,serif; font-size:24px; letter-spacing:0.04em; color:#f4d27a; text-shadow:0 2px 0 #000; }
+.resv{ color:#fff0c8; text-shadow:0 1px 1px #000; } .resv.warn{ color:#ffab8a; } .resv .ico{ width:20px; height:20px; }
+#daylbl{ color:#f4d27a; text-align:right; } .windlbl{ display:inline-flex; align-items:center; gap:3px; color:#cfe8f0; font-size:12px; margin-left:6px; } .windlbl .ico{ width:15px; height:15px; }
+#btn-goals2{ display:inline-block; }
+html.mob #mobbar{ background:linear-gradient(180deg,rgba(255,220,160,0.08),rgba(0,0,0,0.35)), repeating-linear-gradient(90deg,#3e2410 0 9px,#341e0c 9px 13px), #3a220e; border-top:2px solid var(--brass); gap:3px; }
+.mbtn{ background:linear-gradient(180deg,#6a4422,#3a220c); border:1.5px solid #a8823a; color:#fff0c8; border-radius:9px; box-shadow:inset 0 1px 0 rgba(255,230,170,0.35); padding:2px 0; }
+.mbtn .mbi{ display:block; width:24px; height:24px; } .mbtn .mbi svg{ width:100%; height:100%; display:block; }
+.mbtn .mbl{ font-size:11px; letter-spacing:0; }
+.mbtn:active{ filter:brightness(1.2); }
+
+/* toasts, banners, hints over the sea */
+#toast{ background:linear-gradient(180deg,#4a2c12,#2a170a); border:1.5px solid var(--brass); color:#fff0c8; box-shadow:0 6px 18px rgba(0,0,0,0.6); border-radius:10px; }
+#banner{ background:linear-gradient(180deg,rgba(74,44,18,0.96),rgba(42,23,10,0.96)); border-color:var(--brass); color:#fff0c8; }
+#navhint{ top:auto; bottom:58px; background:rgba(42,23,10,0.92); border-color:var(--brass); color:#fff0c8; }
+#zoombar{ background:rgba(42,23,10,0.82); border:1px solid rgba(201,162,74,0.6); }
+html.mob #zoombar .btn{ min-width:42px; }
+#goalchip{ position:absolute; top:8px; right:8px; z-index:6; max-width:min(64%,360px); display:flex; align-items:center; gap:6px; padding:6px 12px 6px 8px; font:14px 'Iowan Old Style',Georgia,serif; color:#2b1a0c; text-align:left;
+  background:url(assets/parchment.webp) center/300px, #ead8ae; border:2px solid #5a3a1c; border-radius:20px; box-shadow:0 3px 10px rgba(0,0,0,0.5); cursor:pointer; min-height:40px; }
+#goalchip span{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } #goalchip b{ color:#7a2a10; font-size:18px; } #goalchip .ico{ width:22px; height:22px; }
+
+/* main menu: painted title screen */
+#menu{ background:#061014; padding:0 !important; display:block; }
+.menu-art{ position:fixed; inset:0; background:url(assets/title.webp) center 30%/cover no-repeat, radial-gradient(ellipse at 30% 20%, #245a68 0%, #0c2430 50%, #061014 100%); }
+.menu-art::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 45%,rgba(4,10,14,0.75) 100%); }
+.menu-inner{ position:relative; z-index:1; max-width:560px; margin:0 auto; min-height:100%; display:flex; flex-direction:column; justify-content:space-between; padding:calc(18px + var(--sat)) 12px calc(14px + var(--sab)); background:none; border:0; box-shadow:none; }
+.menu-titlebox{ text-align:center; padding-top:6px; }
+.title{ font-family:'Pirata One',Georgia,serif; font-size:64px; line-height:1; letter-spacing:0.02em; background:linear-gradient(180deg,#fff6d0,#f0c860 55%,#b07a1a); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 3px 0 #2a1004) drop-shadow(0 0 14px rgba(0,0,0,0.6)); margin:0; }
+html.mob .title{ font-size:58px; }
+.subtitle{ color:#fff0d0; font-style:italic; text-shadow:0 1px 3px #000, 0 0 10px #000; margin:8px 0 0; }
+.menu-card{ padding:12px 14px 8px; margin-top:auto; background:url(assets/parchment.webp) center/420px, rgba(234,216,174,0.95); }
+.menu-card .menu-row{ margin:8px 0; } .menu-card .menu-row .btn.big{ flex:1 1 100%; } .menu-card .menu-row.small .btn{ flex:1 1 40%; }
+.menu-card .ver{ text-align:center; font-size:12px; margin:6px 0 0; }
+
+/* screens */
+#port,#captain,#fleet,#crew,#hideout{ background:rgba(4,12,16,0.78); }
+.portscene{ position:relative; min-height:128px; margin:-4px -4px 8px; padding:10px 10px 10px; border-radius:8px; overflow:hidden; align-items:flex-end; background:url(assets/port.webp) center/cover no-repeat, #2a4a50; border:2px solid #4a2c12; box-shadow:inset 0 0 0 1px rgba(201,162,74,0.6); }
+.portscene::before{ content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(10,6,2,0.78) 100%); }
+.portscene > *{ position:relative; }
+.portscene h1{ color:#ffe7a0 !important; text-shadow:0 2px 3px #000 !important; font-size:28px; }
+.pstitle{ display:flex; gap:10px; align-items:flex-end; min-width:0; }
+.psflag{ width:30px; height:22px; border:2px solid #f4e6c0; border-radius:3px; flex:none; box-shadow:0 2px 4px #000; margin-bottom:6px; }
+.pssub{ color:#f6ead0; font-size:13px; text-shadow:0 1px 2px #000; }
+.portscene .rep{ background:rgba(0,0,0,0.45); color:#ffe7a8 !important; border-color:#c9a24a !important; }
+.goldline{ margin:0 0 6px; font-size:14px; color:var(--parchDim); }
+.ptabs .btn{ font-size:14px; }
+
+/* painted portraits (one sprite sheet, 4 x 4) */
+.pp{ display:inline-block; flex:none; background-image:url(assets/portraits.webp), linear-gradient(160deg,#4a5a60,#1a2428); background-size:400% 400%, cover; background-repeat:no-repeat; border:2px solid #5a3a1c; border-radius:8px; box-shadow:0 0 0 1px #c9a24a, 0 2px 5px rgba(0,0,0,0.45); }
+.pp.spic{ width:64px; height:64px; } html.mob .pp.spic{ width:58px; height:58px; }
+.pp.portrait{ width:84px; height:84px; } .pp.bigport{ width:160px; height:160px; border-width:3px; }
+
+/* battle */
+#combat{ background:#083444; }
+.c-hero{ padding:6px 9px; }
+#c-status{ background:linear-gradient(180deg,rgba(74,44,18,0.94),rgba(42,23,10,0.94)); border-color:var(--brass); color:#fff0c8; }
+#c-log{ color:#fff6e0; text-shadow:0 1px 2px #000,0 0 6px #000; }
+#c-actions{ padding:6px 4px 0; border-radius:12px; background:linear-gradient(180deg,rgba(20,10,4,0),rgba(20,10,4,0.55) 30%); }
+#c-actions .btn{ font-size:14px; padding:6px 9px; }
+
+/* cove */
+.hzoom{ top:8px; bottom:auto; }
+html.tut-on #navhint, html.tut-on #goalchip{ display:none !important; }
+.sailorrow,.reccard,.hcard,.offer,.loadrow,.goal,.mbtn{ font-family:inherit; }
+button.sailorrow,button.hcard,button.offer,button.loadrow{ font:inherit; }
+html.mob #c-rot-hint{ top:auto; bottom:calc(196px + var(--sab)); }
+.hcanvas-wrap{ border:3px solid #4a2c12; box-shadow:inset 0 0 0 1px rgba(201,162,74,0.6); }
+#hcv{ height:auto; }
+
+/* first-time tips */
+#ftip{ position:fixed; z-index:140; left:8px; right:8px; max-width:520px; margin:0 auto; top:calc(var(--tbh) + var(--sat) + 56px); padding:10px 12px; color:#2b1a0c;
+  background:url(assets/parchment.webp) center/300px, #ead8ae; border:2px solid #5a3a1c; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.6); font-size:14px; line-height:1.4; }
+#ftip .ft-body{ display:flex; gap:8px; align-items:flex-start; } #ftip .ft-body .ico{ width:24px; height:24px; }
+#ftip .ft-btns{ display:flex; justify-content:flex-end; gap:8px; margin-top:8px; }
+
+/* tutorial overlay */
+#tut{ position:fixed; inset:0; z-index:300; pointer-events:none; }
+#tut-ring{ position:fixed; display:none; border:3px solid #ffe08a; border-radius:12px; pointer-events:none; box-shadow:0 0 0 200vmax rgba(2,8,12,0.42), 0 0 16px 4px rgba(255,224,138,0.85); animation:tutpulse 1.3s ease-in-out infinite; transition:left .18s, top .18s, width .18s, height .18s; }
+@keyframes tutpulse{ 0%,100%{ outline:0 solid rgba(255,224,138,0.0); } 50%{ box-shadow:0 0 0 200vmax rgba(2,8,12,0.42), 0 0 26px 9px rgba(255,224,138,1); } }
+#tut-arrow{ position:fixed; display:none; width:28px; text-align:center; font-size:30px; line-height:30px; color:#ffe08a; text-shadow:0 2px 0 #3a1a04, 0 0 10px #000; pointer-events:none; animation:tutbob .8s ease-in-out infinite; }
+#tut-arrow.up{ transform:rotate(180deg); }
+@keyframes tutbob{ 0%,100%{ margin-top:0; } 50%{ margin-top:-7px; } }
+#tut-card{ position:fixed; left:8px; right:8px; max-width:540px; margin:0 auto; pointer-events:auto; color:#2b1a0c; padding:10px 12px 10px;
+  background:url(assets/parchment.webp) center/360px, #ead8ae; border:3px solid #4a2c12; border-radius:12px; box-shadow: inset 0 0 0 2px rgba(201,162,74,0.55), 0 10px 30px rgba(0,0,0,0.7); font-size:15px; line-height:1.42; }
+#tut-card.at-bottom{ bottom:16px; } #tut-card.at-top{ top:56px; }
+html.mob #tut-card.at-bottom{ bottom:calc(var(--bar) + var(--sab) + 8px); } html.mob.mobback-on #tut-card.at-bottom{ bottom:calc(78px + var(--sab)); }
+html.mob.combat-on #tut-card.at-bottom{ bottom:calc(8px + var(--sab)); }
+html.mob #tut-card.at-top{ top:calc(var(--tbh) + var(--sat) + 6px); } html.mob.combat-on #tut-card.at-top{ top:calc(6px + var(--sat)); }
+.tut-top{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:2px; }
+.tut-step{ font-size:12px; color:#6b5233; } .tut-skip{ background:none; border:0; color:#7a2a10; font:13px Georgia,serif; text-decoration:underline; padding:6px 2px; min-height:32px; cursor:pointer; }
+.tut-title{ font-size:20px; color:#5a1a0e; margin:0 0 3px; }
+.tut-text b{ color:#3a1206; }
+.tut-btns{ display:flex; justify-content:flex-end; align-items:center; gap:10px; margin-top:8px; }
+.tut-wait{ flex:1; font-size:13px; color:#6b5233; display:flex; align-items:center; gap:4px; } .tut-wait .ico{ filter:invert(0.5) sepia(1) saturate(3) hue-rotate(-20deg); }
+
+/* goals */
+.goallist{ display:flex; flex-direction:column; gap:8px; }
+.goal{ display:flex; gap:10px; align-items:flex-start; padding:10px; border-radius:10px; }
+.gnum{ flex:none; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font:bold 16px Georgia,serif; color:#2a1606; background:linear-gradient(180deg,#f2cf6a,#b07a1a); border:2px solid #5a3a1c; }
+.gbody{ flex:1; min-width:0; } .gprog{ float:right; font-size:13px; color:#6b5233; margin-left:8px; }
+.gbar i{ background:linear-gradient(90deg,#2f7a38,#7fc06a); }
+.hints{ margin:4px 0; padding-left:20px; line-height:1.5; }
+.nextlist{ line-height:1.55; padding-left:22px; }
+.chk{ display:flex; align-items:center; gap:8px; margin-top:8px; } .chk input{ transform:scale(1.3); }
 </style>
 </head>
 <body>
 <div id="topbar">
-  <div class="logo">⚓ Windward Marque</div>
+  <div class="logo">Windward Marque</div>
   <div id="res"></div>
   <div id="daylbl"></div>
   <button class="btn" id="btn-help" data-tip="How to play">? Help</button>
@@ -211,11 +362,13 @@ html.mob .reccard .btn{ width:100%; }
   <button class="btn" id="btn-menu" data-tip="Main menu">☰ Menu</button>
   <button class="btn" id="btn-crew2" data-tip="Ship's company — unique sailors">👥 Crew</button>
   <button class="btn" id="btn-hideout2" data-tip="Your hidden cove">🏝 Hideout</button>
+  <button class="btn" id="btn-goals2" data-tip="Goals — what to do next">📜 Goals</button>
 </div>
 <div id="mapwrap">
   <canvas id="map"></canvas>
+  <button id="goalchip" class="hidden" type="button" data-tip="Your current goals — tap for ideas"></button>
   <div id="navhint">Drag to pan · pinch to zoom · tap a sea hex, tap again to sail · hold for info <button class="btn" id="hint-ok">OK</button></div>
-  <div id="zoombar"><button class="btn small" id="z-out" data-tip="Zoom out">－</button><button class="btn small" id="z-in" data-tip="Zoom in">＋</button><button class="btn small" id="z-fit" data-tip="Fit your fleet on screen">Fit</button></div>
+  <div id="zoombar"><button class="btn small" id="z-out" data-tip="Zoom out">－</button><button class="btn small" id="z-in" data-tip="Zoom in">＋</button><button class="btn small" id="z-fit" data-tip="Fit your fleet on screen">Fit</button><button class="btn small" id="z-ctr" data-tip="Center on your fleet">◎</button></div>
 </div>
 <div id="side" class="panel">
   <div id="side-hero"></div>
@@ -225,6 +378,7 @@ html.mob .reccard .btn{ width:100%; }
     <button class="btn" id="btn-crew">Crew</button>
     <button class="btn" id="btn-hideout">Hideout</button>
     <button class="btn" id="btn-center">Center</button>
+    <button class="btn" id="btn-goals">Goals</button>
   </div>
   <canvas id="minimap" width="240" height="180"></canvas>
   <div id="side-log"></div>
@@ -249,12 +403,14 @@ html.mob .reccard .btn{ width:100%; }
 <div id="modal-root"></div>
 <div id="tip"></div>
 <div id="toast"></div>
+<div id="ftip" class="hidden"></div>
+<div id="tut" class="hidden"><div id="tut-ring"></div><div id="tut-arrow">▼</div><div id="tut-card"></div></div>
 <script>
 "use strict";
 // ---- 00_boot.js ----
 // Windward Marque — shared utilities
 const GAME_TITLE='Windward Marque';
-const GAME_VERSION='0.2.0';
+const GAME_VERSION='0.3.0';
 const TS=48;
 const SAVE_KEY='wm_save';
 const AUTO_KEY='wm_autosave';
@@ -416,14 +572,7 @@ function drawLandTile(ctx,x,y,s,tx,ty,edge){
   if(r()>0.75){ ctx.fillStyle='#6b3e1a'; ctx.fillRect(x+s*0.7,y+s*0.65,s*0.08,s*0.18); }
 }
 
-function drawPalm(ctx,x,y,sc,rng){ rng=rng||Math.random;
-  ctx.save(); ctx.translate(x,y); ctx.scale(sc/24,sc/24);
-  ctx.strokeStyle='#6b3e1a'; ctx.lineWidth=2.4; ctx.lineCap='round';
-  ctx.beginPath(); ctx.moveTo(0,14); ctx.quadraticCurveTo(2,4,1,-8); ctx.stroke();
-  ctx.strokeStyle='#2f8a3a'; ctx.lineWidth=1.8;
-  for(const a of [-1.1,-0.4,0.3,0.95]){ ctx.beginPath(); ctx.moveTo(1,-8); ctx.quadraticCurveTo(Math.cos(a)*16,-8+Math.sin(a)*6,Math.cos(a)*18,-14+Math.sin(a)*10); ctx.stroke(); }
-  ctx.restore();
-}
+/* drawPalm moved to v0.3 module */
 
 function drawPortTile(ctx,x,y,s,port){ const nat=NATIONS[port.nation];
   drawOceanTile(ctx,x,y,s,port.x,port.y,TILE_SEA,0);
@@ -439,63 +588,11 @@ function drawPortTile(ctx,x,y,s,port){ const nat=NATIONS[port.nation];
   drawFlag(ctx,x+s*0.78,y+s*0.12,s*0.28,nat);
 }
 
-function drawFlag(ctx,x,y,h,nat){ ctx.save();
-  ctx.strokeStyle='#3a2a1a'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(x,y+h); ctx.lineTo(x,y); ctx.stroke();
-  ctx.fillStyle=nat.color; ctx.fillRect(x+1,y,h*0.85,h*0.48);
-  ctx.fillStyle=nat.color2; ctx.fillRect(x+1,y+h*0.24,h*0.85,h*0.24);
-  if(nat.id==='pirate'){ ctx.fillStyle='#f0e6c8'; ctx.font=`bold ${Math.max(8,h*0.32)}px serif`; ctx.textAlign='center'; ctx.fillText('☠', x+1+h*0.42, y+h*0.38); }
-  ctx.restore();
-}
+/* drawFlag moved to v0.3 module */
 
-function drawShipSprite(ctx,x,y,s,ship,opt){ opt=opt||{};
-  const cls=SHIP_CLASSES[ship.cls]||SHIP_CLASSES.sloop;
-  const nat=NATIONS[ship.nation]||NATIONS.pirate;
-  const face=opt.facing!=null?opt.facing:(ship.facing||1);
-  const sunk=!!opt.sunk || (ship.hull<=0);
-  ctx.save(); ctx.translate(x,y); ctx.rotate(face*Math.PI/2);
-  const L=s*(0.72+cls.masts*0.06), W=s*(0.28+ (cls.id==='galleon'?0.1:0));
-  // hull
-  ctx.fillStyle=sunk?'#3a4450':(opt.wreck?'#4a4038':nat.color2);
-  ctx.beginPath(); ctx.ellipse(0,0,W*0.55,L*0.5,0,0,7); ctx.fill();
-  ctx.fillStyle=sunk?'#5a6570':'#c4a06a';
-  ctx.beginPath(); ctx.ellipse(0,0,W*0.38,L*0.42,0,0,7); ctx.fill();
-  // stripe
-  ctx.fillStyle=nat.color; ctx.fillRect(-W*0.38,-L*0.08,W*0.76,L*0.12);
-  // sterncastle for galleon/frigate
-  if(cls.id==='galleon'||cls.id==='frigate'){ ctx.fillStyle=nat.color; ctx.fillRect(-W*0.4,L*0.18,W*0.8,L*0.22); }
-  // masts + sails
-  const mastN=cls.masts; ctx.strokeStyle='#3a2412'; ctx.lineWidth=Math.max(1.2,s*0.04);
-  for(let i=0;i<mastN;i++){ const my=-L*0.28+i*(L*0.32/(Math.max(1,mastN-1)||1)); if(mastN===1) { /* center */ }
-    const yy = mastN===1? -L*0.05 : (i-(mastN-1)/2)*L*0.28;
-    ctx.beginPath(); ctx.moveTo(0,yy+L*0.12); ctx.lineTo(0,yy-L*0.22); ctx.stroke();
-    if(!sunk && (ship.sails||cls.sails)>0){ const dmg=ship.sailsMax?clamp(ship.sails/ship.sailsMax,0.15,1):1;
-      ctx.fillStyle=rgba(nat.sail,0.92); ctx.beginPath();
-      ctx.moveTo(0,yy-L*0.2); ctx.lineTo(W*0.7*dmg,yy); ctx.lineTo(0,yy+L*0.08); ctx.closePath(); ctx.fill();
-      ctx.strokeStyle='rgba(60,40,20,0.35)'; ctx.lineWidth=1; ctx.stroke(); }
-  }
-  // bow
-  ctx.fillStyle='#2a1a10'; ctx.beginPath(); ctx.moveTo(-W*0.12,-L*0.5); ctx.lineTo(0,-L*0.62); ctx.lineTo(W*0.12,-L*0.5); ctx.fill();
-  // cannons as dark ports
-  ctx.fillStyle='#1a1210';
-  const guns=Math.min(6,Math.max(2,Math.round((ship.cannons||cls.cannons)/6)));
-  for(let i=0;i<guns;i++){ const yy=-L*0.28+i*(L*0.5/Math.max(1,guns-1)); ctx.fillRect(-W*0.52,yy,W*0.12,s*0.05); ctx.fillRect(W*0.4,yy,W*0.12,s*0.05); }
-  // flag at stern
-  if(!sunk){ ctx.save(); ctx.translate(0,L*0.42); ctx.rotate(-face*Math.PI/2); drawFlag(ctx,0,-s*0.18,s*0.22,nat); ctx.restore(); }
-  if(opt.selected){ ctx.strokeStyle='#ffe08a'; ctx.lineWidth=2; ctx.setLineDash([3,2]); ctx.beginPath(); ctx.ellipse(0,0,W*0.8,L*0.62,0,0,7); ctx.stroke(); ctx.setLineDash([]); }
-  ctx.restore();
-}
+/* drawShipSprite moved to v0.3 module */
 
-function drawWindRose(ctx,x,y,r,wind){ ctx.save(); ctx.translate(x,y);
-  ctx.fillStyle='rgba(8,24,32,0.72)'; ctx.beginPath(); ctx.arc(0,0,r,0,7); ctx.fill();
-  ctx.strokeStyle='#e8c36a'; ctx.lineWidth=1.5; ctx.stroke();
-  ctx.fillStyle='#d8c8a0'; ctx.font=`bold ${Math.max(9,r*0.28)}px Georgia`; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText('N',0,-r*0.72); ctx.fillText('E',r*0.7,0); ctx.fillText('S',0,r*0.74); ctx.fillText('W',-r*0.7,0);
-  const ang=wind*Math.PI/4; // 0 = N
-  ctx.rotate(ang);
-  ctx.fillStyle='#7fe0ff'; ctx.beginPath(); ctx.moveTo(0,-r*0.58); ctx.lineTo(r*0.16,r*0.12); ctx.lineTo(0,0); ctx.lineTo(-r*0.16,r*0.12); ctx.closePath(); ctx.fill();
-  ctx.fillStyle='#e8c36a'; ctx.beginPath(); ctx.moveTo(0,r*0.5); ctx.lineTo(r*0.1,0.02); ctx.lineTo(-r*0.1,0.02); ctx.closePath(); ctx.fill();
-  ctx.restore();
-}
+/* drawWindRose moved to v0.3 module */
 
 function drawCaptainPortrait(size, captain){ const cv=document.createElement('canvas'); cv.width=cv.height=size; const c=cv.getContext('2d');
   const seed=hashStr((captain&&captain.name)||'Reese'); const rng=mulberry32(seed);
@@ -522,24 +619,7 @@ function drawCaptainPortrait(size, captain){ const cv=document.createElement('ca
   return cv;
 }
 
-function drawAppIcon(s){ const cv=document.createElement('canvas'); cv.width=cv.height=s; const c=cv.getContext('2d'); const k=s/512;
-  const bg=c.createRadialGradient(s*0.45,s*0.35,s*0.05,s*0.5,s*0.55,s*0.7);
-  bg.addColorStop(0,'#2a7a88'); bg.addColorStop(0.55,'#0d3a48'); bg.addColorStop(1,'#071820'); c.fillStyle=bg; c.fillRect(0,0,s,s);
-  // sun
-  c.fillStyle='#f0d48a'; c.beginPath(); c.arc(s*0.72,s*0.22,s*0.1,0,7); c.fill();
-  // island
-  c.fillStyle='#d7c07a'; c.beginPath(); c.ellipse(s*0.28,s*0.72,s*0.28,s*0.1,0,0,7); c.fill();
-  c.fillStyle='#3a8a40'; c.beginPath(); c.ellipse(s*0.28,s*0.68,s*0.22,s*0.1,0,0,7); c.fill();
-  drawPalm(c,s*0.22,s*0.58,s*0.28,mulberry32(4));
-  // ship
-  c.save(); c.translate(s*0.58,s*0.58); c.scale(k*1.35,k*1.35);
-  const fake={cls:'brig',nation:'pirate',sails:50,sailsMax:50,cannons:18,facing:0};
-  drawShipSprite(c,0,0,140,fake,{facing:0,selected:false});
-  c.restore();
-  // ring
-  c.strokeStyle='#e8c36a'; c.lineWidth=s*0.035; c.beginPath(); c.arc(s/2,s/2,s*0.46,0,7); c.stroke();
-  return cv;
-}
+/* drawAppIcon moved to v0.3 module */
 
 function goodSwatch(good,s){ s=s||18; const inf=GOOD_INFO[good]||{hue:'#ccc'};
   return `<span class="gsw" style="background:${inf.hue}" title="${inf.name}"></span>`; }
@@ -578,15 +658,7 @@ function drawSailorPortrait(size, sailor){ const cv=document.createElement('canv
   if(rng()>0.7){ c.fillStyle='#e8c36a'; c.beginPath(); c.arc(cx+size*0.16,cy+size*0.06,size*0.018,0,7); c.fill(); }
   return cv; }
 
-function drawHideoutMarker(ctx,x,y,s,hideout){
-  drawOceanTile(ctx,x,y,s,(hideout&&hideout.x)||0,(hideout&&hideout.y)||0,TILE_SEA,0);
-  ctx.fillStyle='#d7c07a'; ctx.beginPath(); ctx.ellipse(x+s*0.55,y+s*0.42,s*0.38,s*0.22,0.2,0,7); ctx.fill();
-  ctx.fillStyle='#2f7a38'; ctx.beginPath(); ctx.ellipse(x+s*0.58,y+s*0.38,s*0.28,s*0.16,0.2,0,7); ctx.fill();
-  ctx.fillStyle='#c4a36a'; ctx.fillRect(x+s*0.12,y+s*0.58,s*0.42,s*0.1);
-  if(hideout&&hideout.built&&hideout.built.dock){ ctx.fillStyle='#6a4a22'; ctx.fillRect(x+s*0.08,y+s*0.62,s*0.5,s*0.12); }
-  if(hideout&&hideout.claimed){ drawFlag(ctx,x+s*0.7,y+s*0.08,s*0.32,NATIONS.pirate); }
-  else { ctx.fillStyle='rgba(8,20,24,0.55)'; ctx.beginPath(); ctx.arc(x+s*0.28,y+s*0.3,s*0.08,0,7); ctx.fill(); }
-}
+/* drawHideoutMarker moved to v0.3 module */
 
 // ---- 03_map.js ----
 // Map generation, queries, pathfinding, wind costs
@@ -751,7 +823,7 @@ function startGame(opts){ opts=opts||{};
   const D=DIFF[diff]||DIFF.normal;
   G={ version:GAME_VERSION, seed, difficulty:diff, day:1, wind:2, log:[], player:makeCaptain(opts.name||'Reese'),
     ships:[], fleets:[], map:generateMap(seed), mission:null, over:false, report:[], rumours:[],
-    crew:[], fallen:[], pendingSailorLevels:[], seen:{} };
+    crew:[], fallen:[], pendingSailorLevels:[], seen:{}, stats:{captures:0,sunk:0}, tutorial:opts.tutorial?{started:Date.now()}:null };
   G.player.gold=D.gold; G.player.morale=D.morale;
   if(typeof ensureSupplies==='function') ensureSupplies(G);
   if(typeof ensureHideout==='function') ensureHideout(G);
@@ -771,13 +843,14 @@ function startGame(opts){ opts=opts||{};
   if(!mpos) mpos=spawnNearbySea(start.x, start.y, rng);
   const merch=makeShip('sloop','spain','Santa Clara'); merch.crew=10; merch.hull=32; merch.cargo.sugar=6; merch.cargo.rum=3; refreshShipDerived(merch,null);
   G.fleets.push(makeFleet('ai','spain', mpos.x, mpos.y, [merch], { role:'merchant', home:'havana', personality:'merchant', bounty:true }));
-  spawnWorldAI(rng);
+  if(!opts.tutorial) spawnWorldAI(rng);
   refreshAllMp();
   addLog(`${G.player.name} weighs anchor at Nassau aboard <b>${flag.name}</b>.`);
   document.getElementById('menu').classList.add('hidden');
   centerOnFleet(pf);
   MAPV.path=null; MAPV.dest=null; MAPV.range=tilesInRange(G.map,pf.x,pf.y,pf.mp,G.player,G.wind);
   renderAll();
+  if(opts.tutorial) return G;
   try{ autoSave(); }catch(e){}
   const mer=G.fleets.find(x=>x.bounty); let where='nearby';
   if(mer){ const dx=mer.x-pf.x, dy=mer.y-pf.y; if(Math.abs(dx)>=Math.abs(dy)) where=dx>=0?'east':'west'; else where=dy>=0?'south':'north'; }
@@ -998,10 +1071,10 @@ function endDay(){ if(!G||G.over) return; if(typeof B!=='undefined'&&B){ toast('
     if(typeof trainStation==='function'){ trainStation(s,'rigging','rigger',2); trainStation(s,'navigator','navigator',2); trainStation(s,'cook','cook',2); } }
   if(typeof consumeDailySupplies==='function') consumeDailySupplies();
   G.day++;
-  if(Math.random()<0.45) G.wind=(G.wind+ (Math.random()<0.5?-1:1)+8)%8;
+  if(!G.tutorial && Math.random()<0.45) G.wind=(G.wind+ (Math.random()<0.5?-1:1)+8)%8;
   const weekStart=((G.day-1)%7===0);
   addLog(`A new day. Wind from the ${windName(G.wind)}. Wages ${wage} gold.`);
-  try{ runAIDay(); }catch(e){ console.error(e); }
+  if(!G.tutorial){ try{ runAIDay(); }catch(e){ console.error(e); } }
   if(typeof dailyCrewTick==='function') dailyCrewTick(f,wage);
   if(typeof hideoutDayTick==='function') hideoutDayTick();
   if(weekStart && G.day>1) weeklyGrowth();
@@ -1048,6 +1121,7 @@ function afterBattleWorld(result, you, foe){ // result: {won, captured:[ships], 
     gainXP(Math.round(40+loot/8+(result.captured.length?30:0)));
     checkMissionComplete('destroyed', foe);
     foe.dead=true;
+    if(!G.stats) G.stats={captures:0,sunk:0}; G.stats.captures+=(result.captured||[]).length; G.stats.sunk+=(result.sunk||[]).length;
     addLog(`Victory over ${otherRoleName(foe)}. Plunder ${loot} gold.`);
     if(result.captured.length) offerCapturedShips(result.captured);
     else banner('The sea takes them. You take the gold.', 2200);
@@ -1080,22 +1154,26 @@ function offerCapturedShips(list){ const f=playerFleet(); const room=MAX_FLEET-s
 let B=null;
 const CV={ cv:null, ctx:null, z:1, panX:0, panY:0, ox:0, oy:0, cell:48, hover:null };
 
-const BATTLE_W=10, BATTLE_H=7;
+let BATTLE_W=10, BATTLE_H=7;
+function pickBattleGrid(){ const portrait=(typeof MOB!=='undefined'&&MOB.phone&&!MOB.land)||(window.innerHeight>window.innerWidth*1.2); if(portrait){ BATTLE_W=7; BATTLE_H=10; } else { BATTLE_W=10; BATTLE_H=7; } }
 
 function beginBattle(youFleet, foeFleet){ if(B) return;
   const yShips=shipsOf(youFleet).filter(s=>s.hull>0&&((typeof crewCount==='function'?crewCount(s):s.crew)>0));
   const eShips=shipsOf(foeFleet).filter(s=>s.hull>0&&((typeof crewCount==='function'?crewCount(s):s.crew)>0));
   if(!yShips.length||!eShips.length){ toast('No fight in them.'); return; }
-  B={ you:youFleet, foe:foeFleet, turn:'player', round:1, units:[], sel:null, ammo:'round', log:[], over:false, anim:null };
+  pickBattleGrid(); if(typeof gfxInvalidate==='function'){ GFX.bLayer=null; GFX.bKey=''; }
+  B={ you:youFleet, foe:foeFleet, turn:'player', round:1, units:[], sel:null, ammo:'round', log:[], over:false, anim:null, fx:[] };
   yShips.forEach((s,i)=>B.units.push(makeBU(s,'player', 1, 2+i, 1)));
   eShips.forEach((s,i)=>B.units.push(makeBU(s,'enemy', BATTLE_W-2, 2+i, 3)));
   B.sel=B.units.find(u=>u.side==='player');
+  if(G.tutorial&&typeof tutBattleSetup==='function') tutBattleSetup();
   document.getElementById('combat').classList.remove('hidden');
   document.documentElement.classList.add('combat-on');
   hideBanner();
   const toastEl=document.getElementById('toast'); if(toastEl) toastEl.classList.remove('show');
   openCombatUI();
   clog(`Battle is joined! Wind from the ${windName(G.wind)}.`);
+  if(typeof firstTip==='function') firstTip('battle');
 }
 
 function makeBU(ship, side, x, y, facing){ return { id:ship.id, ship, side, x, y, facing, mp:0, mpMax:0, reload:0, boarded:false, captured:false, sunk:false }; }
@@ -1158,10 +1236,12 @@ function battleFire(which){ const u=B.sel; if(!u||B.over||u.side!=='player') ret
   const tgts=targetsInArc(u, which); if(!tgts.length){ toast('No enemy in that broadside.'); return false; }
   const ammo=B.ammo||'round';
   for(const t of tgts){ const r=fireDamage(u,t,ammo); clog(`${u.ship.name} fires ${AMMO[ammo].short.toLowerCase()} — ${r.hit} to ${t.ship.name}'s ${r.vs}.`);
+    if(typeof fxShot==='function') fxShot(u,t,which,ammo,r);
     if(t.ship.hull<=0) sinkUnit(t, u); }
+  B.lastPlayerFire=performance.now();
   u.reload=1; u.mp=0; refreshCombatUI(); checkBattleEnd(); return true; }
 
-function sinkUnit(t, by){ t.sunk=true; clog(`${t.ship.name} goes down!`); t.ship.hull=0; }
+function sinkUnit(t, by){ t.sunk=true; t.sinkAt=performance.now(); clog(`${t.ship.name} goes down!`); t.ship.hull=0; if(typeof fxAdd==='function'){ const p=battleCellPx(t.x,t.y); for(let i=0;i<5;i++) fxAdd({k:'splash',x:p.x+(Math.random()-0.5)*CV.cell,y:p.y+(Math.random()-0.5)*CV.cell,delay:i*180,life:900}); } }
 
 function adjacentEnemies(u){ const out=[]; for(const d of DIRS4){ const t=unitAt(u.x+d.x,u.y+d.y); if(t&&t.side!==u.side) out.push(t); } return out; }
 
@@ -1174,10 +1254,12 @@ function battleBoard(){ const u=B.sel; if(!u||B.over||u.side!=='player') return 
   const defCrew=t.ship.crew||0;
   let atk=atkCrew*(1+skillBonus(atkCap,'boarding')*0.16)*(clamp(G.player.morale,20,100)/80);
   let def=defCrew*(1+skillBonus(defCap,'boarding')*0.16);
+  if(G.tutorial) def*=0.3;
+  if(typeof fxBoard==='function') fxBoard(u,t);
   if((G.player.perks||[]).includes('close_quarters')) atk*=1.25;
   const aLoss=Math.max(1,Math.round(def*0.25*(0.8+Math.random()*0.4)));
   const dLoss=Math.max(2,Math.round(atk*0.35*(0.8+Math.random()*0.4)));
-  if(typeof inflictCrewHits==='function'&&typeof shipHasNamedCrew==='function'&&shipHasNamedCrew(u.ship)) inflictCrewHits(u.ship,{ hits:aLoss, kind:'boarding', numeric:aLoss, killBias:0.35 });
+  if(typeof inflictCrewHits==='function'&&typeof shipHasNamedCrew==='function'&&shipHasNamedCrew(u.ship)) inflictCrewHits(u.ship,{ hits:aLoss, kind:'boarding', numeric:aLoss, killBias:G.tutorial?0:0.35 });
   else u.ship.crew=Math.max(0,u.ship.crew-aLoss);
   t.ship.crew=Math.max(0,t.ship.crew-dLoss);
   if(typeof trainStation==='function') trainStation(u.ship,'boarding','cutlass',8);
@@ -1211,6 +1293,7 @@ function advanceBattle(){ if(!B||B.over) return;
 }
 
 function aiBattleShip(e){ const foes=living('player'); if(!foes.length) return;
+  if(G.tutorial){ e.mp=0; return; }
   const role=B.foe.role;
   // merchants try to run downwind
   if(role==='merchant'){ const w=DIRS8[G.wind];
@@ -1241,7 +1324,7 @@ function aiBattleShip(e){ const foes=living('player'); if(!foes.length) return;
       e.ship.crew=Math.max(0,e.ship.crew-aLoss);
       if(typeof inflictCrewHits==='function'&&typeof shipHasNamedCrew==='function'&&shipHasNamedCrew(t.ship)) inflictCrewHits(t.ship,{hits:dLoss,kind:'boarding',numeric:dLoss,killBias:0.35});
       else t.ship.crew=Math.max(0,t.ship.crew-dLoss);
-      clog(`${e.ship.name} boards ${t.ship.name}!`);
+      clog(`${e.ship.name} boards ${t.ship.name}!`); if(typeof fxBoard==='function') fxBoard(e,t);
       if(t.ship.crew<=0 || atk>def){ t.captured=true; clog(`${t.ship.name} is taken by the enemy!`); }
       checkBattleEnd(); return; }
   }
@@ -1258,7 +1341,7 @@ function tryAiFire(e){ if(e.reload>0) return;
     let ammo='round'; if(e.ship.crew>12) ammo='round';
     const t=tgts[0]; if(t.ship.sails>t.ship.sailsMax*0.5 && B.foe.role==='navy') ammo='chain';
     if(Math.abs(t.x-e.x)+Math.abs(t.y-e.y)<=2 && t.ship.crew>8) ammo='grape';
-    const r=fireDamage(e,t,ammo); clog(`${e.ship.name} answers with ${AMMO[ammo].short.toLowerCase()} — ${r.hit} to ${t.ship.name}'s ${r.vs}.`);
+    const r=fireDamage(e,t,ammo); if(typeof fxShot==='function') fxShot(e,t,side,ammo,r); clog(`${e.ship.name} answers with ${AMMO[ammo].short.toLowerCase()} — ${r.hit} to ${t.ship.name}'s ${r.vs}.`);
     if(t.ship.hull<=0) sinkUnit(t,e);
     e.reload=1; checkBattleEnd(); return; }
 }
@@ -1312,7 +1395,7 @@ function layoutCombat(){ const cv=CV.cv||document.getElementById('ccv'); if(!cv)
   const h=cv.parentElement?cv.parentElement.clientHeight:window.innerHeight;
   cv.width=Math.max(1,w*dpr); cv.height=Math.max(1,h*dpr); cv.style.width=w+'px'; cv.style.height=h+'px';
   CV.dpr=dpr;
-  const padTop= (typeof MOB!=='undefined'&&MOB.phone)?110:90; const padBot=(typeof MOB!=='undefined'&&MOB.phone)?168:140;
+  const ph=typeof MOB!=='undefined'&&MOB.phone; const padTop= ph?(MOB.land?44:112):90; const padBot=ph?(MOB.land?104:176):140;
   const aw=cv.width/dpr, ah=cv.height/dpr;
   const cell=Math.max(32, Math.min((aw-16)/BATTLE_W, (ah-padTop-padBot)/BATTLE_H));
   CV.cell=cell; CV.ox=(aw-cell*BATTLE_W)/2; CV.oy=padTop+(ah-padTop-padBot-cell*BATTLE_H)/2;
@@ -1410,39 +1493,18 @@ function combatWorldFromScreen(sx,sy){ const z=CV.z||1; const dpr=CV.dpr||1; con
 function combatFrame(now){ if(!B||!CV.cv||!CV.ctx){ CV.raf=null; return; }
   const ctx=CV.ctx, cv=CV.cv, dpr=CV.dpr||1;
   ctx.setTransform(dpr,0,0,dpr,0,0);
-  ctx.clearRect(0,0,cv.width,cv.height);
   const z=CV.z||1; const W=cv.width/dpr, H=cv.height/dpr;
+  ctx.fillStyle='#083444'; ctx.fillRect(0,0,W,H);
   ctx.save();
   ctx.translate(W/2,H/2); ctx.scale(z,z); ctx.translate(-W/2+CV.panX,-H/2+CV.panY);
-  // water
-  const bg=ctx.createLinearGradient(0,0,W,H); bg.addColorStop(0,'#0b3c4c'); bg.addColorStop(1,'#0a2a36'); ctx.fillStyle=bg; ctx.fillRect(-40,-40,W+80,H+80);
-  for(let r=0;r<BATTLE_H;r++) for(let c=0;c<BATTLE_W;c++){
-    const x=CV.ox+c*CV.cell, y=CV.oy+r*CV.cell;
-    drawOceanTile(ctx,x,y,CV.cell,c,r,TILE_SEA,now);
-    ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.strokeRect(x,y,CV.cell,CV.cell);
-  }
-  // arcs
-  const sel=B.sel;
-  if(sel && sel.side==='player' && !sel.sunk){
-    const d=DIRS4[sel.facing]; const fx=sel.x+d.x, fy=sel.y+d.y;
-    if(inBattle(fx,fy)){ const p=battleCellPx(fx,fy); ctx.fillStyle='rgba(127,224,255,0.38)'; ctx.fillRect(p.x-CV.cell/2,p.y-CV.cell/2,CV.cell,CV.cell); }
-    for(const side of ['port','starboard']) for(const cell of broadsideCells(sel,side)){
-      const p=battleCellPx(cell.c,cell.r);
-      const foe=unitAt(cell.c,cell.r);
-      if(foe&&foe.side!==sel.side){ ctx.fillStyle='rgba(224,110,60,0.36)'; ctx.fillRect(p.x-CV.cell/2+4,p.y-CV.cell/2+4,CV.cell-8,CV.cell-8); }
-      ctx.strokeStyle='rgba(224,150,90,0.9)'; ctx.lineWidth=2; ctx.setLineDash([5,4]);
-      ctx.strokeRect(p.x-CV.cell/2+3,p.y-CV.cell/2+3,CV.cell-6,CV.cell-6); ctx.setLineDash([]); }
-  }
-  for(const u of B.units){
-    const p=battleCellPx(u.x,u.y);
-    if(u.sunk){ drawShipSprite(ctx,p.x,p.y,CV.cell*1.55,u.ship,{facing:u.facing,sunk:true}); continue; }
-    drawShipSprite(ctx,p.x,p.y,CV.cell*1.82,u.ship,{facing:u.facing,selected:u===B.sel});
-    // hp pip
-    ctx.fillStyle='rgba(0,0,0,0.45)'; ctx.fillRect(p.x-16,p.y+CV.cell*0.38,32,5);
-    ctx.fillStyle='#e07060'; ctx.fillRect(p.x-16,p.y+CV.cell*0.38,32*clamp(u.ship.hull/u.ship.hullMax,0,1),5);
-  }
+  drawBattleSea(ctx,W,H,now);
+  drawArcs(ctx,B.sel,now);
+  const order=B.units.slice().sort((a,b)=>(b.sunk?1:0)-(a.sunk?1:0));
+  for(const u of order) drawBattleUnit(ctx,u,now);
+  drawFx(ctx,now);
   ctx.restore();
-  drawWindRose(ctx, 52, (typeof MOB!=='undefined'&&MOB.phone?90:70), 28, G?G.wind:2);
+  drawWindRose(ctx, 40, (typeof MOB!=='undefined'&&MOB.phone?150:120), 26, G?G.wind:2);
+  CV.frames=(CV.frames||0)+1;
   CV.raf=requestAnimationFrame(combatFrame);
 }
 
@@ -1478,6 +1540,10 @@ function bindUI(){ MAPV.cv=document.getElementById('map'); MAPV.ctx=MAPV.cv.getC
   const bHide=document.getElementById('btn-hideout'); if(bHide) bHide.onclick=()=>openHideout();
   const bCrew2=document.getElementById('btn-crew2'); if(bCrew2) bCrew2.onclick=()=>openCrew();
   const bHide2=document.getElementById('btn-hideout2'); if(bHide2) bHide2.onclick=()=>openHideout();
+  const bG=document.getElementById('btn-goals'); if(bG) bG.onclick=()=>openGoals();
+  const bG2=document.getElementById('btn-goals2'); if(bG2) bG2.onclick=()=>openGoals();
+  const gc=document.getElementById('goalchip'); if(gc) gc.onclick=()=>openGoals();
+  const zc=document.getElementById('z-ctr'); if(zc) zc.onclick=()=>{ const f=playerFleet(); if(f){ centerOnFleet(f); renderMap(); } };
   document.getElementById('btn-center').onclick=()=>{ const f=playerFleet(); if(f){ centerOnFleet(f); renderMap(); } };
   document.getElementById('hint-ok').onclick=()=>{ document.getElementById('navhint').classList.add('hidden'); prefSet('wm_navhint','1'); };
   if(prefGet('wm_navhint','0')==='1') document.getElementById('navhint').classList.add('hidden');
@@ -1522,7 +1588,15 @@ function resizeMap(){ const cv=MAPV.cv; if(!cv) return; const wrap=document.getE
   cv.width=Math.max(1,w*dpr); cv.height=Math.max(1,h*dpr); cv.style.width=w+'px'; cv.style.height=h+'px';
   MAPV.dpr=dpr; clampCam(); renderMap(); renderMinimap(); }
 
-function mapFrame(t){ if(G && MAPV.cv){ const idle=performance.now()-(MAPV.lastMove||0)>400 && !MAPV.moving;
+function fogLayer(){ if(!G) return null; const n=G.seen?Object.keys(G.seen).length:-1; if(GFX.fog&&GFX.fogN===n&&GFX.fogSeed===G.seed) return GFX.fog;
+  // one pixel per tile (+1 border), drawn scaled with smoothing so fog edges are soft
+  const c=GFX.fog||document.createElement('canvas'); c.width=MAP_W+2; c.height=MAP_H+2; const x=c.getContext('2d'); x.clearRect(0,0,c.width,c.height);
+  const img=x.createImageData(c.width,c.height);
+  for(let ty=-1;ty<=MAP_H;ty++) for(let tx=-1;tx<=MAP_W;tx++){ const inside=inMap(tx,ty); let a=0; if(!inside){ const cx=clamp(tx,0,MAP_W-1), cy=clamp(ty,0,MAP_H-1); a=isSeen(cx,cy)?0:150; } else a=isSeen(tx,ty)?0:150;
+    const i=((ty+1)*c.width+(tx+1))*4; img.data[i]=4; img.data[i+1]=16; img.data[i+2]=26; img.data[i+3]=a; }
+  x.putImageData(img,0,0); GFX.fog=c; GFX.fogN=n; GFX.fogSeed=G.seed; return c; }
+function mapCovered(){ const de=document.documentElement; if(de.classList.contains('combat-on')) return true; for(const id of ['port','crew','hideout','menu']){ const e=document.getElementById(id); if(e&&!e.classList.contains('hidden')) return true; } return false; }
+function mapFrame(t){ if(G && MAPV.cv && !mapCovered()){ const idle=performance.now()-(MAPV.lastMove||0)>400 && !MAPV.moving;
     if(!(typeof MOB!=='undefined'&&MOB.phone&&idle&& t-(mapFrame._last||0)<32)){ mapFrame._last=t; renderMap(t); MAPV._frameToken=(MAPV._frameToken||0)+1; } }
   requestAnimationFrame(mapFrame); }
 
@@ -1532,18 +1606,19 @@ function renderTop(){ const res=document.getElementById('res'), day=document.get
   if(!G){ if(res) res.innerHTML=''; if(day) day.textContent=''; return; }
   const f=playerFleet(); const crew=f?fleetCrew(f):0;
   const stores=typeof storesHud==='function'?storesHud():'';
-  if(res) res.innerHTML=`<div class="resv" data-tip="Gold in your chest">🪙 <span>${G.player.gold}</span></div>
-    <div class="resv" data-tip="Sailors across your fleet (unique people)">⚔ <span>${crew}</span></div>
-    <div class="resv" data-tip="Crew morale. Low morale means desertion and timid boarding.">♫ <span>${G.player.morale}</span></div>
-    ${stores?`<div class="resv" data-tip="Days of food and water left for everyone not left at the hideout">${stores}</div>`:''}`;
-  if(day) day.innerHTML=`<b>Day ${G.day}</b><span class="dim"> Wind ${windName(G.wind)}</span>`; }
+  const sd=typeof daysOfFood==='function'?daysOfFood():99;
+  if(res) res.innerHTML=`<div class="resv" data-tip="Gold in your chest">${icon('gold')}<span>${G.player.gold}</span></div>
+    <div class="resv" data-tip="Sailors across your fleet (unique people)">${icon('crew')}<span>${crew}</span></div>
+    <div class="resv" data-tip="Crew morale. Low morale means desertion and timid boarding.">${icon('morale')}<span>${G.player.morale}</span></div>
+    ${stores?`<div class="resv ${sd<=3?'warn':''}" data-tip="Days of food and water left for everyone not left at the hideout">${icon('stores')}<span>${sd>=99?'∞':sd+'d'}</span></div>`:''}`;
+  if(day) day.innerHTML=`<b>Day ${G.day}</b><span class="windlbl">${icon('wind')}${windName(G.wind)}</span>`;
+  if(typeof updateGoalChip==='function') updateGoalChip(); }
 
 function renderSide(){ const box=document.getElementById('side-hero'); if(!box) return;
   if(!G){ box.innerHTML='<div class="dim">No voyage started.</div>'; return; }
   const f=playerFleet(); const cap=G.player; const sh=f?flagshipOf(f):null;
-  const port=drawCaptainPortrait(96,cap).toDataURL();
   box.innerHTML=`<div class="hero-card">
-    <img class="portrait" src="${port}" alt="">
+    ${captainPortraitHtml(cap,'portrait')}
     <div><div class="hname">${escapeHtml(cap.name)}</div>
     <div class="dim">Rank ${cap.level} · ${cap.marque?('Letter: '+NATIONS[cap.marque].name):'Free captain'}</div>
     <div class="bar xp"><i style="width:${cap.xpNeed?clamp(cap.xp/cap.xpNeed,0,1)*100:0}%"></i></div>
@@ -1557,46 +1632,50 @@ function renderSide(){ const box=document.getElementById('side-hero'); if(!box) 
 }
 
 function renderMap(time){ const cv=MAPV.cv, ctx=MAPV.ctx; if(!cv||!ctx) return;
+  time=time||performance.now();
   const dpr=MAPV.dpr||1; ctx.setTransform(dpr,0,0,dpr,0,0);
   const W=cv.width/dpr, H=cv.height/dpr;
-  ctx.fillStyle='#082028'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#093b4e'; ctx.fillRect(0,0,W,H);
   if(!G){ ctx.fillStyle='#e8c36a'; ctx.font='28px Georgia'; ctx.textAlign='center'; ctx.fillText(GAME_TITLE,W/2,H/2); return; }
   const z=MAPV.z||1; ctx.save(); ctx.scale(z,z); ctx.translate(-MAPV.cam.x,-MAPV.cam.y);
   const x0=Math.max(0,Math.floor(MAPV.cam.x/TS)-1), y0=Math.max(0,Math.floor(MAPV.cam.y/TS)-1);
   const x1=Math.min(MAP_W, Math.ceil((MAPV.cam.x+W/z)/TS)+1), y1=Math.min(MAP_H, Math.ceil((MAPV.cam.y+H/z)/TS)+1);
-  for(let y=y0;y<y1;y++) for(let x=x0;x<x1;x++){
-    const t=tileAt(G.map,x,y); const px=x*TS, py=y*TS;
-    if(t===TILE_LAND){ const edge=DIRS4.some(d=>walkable(G.map,x+d.x,y+d.y)); drawLandTile(ctx,px,py,TS,x,y,edge); }
-    else if(t===TILE_PORT){ const p=portAt(x,y); if(p) drawPortTile(ctx,px,py,TS,p); else drawOceanTile(ctx,px,py,TS,x,y,TILE_SEA,time); }
-    else if(typeof isHideoutTile==='function'&&isHideoutTile(x,y)&&typeof drawHideoutMarker==='function') drawHideoutMarker(ctx,px,py,TS,G.hideout);
-    else drawOceanTile(ctx,px,py,TS,x,y,t,time);
-    if(typeof isSeen==='function'&&!isSeen(x,y)){ ctx.fillStyle='rgba(4,14,20,0.5)'; ctx.fillRect(px,py,TS+0.6,TS+0.6); }
-  }
+  // static painted layer (built once per map), blitted for the visible part only
+  const L=ensureMapLayer(); const S=GFX.scale;
+  if(L){ const sx=Math.max(0,MAPV.cam.x), sy=Math.max(0,MAPV.cam.y); const ex=Math.min(MAP_W*TS,MAPV.cam.x+W/z), ey=Math.min(MAP_H*TS,MAPV.cam.y+H/z);
+    if(ex>sx&&ey>sy) ctx.drawImage(L, sx*S, sy*S, (ex-sx)*S, (ey-sy)*S, sx, sy, ex-sx, ey-sy); }
+  drawSeaLife(ctx,time,x0,y0,x1,y1);
+  if(G.hideout && typeof drawHideoutMarker==='function'){ const hx=G.hideout.x, hy=G.hideout.y; if(hx>=x0-1&&hy>=y0-1&&hx<=x1&&hy<=y1) drawHideoutMarker(ctx,hx*TS,hy*TS,TS,G.hideout); }
+  if(typeof isSeen==='function'){ const fog=fogLayer(); if(fog){ ctx.save(); ctx.imageSmoothingEnabled=true; ctx.drawImage(fog,0,0,fog.width,fog.height,-TS,-TS,(MAP_W+2)*TS,(MAP_H+2)*TS); ctx.restore(); } }
   // range
-  if(MAPV.range){ ctx.fillStyle='rgba(127,224,255,0.16)';
-    for(const [k] of MAPV.range){ const x=k%MAP_W,y=(k/MAP_W)|0; ctx.fillRect(x*TS,y*TS,TS,TS); } }
-  if(MAPV.path){ ctx.strokeStyle='rgba(255,224,140,0.85)'; ctx.lineWidth=3; ctx.beginPath();
-    const f=playerFleet(); if(f) ctx.moveTo(f.x*TS+TS/2,f.y*TS+TS/2);
-    for(const p of MAPV.path) ctx.lineTo(p.x*TS+TS/2,p.y*TS+TS/2); ctx.stroke();
-    if(MAPV.dest){ ctx.fillStyle='rgba(255,224,140,0.35)'; ctx.fillRect(MAPV.dest.x*TS,MAPV.dest.y*TS,TS,TS); } }
+  if(MAPV.range){ ctx.fillStyle='rgba(150,235,255,0.13)'; ctx.strokeStyle='rgba(190,245,255,0.18)'; ctx.lineWidth=1;
+    for(const [k] of MAPV.range){ const x=k%MAP_W,y=(k/MAP_W)|0; if(x<x0||y<y0||x>=x1||y>=y1) continue; ctx.fillRect(x*TS+1,y*TS+1,TS-2,TS-2); } }
+  if(MAPV.path){ const f=playerFleet();
+    ctx.lineCap='round'; ctx.lineJoin='round';
+    const pathLine=()=>{ ctx.beginPath(); if(f) ctx.moveTo(f.x*TS+TS/2,f.y*TS+TS/2); for(const p of MAPV.path) ctx.lineTo(p.x*TS+TS/2,p.y*TS+TS/2); };
+    ctx.strokeStyle='rgba(40,20,5,0.55)'; ctx.lineWidth=6; pathLine(); ctx.stroke();
+    ctx.strokeStyle='rgba(255,224,140,0.95)'; ctx.lineWidth=3; ctx.setLineDash([8,6]); ctx.lineDashOffset=-(time/40)%14; pathLine(); ctx.stroke(); ctx.setLineDash([]);
+    if(MAPV.dest){ const dx=MAPV.dest.x*TS+TS/2, dy=MAPV.dest.y*TS+TS/2; const pulse=0.5+0.5*Math.sin(time/250);
+      ctx.strokeStyle=`rgba(255,224,140,${(0.6+pulse*0.4).toFixed(3)})`; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(dx,dy,TS*0.34+pulse*3,0,7); ctx.stroke();
+      ctx.strokeStyle='rgba(160,30,20,0.9)'; ctx.lineWidth=3.5; ctx.beginPath(); ctx.moveTo(dx-7,dy-7); ctx.lineTo(dx+7,dy+7); ctx.moveTo(dx+7,dy-7); ctx.lineTo(dx-7,dy+7); ctx.stroke(); } }
   // fleets
   for(const fl of G.fleets){ if(fl.dead) continue; if(fl.x<x0-1||fl.y<y0-1||fl.x>x1||fl.y>y1) continue;
     if(typeof isSeen==='function'&&!isSeen(fl.x,fl.y)&&fl.owner!=='player') continue;
     const sh=flagshipOf(fl); if(!sh) continue;
     const px=fl.x*TS+TS/2, py=fl.y*TS+TS/2;
-    drawShipSprite(ctx,px,py,TS*1.32,sh,{facing:sh.facing||1,selected:fl.owner==='player'});
-    if(fl.owner==='player'){ ctx.strokeStyle='#ffe08a'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(px,py,TS*0.42,0,7); ctx.stroke(); }
+    if(fl.owner==='player'){ const pulse=0.5+0.5*Math.sin(time/500); ctx.fillStyle=`rgba(255,224,138,${(0.12+pulse*0.1).toFixed(3)})`; ctx.beginPath(); ctx.arc(px,py,TS*0.52,0,7); ctx.fill(); }
+    drawShipSprite(ctx,px,py,TS*1.32,sh,{facing:sh.facing||1,selected:fl.owner==='player',wake:true,time});
+    const n=shipsOf(fl).length; if(n>1){ ctx.fillStyle='rgba(20,12,4,0.8)'; ctx.beginPath(); ctx.arc(px+TS*0.36,py-TS*0.36,8,0,7); ctx.fill(); ctx.fillStyle='#ffe08a'; ctx.font='bold 10px Georgia'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(String(n),px+TS*0.36,py-TS*0.36); }
   }
-  // port names + hideout label
-  ctx.font='bold 11px Georgia'; ctx.textAlign='center'; ctx.textBaseline='top';
-  for(const p of G.map.ports){ if(p.x<x0||p.y<y0||p.x>x1||p.y>y1) continue;
-    ctx.fillStyle='rgba(8,20,24,0.65)'; ctx.fillRect(p.x*TS+4,p.y*TS+TS-2,TS-8,13);
-    ctx.fillStyle='#f3ead4'; ctx.fillText(p.name, p.x*TS+TS/2, p.y*TS+TS-2); }
+  // labels: little parchment scrolls
+  const label=(txt,cx,ty,col)=>{ ctx.font='bold 11px Georgia'; const w=ctx.measureText(txt).width+12; ctx.fillStyle='rgba(30,16,6,0.35)'; roundRect(ctx,cx-w/2+1,ty+1,w,15,4); ctx.fill();
+    ctx.fillStyle='#efdcae'; roundRect(ctx,cx-w/2,ty,w,15,4); ctx.fill(); ctx.strokeStyle='#6a4a24'; ctx.lineWidth=1; ctx.stroke(); ctx.fillStyle=col||'#3a1a0a'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(txt,cx,ty+8); };
+  for(const p of G.map.ports){ if(p.x<x0||p.y<y0||p.x>x1||p.y>y1) continue; label(p.name, p.x*TS+TS/2, p.y*TS+TS-3); }
   if(G.hideout){ const hx=G.hideout.x, hy=G.hideout.y;
-    if(hx>=x0&&hy>=y0&&hx<=x1&&hy<=y1){ ctx.fillStyle='rgba(8,20,24,0.65)'; ctx.fillRect(hx*TS+2,hy*TS+TS-2,TS-4,13);
-      ctx.fillStyle='#c9f0d0'; ctx.fillText(G.hideout.claimed?(G.hideout.name||'Cove'):'Cove?', hx*TS+TS/2, hy*TS+TS-2); } }
+    if(hx>=x0&&hy>=y0&&hx<=x1&&hy<=y1) label(G.hideout.claimed?(G.hideout.name||'Cove'):'Cove?', hx*TS+TS/2, hy*TS+TS-3, '#1f5a2a'); }
   ctx.restore();
-  drawWindRose(ctx, 48, 52, 30, G.wind);
+  drawWindRose(ctx, 46, 50, 30, G.wind);
+  MAPV.frames=(MAPV.frames||0)+1;
 }
 
 function renderMinimap(){ const cv=document.getElementById('minimap'); if(!cv||!G) return; const ctx=cv.getContext('2d');
@@ -1613,38 +1692,45 @@ function renderMinimap(){ const cv=document.getElementById('minimap'); if(!cv||!
 }
 
 function openMenu(){ const el=document.getElementById('menu'); el.classList.remove('hidden');
-  const has=!!G && !G.over; const canCont=has || !!prefGet(SAVE_KEY,null) || !!prefGet(AUTO_KEY,null);
-  el.innerHTML=`<div class="menu-inner panel">
-    <h1 class="title">${GAME_TITLE}</h1>
-    <p class="subtitle">Ships, shot, and hard choices on the Windward Main</p>
-    <div class="menu-row">
-      <button class="btn primary big" id="mn-new">New voyage</button>
-      ${canCont?`<button class="btn big" id="mn-cont">Continue</button>`:''}
-      <button class="btn big" id="mn-help">How to play</button>
+  const has=!!G && !G.over && !G.tutorial; const canCont=has || !!prefGet(SAVE_KEY,null) || !!prefGet(AUTO_KEY,null);
+  const tutDone=prefGet('wm_tut_done','0')==='1';
+  el.innerHTML=`<div class="menu-art"></div><div class="menu-inner">
+    <div class="menu-titlebox">
+      <h1 class="title">${GAME_TITLE}</h1>
+      <p class="subtitle">Ships, shot, and hard choices on the Windward Main</p>
     </div>
-    <div id="mn-setup" class="newsetup">
-      <label>Captain name <input id="mn-name" maxlength="22" value="${escapeHtml((G&&G.player&&G.player.name)||'Reese')}"></label>
-      <div class="difrow"><b>Difficulty</b>
-        <label><input type="radio" name="mdif" value="easy"> Easy</label>
-        <label><input type="radio" name="mdif" value="normal" checked> Normal</label>
-        <label><input type="radio" name="mdif" value="hard"> Hard</label>
+    <div class="menu-card panel">
+      <div class="menu-row">
+        <button class="btn ${tutDone?'':'primary'} big" id="mn-tut">${icon('star')} First Voyage <span class="btnsub">guided tutorial</span></button>
+        <button class="btn ${tutDone?'primary':''} big" id="mn-new">${icon('ship')} New voyage</button>
+        ${canCont?`<button class="btn big" id="mn-cont">${icon('sail')} Continue</button>`:''}
       </div>
-      <p class="dim">Normal is meant to threaten you — navy patrols hunt a hostile flag, and they grow over the weeks.</p>
-      <div class="row"><button class="btn primary" id="mn-go">Weigh anchor</button></div>
+      <div id="mn-setup" class="newsetup">
+        <label>Captain name <input id="mn-name" maxlength="22" value="${escapeHtml((G&&G.player&&G.player.name)||'Reese')}"></label>
+        <div class="difrow"><b>Difficulty</b>
+          <label><input type="radio" name="mdif" value="easy"> Easy</label>
+          <label><input type="radio" name="mdif" value="normal" checked> Normal</label>
+          <label><input type="radio" name="mdif" value="hard"> Hard</label>
+        </div>
+        <p class="dim">Normal is meant to threaten you — navy patrols hunt a hostile flag, and they grow over the weeks.</p>
+        <div class="row"><button class="btn primary" id="mn-go">Weigh anchor</button></div>
+      </div>
+      <div class="menu-row small">
+        <button class="btn" id="mn-help">How to play</button>
+        <button class="btn" id="mn-load">Load</button>
+        <button class="btn" id="mn-export">Export saves</button>
+        <button class="btn" id="mn-import">Import saves</button>
+        ${has?`<button class="btn" id="mn-back">Back to sea</button>`:''}
+      </div>
+      <p class="dim ver">v${GAME_VERSION} · a separate game from Banners of Aldmere</p>
     </div>
-    <div class="menu-row">
-      <button class="btn" id="mn-load">Load</button>
-      <button class="btn" id="mn-export">Export saves</button>
-      <button class="btn" id="mn-import">Import saves</button>
-      ${has?`<button class="btn" id="mn-back">Back to sea</button>`:''}
-    </div>
-    <p class="dim" style="text-align:center">v${GAME_VERSION} · a separate game from Banners of Aldmere</p>
   </div>`;
   const setup=el.querySelector('#mn-setup'); setup.style.display='none';
-  el.querySelector('#mn-new').onclick=()=>{ setup.style.display='block'; };
+  el.querySelector('#mn-tut').onclick=()=>startTutorial();
+  el.querySelector('#mn-new').onclick=()=>{ setup.style.display='block'; try{ setup.scrollIntoView({block:'center'}); }catch(e){} };
   el.querySelector('#mn-go').onclick=()=>{ const name=el.querySelector('#mn-name').value.trim()||'Reese';
-    const dif=(el.querySelector('input[name=mdif]:checked')||{}).value||'normal'; startGame({name,difficulty:dif}); };
-  const c=el.querySelector('#mn-cont'); if(c) c.onclick=()=>{ if(G&&!G.over){ el.classList.add('hidden'); renderAll(); } else loadGame(); };
+    const dif=(el.querySelector('input[name=mdif]:checked')||{}).value||'normal'; startGame({name,difficulty:dif}); if(typeof offerTutorialPrompt==='function') offerTutorialPrompt(); };
+  const c=el.querySelector('#mn-cont'); if(c) c.onclick=()=>{ if(G&&!G.over&&!G.tutorial){ el.classList.add('hidden'); renderAll(); } else loadGame(); };
   el.querySelector('#mn-help').onclick=()=>openHelp();
   el.querySelector('#mn-load').onclick=()=>openLoadMenu();
   el.querySelector('#mn-export').onclick=()=>downloadSaveBundle();
@@ -1655,6 +1741,8 @@ function openMenu(){ const el=document.getElementById('menu'); el.classList.remo
 
 function openHelp(){ modal(`<h2>How to play ${GAME_TITLE}</h2>
   <div class="help">
+    <h3>New here?</h3>
+    <p>Play the <b>First Voyage</b> tutorial from the main menu (or the button below). It walks you through one safe voyage, step by step. Any time you are unsure, tap <b>Goals</b> for two or three things worth doing next.</p>
     <h3>The map</h3>
     <p>You captain a fleet on a Caribbean sea. Each day you have a limited amount of sailing, shown as “wind” or movement. Sailing <b>with</b> the wind (see the compass rose) is cheap; beating <b>upwind</b> costs more. Reefs cost extra and may scrape the hull.</p>
     <p>Tap a sea hex to lay a course, then tap it again (or tap <b>Sail</b>) to go. Moving onto a port docks you. Moving onto another ship starts a meeting — fight or try to flee.</p>
@@ -1677,15 +1765,16 @@ function openHelp(){ modal(`<h2>How to play ${GAME_TITLE}</h2>
     <h3>Saving</h3>
     <p>The game autosaves every day. Use Save, Load, and Export / Import to keep a backup file. Updates will not wipe a save. Preferences (layout, text size, zoom) can always be put back with <b>Reset to phone defaults</b> in the ☰ menu — that never touches saves.</p>
   </div>
-  <div class="row"><button class="btn primary" id="hp-ok">Got it</button></div>`,'help wide');
-  document.getElementById('hp-ok').onclick=()=>closeAllModals(); }
+  <div class="row"><button class="btn" id="hp-tut">Play the tutorial</button><button class="btn primary" id="hp-ok">Got it</button></div>`,'help wide');
+  document.getElementById('hp-ok').onclick=()=>closeAllModals();
+  document.getElementById('hp-tut').onclick=()=>{ closeAllModals(); startTutorial(); }; }
 
-function openCaptain(){ if(!G) return; hideBanner(); const c=G.player; const port=drawCaptainPortrait(160,c).toDataURL();
+function openCaptain(){ if(!G) return; hideBanner(); const c=G.player;
   const el=document.getElementById('captain'); el.classList.remove('hidden');
   el.innerHTML=`<div class="screen panel">
     <div class="scr-head"><h1>Captain ${escapeHtml(c.name)}</h1><button class="btn" id="cap-x">Close</button></div>
     <div class="capgrid">
-      <img class="bigport" src="${port}" alt="">
+      ${captainPortraitHtml(c,'bigport')}
       <div>
         <p>Rank ${c.level} · ${c.xp} / ${c.xpNeed} experience · Morale ${c.morale}</p>
         <p>${c.marque?`Letter of marque: <b>${NATIONS[c.marque].name}</b>`:'No letter of marque — a free captain.'}</p>
@@ -1741,6 +1830,7 @@ function openPort(port){ CUR_PORT=port; PORT_TAB='trade';
   document.getElementById('port').classList.remove('hidden');
   checkMissionComplete('dock', port);
   renderPort();
+  if(typeof firstTip==='function') firstTip('port');
 }
 function closePort(){ document.getElementById('port').classList.add('hidden'); CUR_PORT=null;
   const f=playerFleet(); if(f) MAPV.range=tilesInRange(G.map,f.x,f.y,f.mp,G.player,G.wind);
@@ -1749,11 +1839,12 @@ function closePort(){ document.getElementById('port').classList.add('hidden'); C
 function renderPort(){ const port=CUR_PORT; const el=document.getElementById('port'); if(!port||!el) return;
   const nat=NATIONS[port.nation]; const stand=repStanding(port.nation);
   el.innerHTML=`<div class="screen panel portscr">
-    <div class="scr-head">
-      <h1>${escapeHtml(port.name)}</h1>
+    <div class="scr-head portscene" style="background-position:50% ${20+(hashStr(port.id)%60)}%">
+      <div class="pstitle"><span class="psflag" style="background:linear-gradient(135deg,${nat.color} 0 50%,${nat.color2} 50% 100%)"></span><div><h1>${escapeHtml(port.name)}</h1>
+      <div class="pssub">${escapeHtml(port.flavor)} · <span class="rep ${stand}">${nat.name} · ${repLabel(stand)}</span></div></div></div>
       <button class="btn" id="pt-leave">Leave</button>
     </div>
-    <p class="dim">${escapeHtml(port.flavor)} · <span class="rep ${stand}">${nat.name} · ${repLabel(stand)}</span></p>
+    <div class="goldline">${icon('gold','in')} <b>${G.player.gold}</b> gold · ${icon('crew','in')} ${typeof livingPlayerCrew==='function'?livingPlayerCrew().filter(s=>s.shipId!=='hideout').length:''} aboard · ${icon('stores','in')} ${typeof daysOfFood==='function'?daysOfFood():'?'} days of stores</div>
     <div class="ptabs">
       ${[['trade','Trade'],['crew','Recruit'],['outfit','Outfitting'],['yard','Shipyard'],['marque','Letter of marque']].map(([id,lab])=>`<button class="btn ${PORT_TAB===id?'primary':''}" data-tab="${id}">${lab}</button>`).join('')}
     </div>
@@ -1779,7 +1870,7 @@ function tradeHtml(port){ const f=playerFleet(); const have=totalCargo(f);
     ${GOODS.map(g=>{ const buy=goodPrice(port,g,true), sell=goodPrice(port,g,false);
       return `<div class="goodcard" data-good="${g}">
         <div class="gh"><b>${GOOD_INFO[g].name}</b><span>You have ${have[g]||0}</span></div>
-        <div class="gp">Buy ${buy} 🪙 · Sell ${sell} 🪙</div>
+        <div class="gp">Buy ${buy}${icon('gold','in')} · Sell ${sell}${icon('gold','in')}</div>
         <div class="mktbtns">
           <button class="btn small" data-buy="${g}" data-n="1">Buy 1</button>
           <button class="btn small" data-buy="${g}" data-n="5">Buy 5</button>
@@ -1924,6 +2015,9 @@ function reviveGame(obj){ if(!obj) throw new Error('Empty save.');
   if(typeof ensureSupplies==='function') ensureSupplies(g);
   if(typeof ensureHideout==='function') ensureHideout(g);
   if(typeof rebuildUsedNames==='function') rebuildUsedNames(g);
+  if(!g.stats) g.stats={captures:0,sunk:0};
+  g.tutorial=null;
+  if(typeof TUT!=='undefined'&&TUT.on) tutStop();
   G=g; pendingLevelUps=0; B=null; CUR_PORT=null;
   document.getElementById('menu').classList.add('hidden');
   document.getElementById('port').classList.add('hidden');
@@ -1936,6 +2030,7 @@ function reviveGame(obj){ if(!obj) throw new Error('Empty save.');
   renderAll(); return G; }
 
 function saveGame(silent){ if(!G){ toast('No voyage to save.'); return false; }
+  if(G.tutorial){ if(!silent) toast('Tutorial voyages are not saved — finish or skip it first.'); return false; }
   try{ localStorage.setItem(SAVE_KEY, JSON.stringify(serializeGame())); if(!silent) toast('Voyage saved on this device.'); return true; }
   catch(e){ toast('Could not save: '+(e.message||e)); return false; } }
 
@@ -1945,7 +2040,7 @@ function loadGame(raw){ try{
     reviveGame(JSON.parse(s)); toast('Voyage loaded.'); return true;
   }catch(e){ toast('Could not load: '+(e.message||e)); return false; } }
 
-function autoSave(){ if(!G) return; try{ const blob=JSON.stringify(serializeGame()); localStorage.setItem(AUTO_KEY, blob);
+function autoSave(){ if(!G||G.tutorial) return; try{ const blob=JSON.stringify(serializeGame()); localStorage.setItem(AUTO_KEY, blob);
     const idx=autoList(); idx.unshift({ key:AUTO_KEY+'_'+Date.now(), ts:Date.now(), day:G.day, captain:G.player.name, gold:G.player.gold });
     // store last 3 snapshots
     try{ localStorage.setItem(idx[0].key, blob); }catch(e){}
@@ -2019,7 +2114,7 @@ function hasSave(){ try{ return !!(localStorage.getItem(SAVE_KEY)||localStorage.
 // ---- 10_mobile.js ----
 // Phone layout, pinch-zoom, reversible settings, PWA
 const MOB={ touch:false, phone:false, land:true, safe:{t:0,r:0,b:0,l:0}, lastTouch:-1e9, lp:null, suppressUntil:0 };
-const MOB_PREF_KEYS=['wm_layout','wm_text','wm_mapzoom','wm_tapconfirm','wm_navhint','wm_crew_autoperk'];
+const MOB_PREF_KEYS=['wm_layout','wm_text','wm_mapzoom','wm_tapconfirm','wm_navhint','wm_crew_autoperk','wm_tips','wm_tips_seen','wm_goalchip','wm_fx','wm_tut_prompt'];
 
 function mobPref(){ return prefGet('wm_layout','auto'); }
 function mobIsPhoneish(){ let coarse=false; try{ coarse=matchMedia('(pointer:coarse)').matches || (navigator.maxTouchPoints>0 && matchMedia('(hover:none)').matches); }catch(e){}
@@ -2042,6 +2137,7 @@ function mobResetPhoneDefaults(opt){ opt=opt||{};
   prefSet('wm_layout','auto');
   MAPV.z=1.05;
   mobDetect(); try{ resizeMap(); }catch(e){}
+  try{ gfxInvalidate(); updateGoalChip(); }catch(e){}
   if(opt.toast!==false) toast('Phone defaults restored. Your saves are untouched.'); }
 
 function mobHandleResetQuery(){ try{ const u=new URL(location.href); if(u.searchParams.get('reset')!=='layout') return;
@@ -2092,14 +2188,15 @@ function mobProxy(id){ const b=document.getElementById(id); if(b&&!b.disabled) b
 function setupMobileHUD(){ if(document.getElementById('mobbar')) return;
   const bar=document.createElement('div'); bar.id='mobbar';
   const btns=[
-    ['mb-panel','🛡','Fleet','Captain, fleet & log',()=>mobDrawer()],
-    ['mb-sail','⛵','Sail','Sail along the planned course',()=>{ if(MAPV.path&&MAPV.path.length) executeSail(); else toast('Tap a sea hex to lay a course, tap again (or Sail) to go.'); }],
-    ['mb-port','🏘','Port','Dock if you are on a port or at your cove',()=>{ const f=playerFleet(); const p=f&&portAt(f.x,f.y); if(p) dockAt(p); else if(f&&typeof hideoutNearFleet==='function'&&hideoutNearFleet(f)) openHideout(); else toast('Sail onto a port hex to dock, or onto Saltkey Cove.'); }],
-    ['mb-cap','★','Captain','Captain screen',()=>openCaptain()],
-    ['mb-center','🎯','Center','Center on your fleet',()=>mobProxy('btn-center')],
-    ['mb-end','⏳','End','End the day',()=>endDay()]
+    ['mb-panel','ship','Fleet','Captain, fleet & log',()=>mobDrawer()],
+    ['mb-sail','sail','Sail','Sail along the planned course',()=>{ if(MAPV.path&&MAPV.path.length) executeSail(); else toast('Tap a sea hex to lay a course, tap again (or Sail) to go.'); }],
+    ['mb-port','anchor','Port','Dock if you are on a port or at your cove',()=>{ const f=playerFleet(); const p=f&&portAt(f.x,f.y); if(p) dockAt(p); else if(f&&typeof hideoutNearFleet==='function'&&hideoutNearFleet(f)) openHideout(); else toast('Sail onto a port hex to dock, or onto Saltkey Cove.'); }],
+    ['mb-crew','crew','Crew','Your sailors, stations and favourites',()=>openCrew()],
+    ['mb-cove','palm','Cove','Your hidden cove',()=>openHideout()],
+    ['mb-goals','goal','Goals','What to do next',()=>openGoals()],
+    ['mb-end','hourglass','End','End the day',()=>endDay()]
   ];
-  for(const [id,ic,lab,tip,fn] of btns){ const b=document.createElement('button'); b.className='mbtn'; b.id=id; b.innerHTML=`<span class="mbi">${ic}</span><span class="mbl">${lab}</span>`; b.setAttribute('data-tip',tip); b.onclick=fn; bar.appendChild(b); }
+  for(const [id,ic,lab,tip,fn] of btns){ const b=document.createElement('button'); b.className='mbtn'; b.id=id; b.innerHTML=`<span class="mbi">${ICON[ic]||ic}</span><span class="mbl">${lab}</span>`; b.setAttribute('data-tip',tip); b.onclick=fn; bar.appendChild(b); }
   document.body.appendChild(bar);
   const tb=document.getElementById('topbar'); if(tb&&!document.getElementById('btn-more')){ const m=document.createElement('button'); m.className='btn'; m.id='btn-more'; m.textContent='☰'; m.setAttribute('data-tip','Save, load, settings, help'); m.onclick=openMobMore; tb.appendChild(m); }
   const side=document.getElementById('side'); if(side&&!document.getElementById('side-grab')){ const gb=document.createElement('div'); gb.id='side-grab'; gb.innerHTML='<span></span>'; gb.onclick=()=>mobDrawer(false); side.insertBefore(gb,side.firstChild); }
@@ -2120,8 +2217,19 @@ function openMobMore(){ const items=[...document.querySelectorAll('#topbar .btn'
       <label><input type="radio" name="mtxt" value="normal" ${cur==='normal'?'checked':''}> Normal</label>
       <label><input type="radio" name="mtxt" value="large" ${cur==='large'?'checked':''}> Large</label>
       <label><input type="radio" name="mtxt" value="xlarge" ${cur==='xlarge'?'checked':''}> Extra large</label></div>
+    <div class="mobset"><b>Graphics</b>
+      <label><input type="radio" name="mfx" value="full" ${prefGet('wm_fx','full')!=='lite'?'checked':''}> Full (animated sea)</label>
+      <label><input type="radio" name="mfx" value="lite" ${prefGet('wm_fx','full')==='lite'?'checked':''}> Lite (saves battery)</label></div>
+    <div class="mobset"><b>First-time tips</b>
+      <label><input type="radio" name="mtips" value="1" ${prefGet('wm_tips','1')!=='0'?'checked':''}> On</label>
+      <label><input type="radio" name="mtips" value="0" ${prefGet('wm_tips','1')==='0'?'checked':''}> Off</label>
+      <button class="btn small" id="mm-tipsre" type="button">Show tips again</button></div>
+    <div class="mobset"><b>Goal banner on the map</b>
+      <label><input type="radio" name="mgoal" value="1" ${prefGet('wm_goalchip','1')!=='0'?'checked':''}> On</label>
+      <label><input type="radio" name="mgoal" value="0" ${prefGet('wm_goalchip','1')==='0'?'checked':''}> Off</label></div>
+    <div class="mobset"><button class="btn" id="mm-tut" type="button">⭐ Play the First Voyage tutorial</button></div>
     <div class="mobset"><button class="btn" id="mm-reset" type="button">↩ Reset to phone defaults</button>
-      <div class="dim" style="margin-top:4px;line-height:1.4">Clears layout, text size and zoom. <b>Does not touch your saves.</b></div></div>
+      <div class="dim" style="margin-top:4px;line-height:1.4">Clears layout, text size, zoom, graphics, tips and goal-banner settings. <b>Does not touch your saves.</b></div></div>
     <div class="row" style="margin-top:8px"><button class="btn" id="mm-exsave">⬆ Export saves</button><button class="btn" id="mm-imsave">⬇ Import saves</button></div>
     ${ios&&!isStandalone()?'<div class="mobset dim">📲 To install: open this page in <b>Safari</b>, tap <b>Share</b> (□↑) → <b>Add to Home Screen</b>.</div>':''}
     <div class="row"><button class="btn" id="mm-close">Close</button></div>`;
@@ -2129,6 +2237,11 @@ function openMobMore(){ const items=[...document.querySelectorAll('#topbar .btn'
   root.querySelectorAll('[data-mi]').forEach(x=>x.onclick=()=>{ const b=items[+x.dataset.mi]; closeModal(root); setTimeout(()=>b.click(),30); });
   root.querySelectorAll('input[name=mlay]').forEach(r=>r.onchange=()=>{ prefSet('wm_layout',r.value); mobDetect(); try{ resizeMap(); }catch(_){} });
   root.querySelectorAll('input[name=mtxt]').forEach(r=>r.onchange=()=>{ if(r.checked){ prefSet('wm_text',r.value); applyTextScale(); try{ resizeMap(); }catch(_){} } });
+  root.querySelectorAll('input[name=mfx]').forEach(r=>r.onchange=()=>{ if(r.checked){ prefSet('wm_fx',r.value); gfxInvalidate(); try{ renderMap(); }catch(_){} } });
+  root.querySelectorAll('input[name=mtips]').forEach(r=>r.onchange=()=>{ if(r.checked){ prefSet('wm_tips',r.value); if(r.value==='0') hideFirstTip(); } });
+  root.querySelectorAll('input[name=mgoal]').forEach(r=>r.onchange=()=>{ if(r.checked){ prefSet('wm_goalchip',r.value); updateGoalChip(); } });
+  root.querySelector('#mm-tipsre').onclick=()=>{ prefDel('wm_tips_seen'); prefSet('wm_tips','1'); toast('Tips will show again.'); closeModal(root); openMobMore(); };
+  root.querySelector('#mm-tut').onclick=()=>{ closeModal(root); startTutorial(); };
   root.querySelector('#mm-reset').onclick=()=>{ closeModal(root); mobResetPhoneDefaults(); try{ openMobMore(); }catch(_){} };
   root.querySelector('#mm-exsave').onclick=()=>downloadSaveBundle();
   root.querySelector('#mm-imsave').onclick=()=>pickSaveFile();
@@ -2362,7 +2475,7 @@ function autoAssignCrew(ship){ const pool=sailorsOnShip(ship).filter(s=>s.status
   pool.filter(s=>s.protected).forEach(s=>{ s.station='reserve'; });
   pool.forEach(s=>{ delete s._took; }); syncShipCrew(ship); }
 
-function autoAssignFleet(){ const f=playerFleet(); if(!f) return; for(const sh of shipsOf(f)) autoAssignCrew(sh);
+function autoAssignFleet(){ const f=playerFleet(); if(!f) return; if(typeof TUT!=='undefined'&&TUT.on) TUT.ctx.autoDone=true; for(const sh of shipsOf(f)) autoAssignCrew(sh);
   toast('Stations filled with the best hands available. Protected sailors stayed in reserve.'); }
 
 function setSailorProtected(sailor, on){ sailor.protected=!!on; if(on) sailor.station='reserve'; }
@@ -2425,7 +2538,7 @@ function killSailor(s, how){ if(!s||s.dead) return;
   addLog(`<span class="bad">${sailorName(s)} is dead</span> — ${s.deathHow}.`); }
 function woundSailor(s, days){ if(!s||s.dead) return;
   s.status='wounded'; s.woundedDays=Math.max(s.woundedDays||0, days!=null?days:clamp(3-Math.floor((s.attrs.con||8)/6)+irnd(0,2),2,6));
-  addLog(`${sailorName(s)} is wounded (${s.woundedDays} days).`); }
+  addLog(`${sailorName(s)} is wounded (${s.woundedDays} days).`); if(typeof firstTip==='function') setTimeout(()=>firstTip('wounded'),1500); }
 
 function inflictCrewHits(ship, opts){ opts=opts||{};
   if(!shipHasNamedCrew(ship)){ if(opts.hits&&ship.crew) ship.crew=Math.max(0,ship.crew-(opts.numeric!=null?opts.numeric:Math.max(1,Math.round((opts.hits||1)*0.6)))); return { killed:[], wounded:[], saved:[] }; }
@@ -2643,7 +2756,10 @@ function topUpSupplies(days, port){ days=Math.max(1,days|0); const m=mouthsToFee
   let crates={}; let space=0, gold=0;
   for(const k of ['food','water','ale']){ const info=SUPPLY_INFO[k]; crates[k]=Math.ceil(need[k]/info.perCrate); space+=crates[k]*info.cargo; gold+=crates[k]*info.cost; }
   if(gold<=0){ toast('Stores already cover that many days.'); return false; }
-  if(cargoFree()<space){ toast('Not enough hold space to top up that far.'); return false; }
+  if(cargoFree()<space){ // v0.3: fill as many days as the hold allows instead of refusing
+    for(let d=days-1; d>=1; d--){ let sp=0; for(const k of ['food','water','ale']){ const info=SUPPLY_INFO[k]; const nd=k==='ale'?Math.ceil(d*m*r.per):d*m; sp+=Math.ceil(Math.max(0,nd-supplyCount(k))/info.perCrate)*info.cargo; }
+      if(sp>0 && cargoFree()>=sp && d>daysOfFood()){ toast(`The hold only has room for ${d} days — topping up to that.`); return topUpSupplies(d, port); } }
+    toast('Not enough hold space to top up — sell some cargo first.'); return false; }
   if(G.player.gold<gold){ toast(`Need ${gold} gold to top up ${days} days.`); return false; }
   for(const k of ['food','water','ale']){ if(crates[k]>0){ G.player.gold-=crates[k]*SUPPLY_INFO[k].cost; G.supplies[k]+=crates[k]*SUPPLY_INFO[k].perCrate; } }
   addLog(`Topped up stores for ${days} days (${gold} gold).`); toast(`Stores ready for ${days} days at sea.`);
@@ -2908,23 +3024,13 @@ let CREW_FOCUS=null;
 let HO_SEL=null;
 const HV={ cv:null, ctx:null, z:1, panX:0, panY:0, dpr:1, plots:null };
 
-const HIDEOUT_PLOTS={
-  dock:{x:70,y:310,w:140,h:86},
-  careening:{x:70,y:210,w:124,h:78},
-  slipway:{x:230,y:318,w:124,h:78},
-  warehouse:{x:70,y:78,w:130,h:86},
-  market:{x:220,y:78,w:120,h:74},
-  tavern:{x:280,y:196,w:130,h:86},
-  smugglers:{x:420,y:196,w:120,h:74},
-  fishery:{x:420,y:318,w:120,h:74},
-  infirmary:{x:430,y:78,w:130,h:86},
-  training:{x:580,y:196,w:130,h:86},
-  armory:{x:580,y:78,w:120,h:74},
-  foundry:{x:580,y:318,w:120,h:74},
-  palisade:{x:24,y:16,w:150,h:48},
-  batteries:{x:186,y:16,w:150,h:48},
-  lookout:{x:400,y:12,w:130,h:56},
-  channel:{x:548,y:12,w:150,h:56}
+const HIDEOUT_PLOTS={ // pin centres on the painted cove (740 x 416 space)
+  dock:{x:217,y:318,ic:'⚓',lab:'Dock'}, careening:{x:506,y:296,ic:'🛠',lab:'Careening'}, slipway:{x:445,y:346,ic:'⛵',lab:'Slipway'},
+  warehouse:{x:630,y:322,ic:'📦',lab:'Warehouse'}, market:{x:484,y:208,ic:'⚖',lab:'Market'}, tavern:{x:621,y:178,ic:'🍺',lab:'Tavern'},
+  smugglers:{x:350,y:222,ic:'🗝',lab:'Smugglers'}, fishery:{x:330,y:346,ic:'🐟',lab:'Fishery'}, infirmary:{x:672,y:236,ic:'✚',lab:'Infirmary'},
+  training:{x:575,y:262,ic:'⚔',lab:'Training'}, armory:{x:462,y:128,ic:'🗡',lab:'Armory'}, foundry:{x:585,y:112,ic:'🔥',lab:'Foundry'},
+  palisade:{x:70,y:190,ic:'🛡',lab:'Palisade'}, batteries:{x:160,y:262,ic:'💣',lab:'Batteries'}, lookout:{x:497,y:50,ic:'🔭',lab:'Lookout'},
+  channel:{x:236,y:196,ic:'🌊',lab:'Channel'}
 };
 
 function sailorPortraitUrl(s, size){ try{ return drawSailorPortrait(size||72, s).toDataURL(); }catch(e){ return ''; } }
@@ -2939,7 +3045,7 @@ function sailorSortList(list){ const arr=list.slice();
   return arr; }
 
 function openCrew(focusId){ if(!G) return; hideBanner(); CREW_VIEW=focusId?'detail':'roster'; CREW_FOCUS=focusId||null;
-  document.getElementById('crew').classList.remove('hidden'); renderCrew(); }
+  document.getElementById('crew').classList.remove('hidden'); renderCrew(); if(typeof firstTip==='function') firstTip('crew'); }
 function closeCrew(){ const el=document.getElementById('crew'); if(el) el.classList.add('hidden'); CREW_FOCUS=null; try{ mobBackUpdate(); }catch(e){} }
 function renderCrew(){ const el=document.getElementById('crew'); if(!el||el.classList.contains('hidden')) return;
   const living=livingPlayerCrew(); const fallen=G.fallen||[];
@@ -2973,7 +3079,7 @@ function rosterHtml(list){ const sorted=sailorSortList(list);
 function sailorRowHtml(s){ const st=STATIONS[s.station]||STATIONS.guns; const wounded=s.status==='wounded';
   const where=s.shipId==='hideout'?'Ashore at the cove':((G.ships||[]).find(x=>x.id===s.shipId)||{}).name||'Aboard';
   return `<button class="sailorrow" data-sid="${s.id}">
-    <img class="spic" src="${sailorPortraitUrl(s,64)}" alt="">
+    ${portraitHtml(s,'spic')}
     <div class="smeta">
       <div><b>${escapeHtml(sailorName(s))}</b> ${s.protected?'<span class="tag">Protected</span>':''} ${wounded?'<span class="tag bad">Wounded</span>':''}</div>
       <div class="dim">Rank ${s.level} · ${escapeHtml(s.originAdj||'')} · ${st.name} · ${where}</div>
@@ -2983,7 +3089,7 @@ function sailorRowHtml(s){ const st=STATIONS[s.station]||STATIONS.guns; const wo
 function fallenHtml(list){
   if(!list.length) return '<p class="dim">No names on the memorial yet. Keep the ones you like out of the grape and the boarding rush.</p>';
   return `<p>They are gone for good. Remember them.</p><div class="crewlist">${list.map(s=>`<div class="sailorrow fallen">
-    <img class="spic" src="${sailorPortraitUrl(s,64)}" alt="">
+    ${portraitHtml(s,'spic')}
     <div class="smeta"><div><b>${escapeHtml(s.name||((s.given||'')+' '+(s.surname||'')))}</b></div>
     <div class="dim">Rank ${s.level||1} · ${escapeHtml(s.originAdj||'')}</div>
     <div class="bad">Lost day ${s.deathDay||'?'} — ${escapeHtml(s.deathHow||'lost at sea')}</div></div>
@@ -2997,7 +3103,7 @@ function sailorDetailHtml(s){ const st=STATIONS[s.station]||STATIONS.guns;
   return `<div class="sdetail">
     <button class="btn small" id="sd-back">◀ Roster</button>
     <div class="capgrid">
-      <img class="bigport" src="${sailorPortraitUrl(s,160)}" alt="">
+      ${portraitHtml(s,'bigport')}
       <div>
         <h3>${escapeHtml(sailorName(s))}</h3>
         <p class="dim">${escapeHtml(s.originAdj||'')} · Rank ${s.level} · ${s.xp}/${s.xpNeed} experience · ${s.wage} gold/day</p>
@@ -3028,7 +3134,7 @@ function bindCrewBody(){
 function recruitCardHtml(s, port){ const fee=recruitPrice(s, port); const wage=recruitWage(s); const start=startingSkillOf(s);
   const tot=attrSum(s); const stars=standoutCount(s);
   return `<div class="reccard" data-rid="${s.id}">
-    <img class="spic" src="${sailorPortraitUrl(s,72)}" alt="">
+    ${portraitHtml(s,'spic')}
     <div class="smeta">
       <div><b>${escapeHtml(sailorName(s))}</b> <span class="dim">${escapeHtml(s.originAdj||'')}</span></div>
       <div class="dim">${attrLine(s)}</div>
@@ -3115,7 +3221,7 @@ function openSailorLevelUp(){ if(!G||!(G.pendingSailorLevels||[]).length) return
   m.querySelector('#sl-auto').onclick=()=>{ applySailorPerkAuto(s); closeModal(m); if((G.pendingSailorLevels||[]).length) openSailorLevelUp(); else renderAll(); };
 }
 
-function offerPrizeJoiners(nation){ const room=hammockRoom(); if(room<=0) return;
+function offerPrizeJoiners(nation){ if(G&&G.tutorial) return; const room=hammockRoom(); if(room<=0) return;
   const n=Math.min(room, 2+Math.floor(Math.random()*2));
   const list=prizeCrewOffers({ }, nation, n);
   if(!list.length) return;
@@ -3148,6 +3254,7 @@ function openHideout(){ if(!G) return; hideBanner(); ensureHideout();
   HO_SEL=HO_SEL||'dock';
   renderHideout();
   requestAnimationFrame(()=>{ layoutHideout(); drawHideout(); setupHideoutInput(); });
+  if(typeof firstTip==='function') firstTip('cove');
 }
 function closeHideout(){ const el=document.getElementById('hideout'); if(el) el.classList.add('hidden');
   const f=playerFleet(); if(f) MAPV.range=tilesInRange(G.map,f.x,f.y,f.mp,G.player,G.wind);
@@ -3259,45 +3366,50 @@ function openHideoutTrain(){ const port=hideoutPort(); const offers=portTrainOff
 
 function layoutHideout(){ const cv=document.getElementById('hcv'); if(!cv) return; HV.cv=cv; HV.ctx=cv.getContext('2d');
   const wrap=cv.parentElement; const w=wrap?wrap.clientWidth:Math.min(720, window.innerWidth-24);
-  const h=Math.max(220, Math.min(340, Math.round(w*0.48)));
+  const h=Math.max(220, Math.min(420, Math.round(w*0.5625)));
   const dpr=Math.min(2, window.devicePixelRatio||1);
-  cv.width=Math.max(1,w*dpr); cv.height=Math.max(1,h*dpr); cv.style.width=w+'px'; cv.style.height=h+'px'; HV.dpr=dpr; }
+  if(cv.width!==Math.max(1,Math.round(w*dpr))||cv.height!==Math.max(1,Math.round(h*dpr))){ cv.width=Math.max(1,Math.round(w*dpr)); cv.height=Math.max(1,Math.round(h*dpr)); }
+  cv.style.width=w+'px'; cv.style.height=h+'px'; HV.dpr=dpr; }
 function hideoutWorldFromScreen(sx,sy){ const z=HV.z||1, dpr=HV.dpr||1; const cx=(HV.cv?HV.cv.width/dpr:0)/2, cy=(HV.cv?HV.cv.height/dpr:0)/2;
   return { x:(sx-cx)/z+cx-HV.panX, y:(sy-cy)/z+cy-HV.panY }; }
-function hideoutPlotAt(sx,sy){ const w=hideoutWorldFromScreen(sx,sy); const scale=hideoutScale();
-  for(const id of Object.keys(HIDEOUT_PLOTS)){ const p=HIDEOUT_PLOTS[id]; const x=p.x*scale.k+scale.ox, y=p.y*scale.k+scale.oy, ww=p.w*scale.k, hh=p.h*scale.k;
-    if(w.x>=x&&w.y>=y&&w.x<=x+ww&&w.y<=y+hh) return id; }
-  return null; }
+function hideoutPlotAt(sx,sy){ const w=hideoutWorldFromScreen(sx,sy); const sc=hideoutScale(); const z=HV.z||1;
+  let best=null, bd=1e9; for(const id of Object.keys(HIDEOUT_PLOTS)){ const p=HIDEOUT_PLOTS[id]; const x=p.x*sc.k+sc.ox, y=p.y*sc.k+sc.oy;
+    const d=Math.hypot(w.x-x,w.y-y); if(d<bd){ bd=d; best=id; } }
+  return bd<=26/z?best:null; }
 function hideoutScale(){ const dpr=HV.dpr||1; const W=(HV.cv?HV.cv.width/dpr:720), H=(HV.cv?HV.cv.height/dpr:320);
-  const k=Math.min(W/740, H/420); return { k, ox:(W-740*k)/2, oy:(H-420*k)/2, W, H }; }
+  const k=Math.max(W/740, H/416); return { k, ox:(W-740*k)/2, oy:(H-416*k)/2, W, H }; }
 
 function drawHideout(){ if(!HV.cv||!HV.ctx||!G||!G.hideout) return;
   const ctx=HV.ctx, cv=HV.cv, dpr=HV.dpr||1;
   ctx.setTransform(dpr,0,0,dpr,0,0);
-  const W=cv.width/dpr, H=cv.height/dpr;
-  ctx.clearRect(0,0,W,H);
-  ctx.save(); ctx.translate(W/2,H/2); ctx.scale(HV.z||1,HV.z||1); ctx.translate(-W/2+HV.panX,-H/2+HV.panY);
-  const sea=ctx.createLinearGradient(0,0,W,H); sea.addColorStop(0,'#0b3c4c'); sea.addColorStop(1,'#0a2a36');
-  ctx.fillStyle=sea; ctx.fillRect(-40,-40,W+80,H+80);
+  const W=cv.width/dpr, H=cv.height/dpr; const z=HV.z||1;
+  ctx.fillStyle='#0a2a36'; ctx.fillRect(0,0,W,H);
+  ctx.save(); ctx.translate(W/2,H/2); ctx.scale(z,z); ctx.translate(-W/2+HV.panX,-H/2+HV.panY);
   const sc=hideoutScale();
-  // island
-  ctx.fillStyle='#d7c07a'; ctx.beginPath(); ctx.ellipse(sc.ox+370*sc.k, sc.oy+230*sc.k, 300*sc.k, 160*sc.k, -0.15, 0, 7); ctx.fill();
-  ctx.fillStyle='#3a8a40'; ctx.beginPath(); ctx.ellipse(sc.ox+370*sc.k, sc.oy+220*sc.k, 250*sc.k, 130*sc.k, -0.15, 0, 7); ctx.fill();
-  // cove water bite
-  ctx.fillStyle='#1a5a68'; ctx.beginPath(); ctx.ellipse(sc.ox+200*sc.k, sc.oy+380*sc.k, 160*sc.k, 70*sc.k, 0.1, 0, 7); ctx.fill();
-  if(typeof drawPalm==='function'){ drawPalm(ctx, sc.ox+160*sc.k, sc.oy+150*sc.k, 40*sc.k); drawPalm(ctx, sc.ox+500*sc.k, sc.oy+140*sc.k, 46*sc.k); }
+  const im=IMG.cove;
+  if(im&&im._ok){ ctx.drawImage(im, sc.ox, sc.oy, 740*sc.k, 416*sc.k); }
+  else { const sea=ctx.createLinearGradient(0,0,W,H); sea.addColorStop(0,'#0f566a'); sea.addColorStop(1,'#0a2a36'); ctx.fillStyle=sea; ctx.fillRect(-40,-40,W+80,H+80);
+    ctx.fillStyle='#ead49a'; ctx.beginPath(); ctx.ellipse(sc.ox+520*sc.k, sc.oy+260*sc.k, 260*sc.k, 140*sc.k, -0.15, 0, 7); ctx.fill();
+    ctx.fillStyle='#3f8434'; ctx.beginPath(); ctx.ellipse(sc.ox+540*sc.k, sc.oy+220*sc.k, 210*sc.k, 110*sc.k, -0.15, 0, 7); ctx.fill(); }
+  ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.fillRect(sc.ox,sc.oy,740*sc.k,416*sc.k);
+  const R=Math.max(11, Math.min(16, 15*sc.k*1.4))/z; const t=performance.now();
   for(const id of Object.keys(HIDEOUT_PLOTS)){ const p=HIDEOUT_PLOTS[id]; const def=HIDEOUT_BUILDINGS[id];
-    const x=p.x*sc.k+sc.ox, y=p.y*sc.k+sc.oy, ww=p.w*sc.k, hh=p.h*sc.k;
+    const x=p.x*sc.k+sc.ox, y=p.y*sc.k+sc.oy;
     const built=hideoutBuilt(id); const building=G.hideout.building&&G.hideout.building.id===id;
     const taken=def.either&&hideoutEitherTaken(def.either)&&hideoutEitherTaken(def.either)!==id;
-    ctx.fillStyle=built?'rgba(40,90,50,0.82)':building?'rgba(120,90,30,0.8)':taken?'rgba(30,30,30,0.45)':(HO_SEL===id?'rgba(80,60,20,0.8)':'rgba(20,30,28,0.62)');
-    ctx.strokeStyle=HO_SEL===id?'#ffe08a':built?'#7fe0a0':taken?'#666': '#c9a227';
-    ctx.lineWidth=HO_SEL===id?2.4:1.4;
-    roundRect(ctx,x,y,ww,hh,6); ctx.fill(); ctx.stroke();
-    ctx.fillStyle='#f3ead4'; ctx.font=`bold ${Math.max(10, Math.round(11*sc.k*1.1))}px Georgia`; ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(def.name, x+ww/2, y+hh/2);
-    if(building){ const left=G.hideout.building.left, tot=G.hideout.building.total||left; ctx.fillStyle='rgba(0,0,0,0.45)'; ctx.fillRect(x+6,y+hh-12,ww-12,6);
-      ctx.fillStyle='#e8c36a'; ctx.fillRect(x+6,y+hh-12,(ww-12)*clamp(1-left/Math.max(1,tot),0,1),6); }
+    const sel=HO_SEL===id;
+    if(sel){ ctx.fillStyle='rgba(255,224,138,0.35)'; ctx.beginPath(); ctx.arc(x,y,R*1.7,0,7); ctx.fill(); }
+    ctx.fillStyle='rgba(0,0,0,0.45)'; ctx.beginPath(); ctx.arc(x+1.5/z,y+2/z,R,0,7); ctx.fill();
+    ctx.fillStyle=built?'#e8b93a':building?'#c98a2a':taken?'#5a5a5a':'#efdcae'; ctx.beginPath(); ctx.arc(x,y,R,0,7); ctx.fill();
+    ctx.lineWidth=(sel?3:1.6)/z; ctx.strokeStyle=sel?'#fff3c0':built?'#6a4a10':taken?'#333':'#5a3a1c'; ctx.stroke();
+    ctx.globalAlpha=taken?0.45:1; ctx.font=`${Math.round(R*1.05)}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle='#2a1a0a'; ctx.fillText(p.ic,x,y+R*0.06); ctx.globalAlpha=1;
+    if(taken){ ctx.strokeStyle='#d04030'; ctx.lineWidth=2.2/z; ctx.beginPath(); ctx.moveTo(x-R*0.6,y-R*0.6); ctx.lineTo(x+R*0.6,y+R*0.6); ctx.moveTo(x+R*0.6,y-R*0.6); ctx.lineTo(x-R*0.6,y+R*0.6); ctx.stroke(); }
+    if(built){ ctx.fillStyle='#2f7a38'; ctx.beginPath(); ctx.arc(x+R*0.75,y-R*0.75,R*0.42,0,7); ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=1.6/z; ctx.beginPath(); ctx.moveTo(x+R*0.55,y-R*0.75); ctx.lineTo(x+R*0.72,y-R*0.58); ctx.lineTo(x+R*0.98,y-R*0.95); ctx.stroke(); }
+    if(building){ const left=G.hideout.building.left, tot=G.hideout.building.total||left; const k=clamp(1-left/Math.max(1,tot),0,1);
+      ctx.strokeStyle='#7fe0a0'; ctx.lineWidth=3/z; ctx.beginPath(); ctx.arc(x,y,R+3/z,-Math.PI/2,-Math.PI/2+Math.max(0.15,k)*Math.PI*2); ctx.stroke(); }
+    const fs=Math.max(9,Math.round(10.5))/z; ctx.font=`bold ${fs}px Georgia`; const lw=ctx.measureText(p.lab).width+8/z;
+    ctx.fillStyle='rgba(20,12,4,0.72)'; roundRect(ctx,x-lw/2,y+R+2/z,lw,fs+5/z,4/z); ctx.fill();
+    ctx.fillStyle=built?'#ffe08a':taken?'#aaa':'#f4ead0'; ctx.textBaseline='top'; ctx.fillText(p.lab,x,y+R+4/z);
   }
   ctx.restore(); }
 
@@ -3318,6 +3430,707 @@ function setupHideoutInput(){ const cv=HV.cv; if(!cv||cv.dataset.hin==='1') retu
   const up=e=>{ P.delete(e.pointerId); if(P.size===0) g=null; else if(P.size===1&&g&&g.mode==='pinch'){ const [p]=[...P.values()]; g={mode:'pan',x:p.x,y:p.y,px:HV.panX,py:HV.panY}; } };
   cv.addEventListener('pointerup',up); cv.addEventListener('pointercancel',up);
 }
+
+// ---- 15_gfx.js ----
+// v0.3 painterly renderer: cached map layer, organic islands, towns, detailed ships, battle sea + effects, icons, portraits
+const ASSET_BASE='assets/';
+const IMG={};
+const GFX={ layer:null, key:'', scale:2, spark:null, bLayer:null, bKey:'' };
+function gfxLite(){ return prefGet('wm_fx','full')==='lite'; }
+function gfxInvalidate(){ GFX.layer=null; GFX.key=''; GFX.bLayer=null; GFX.bKey=''; GFX.spark=null; }
+function loadImg(k,file){ const im=new Image(); im.decoding='async';
+  im.onload=()=>{ im._ok=true; if(k==='cove'){ try{ if(typeof drawHideout==='function') drawHideout(); }catch(e){} } };
+  im.onerror=()=>{ im._bad=true; document.documentElement.classList.add('no-'+k); };
+  im.src=ASSET_BASE+file; IMG[k]=im; }
+['title','portraits','parchment','port','cove'].forEach(k=>loadImg(k,k+'.webp'));
+
+// ---------- noise ----------
+function hash2(x,y,s){ let h=Math.imul(x|0,374761393)+Math.imul(y|0,668265263)+Math.imul((s|0)+7,1442695041); h=Math.imul(h^(h>>>13),1274126177); return ((h^(h>>>16))>>>0)/4294967296; }
+function vnoise(x,y,s){ const xi=Math.floor(x), yi=Math.floor(y), xf=x-xi, yf=y-yi; const u=xf*xf*(3-2*xf), v=yf*yf*(3-2*yf);
+  const a=hash2(xi,yi,s), b=hash2(xi+1,yi,s), c=hash2(xi,yi+1,s), d=hash2(xi+1,yi+1,s); return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v; }
+function fbm(x,y,s){ return vnoise(x,y,s)*0.6+vnoise(x*2.1,y*2.1,s+3)*0.3+vnoise(x*4.3,y*4.3,s+9)*0.1; }
+
+// ---------- icons ----------
+const ICON={
+  gold:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="#f0c447" stroke="#7a5310" stroke-width="1.5"/><circle cx="12" cy="12" r="6.2" fill="#e0ac2c" stroke="#a57818" stroke-width="1"/><path d="M9.5 9.5h5M9.5 14.5h5M12 7.6v8.8" stroke="#7a5310" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="8" r="1.4" fill="#fff6c8" opacity=".8"/></svg>',
+  crew:'<svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3.2" fill="#e8c39a" stroke="#3a2212" stroke-width="1.2"/><path d="M3 19c0-4 2.4-6 5-6s5 2 5 6z" fill="#7a2a1a" stroke="#3a2212" stroke-width="1.2"/><circle cx="16" cy="7.5" r="3.2" fill="#c99a6a" stroke="#3a2212" stroke-width="1.2"/><path d="M11 18.5c0-4 2.4-6 5-6s5 2 5 6z" fill="#264a6a" stroke="#3a2212" stroke-width="1.2"/><path d="M12.6 5.4c1-1.6 5.6-1.8 6.8 0z" fill="#a01818"/></svg>',
+  morale:'<svg viewBox="0 0 24 24"><path d="M5 7h10v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z" fill="#a8743a" stroke="#3a2212" stroke-width="1.3"/><path d="M15 9.5h2.5a2.5 2.5 0 0 1 0 5H15" fill="none" stroke="#3a2212" stroke-width="1.6"/><path d="M4.4 7.5c0-2.4 1.8-3.6 3.4-3 .8-1.4 3.6-1.6 4.4 0 1.8-.4 3.4.8 3.2 3z" fill="#fff3d6" stroke="#3a2212" stroke-width="1.1"/><path d="M8 10v8M12 10v8" stroke="#6a4420" stroke-width="1"/></svg>',
+  stores:'<svg viewBox="0 0 24 24"><path d="M6 4h12c1.6 3 1.6 13 0 16H6c-1.6-3-1.6-13 0-16z" fill="#a06a32" stroke="#3a2212" stroke-width="1.3"/><path d="M5.2 8h13.6M5.2 16h13.6" stroke="#5a5a5a" stroke-width="1.8"/><path d="M10 4.2c-.6 5-.6 10.6 0 15.6M14 4.2c.6 5 .6 10.6 0 15.6" stroke="#6a4420" stroke-width=".9" fill="none"/></svg>',
+  wind:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="#12303a" stroke="#c9a24a" stroke-width="1.4"/><path d="M12 3.5l2 8.5-2 8.5-2-8.5z" fill="#7fe0ff"/><path d="M3.5 12l8.5-2 8.5 2-8.5 2z" fill="#e8c36a" opacity=".8"/></svg>',
+  ship:'<svg viewBox="0 0 24 24"><path d="M3 15h18l-3 5H6z" fill="#7a4a22" stroke="#2a1608" stroke-width="1.2"/><path d="M11.5 3v12" stroke="#2a1608" stroke-width="1.4"/><path d="M12 4c4 2 5 6 5 9h-5z" fill="#f4ead0" stroke="#5a4a30" stroke-width=".9"/><path d="M11 5c-3 2-4 5-4 8h4z" fill="#e8dcc0" stroke="#5a4a30" stroke-width=".9"/><path d="M12 2.6h3.4l-1 1.2 1 1.2H12z" fill="#1a1a1a"/></svg>',
+  sail:'<svg viewBox="0 0 24 24"><path d="M12 2v18" stroke="#2a1608" stroke-width="1.5"/><path d="M12.6 3c5 3 6.4 8 6 13h-6z" fill="#f4ead0" stroke="#5a4a30" stroke-width="1"/><path d="M11.4 6c-3.4 2-4.6 6-4.4 10h4.4z" fill="#e8dcc0" stroke="#5a4a30" stroke-width="1"/><path d="M3 19c3 2 15 2 18 0" stroke="#7fe0ff" stroke-width="1.6" fill="none"/></svg>',
+  anchor:'<svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.2" fill="none" stroke="#e8c36a" stroke-width="1.7"/><path d="M12 7.2V20M8 10.5h8M4.5 13.5c0 4 3.4 6.5 7.5 6.5s7.5-2.5 7.5-6.5" fill="none" stroke="#e8c36a" stroke-width="1.9" stroke-linecap="round"/><path d="M3 14.5l1.5-2 2 1.6M21 14.5l-1.5-2-2 1.6" fill="none" stroke="#e8c36a" stroke-width="1.6"/></svg>',
+  palm:'<svg viewBox="0 0 24 24"><path d="M3 21c4-2.4 14-2.4 18 0z" fill="#e3c98a"/><path d="M12 20c.4-4 .2-8-1-12" stroke="#7a4a22" stroke-width="1.8" fill="none"/><path d="M11 8c-3-3-6-2-8 0 3-.4 5 .2 8 0zM11 8c2-4 6-4 9-2-3 .2-6 .8-9 2zM11 8c-1-3-4-5-7-4 3 1 5 2 7 4zM11 8c3-1 7 1 8 4-3-2-5-3-8-4z" fill="#3e9a44" stroke="#1e5a24" stroke-width=".7"/></svg>',
+  goal:'<svg viewBox="0 0 24 24"><path d="M5 3h11a3 3 0 0 1 3 3v13a2 2 0 0 1-2 2H7" fill="#efdcae" stroke="#5a3a1c" stroke-width="1.3"/><path d="M5 3a2 2 0 0 0-2 2v2h4V5a2 2 0 0 0-2-2z" fill="#d9c08a" stroke="#5a3a1c" stroke-width="1.1"/><path d="M8 9l1.4 1.4L12 7.8M8 14l1.4 1.4L12 12.8" stroke="#2f7a38" stroke-width="1.6" fill="none"/><path d="M13.5 9h3M13.5 14h3" stroke="#5a3a1c" stroke-width="1.3"/></svg>',
+  hourglass:'<svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12" stroke="#7a4a22" stroke-width="2.2" stroke-linecap="round"/><path d="M7.5 3.5c0 5 4.5 6 4.5 8.5S7.5 15.5 7.5 20.5h9c0-5-4.5-6-4.5-8.5s4.5-3.5 4.5-8.5z" fill="#f4ead0" stroke="#3a2212" stroke-width="1.1"/><path d="M9.2 18.6c.6-2 2.8-2.6 2.8-4.4 0 1.8 2.2 2.4 2.8 4.4zM9.6 6.4h4.8c-.6 1.4-2.4 2-2.4 3.4 0-1.4-1.8-2-2.4-3.4z" fill="#e0b45a"/></svg>',
+  target:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="#e8c36a" stroke-width="1.7"/><circle cx="12" cy="12" r="4" fill="none" stroke="#e8c36a" stroke-width="1.5"/><path d="M12 1.5v5M12 17.5v5M1.5 12h5M17.5 12h5" stroke="#e8c36a" stroke-width="1.6"/></svg>',
+  star:'<svg viewBox="0 0 24 24"><path d="M12 2.5l2.8 6 6.4.7-4.8 4.4 1.4 6.4L12 16.8 6.2 20l1.4-6.4L2.8 9.2l6.4-.7z" fill="#f0c447" stroke="#7a5310" stroke-width="1.2"/></svg>'
+};
+function icon(k,cls){ return `<span class="ico ${cls||''}" aria-hidden="true">${ICON[k]||''}</span>`; }
+
+// ---------- portraits ----------
+const FEMALE_NAMES=new Set(['Mary','Anne','Margaret','Eliza','Isabel','Catalina','Ana','Rosa','Marie','Claire','Jeanne','Anke','Griet','Bridget','Niamh','Aoife','Fiona','Mairi','Iona','Amara','Abena','Zola','Lucille','Rosalie','Celeste','Inês','Teresa','Beatriz','Bess','Nan']);
+const PORTRAIT_POOLS={ fEuro:[4,13], fAfro:[8,11], mAfro:[2,5,14], mIber:[1,10,15], mEuro:[0,3,6,7,9,12], captain:[1,7,10,12] };
+function portraitIndex(s){ const seed=((s&&s.portraitSeed)>>>0)||hashStr(String((s&&(s.name||s.given))||'x'));
+  const fem=s&&FEMALE_NAMES.has(s.given); const o=s&&s.origin;
+  let pool;
+  if(fem) pool=(o==='africa'||o==='caribbean')?PORTRAIT_POOLS.fAfro:(o==='pirate'?PORTRAIT_POOLS.fEuro.concat(PORTRAIT_POOLS.fAfro):PORTRAIT_POOLS.fEuro);
+  else if(o==='africa') pool=PORTRAIT_POOLS.mAfro;
+  else if(o==='caribbean') pool=PORTRAIT_POOLS.mAfro.concat(PORTRAIT_POOLS.mIber);
+  else if(o==='spain'||o==='portugal') pool=PORTRAIT_POOLS.mIber.concat([6]);
+  else if(o==='pirate') pool=PORTRAIT_POOLS.mEuro.concat(PORTRAIT_POOLS.mIber,PORTRAIT_POOLS.mAfro);
+  else pool=PORTRAIT_POOLS.mEuro;
+  return { idx:pool[seed%pool.length], flip:((seed>>>5)&1)===1 }; }
+function portraitStyle(idx,flip){ const c=idx%4, r=Math.floor(idx/4);
+  return `background-position:${(c*100/3).toFixed(3)}% ${(r*100/3).toFixed(3)}%;${flip?'transform:scaleX(-1);':''}`; }
+function portraitHtml(s, cls){ const p=portraitIndex(s); return `<span class="pp ${cls||'spic'}" style="${portraitStyle(p.idx,p.flip)}"></span>`; }
+function captainPortraitHtml(c, cls){ const pool=PORTRAIT_POOLS.captain; const h=hashStr((c&&c.name)||'Reese'); return `<span class="pp ${cls||'portrait'}" style="${portraitStyle(pool[h%pool.length], false)}"></span>`; }
+
+// ---------- organic land shapes ----------
+function isLandXY(map,x,y){ return inMap(x,y) && map.t[idx(x,y)]===TILE_LAND; }
+function coastJit(px,py,amp){ return (fbm(px/26,py/26,11)-0.5)*amp; }
+function blobPath(ctx,cx,cy,r,amp){ const N=18; ctx.beginPath();
+  for(let i=0;i<N;i++){ const a=i/N*Math.PI*2; const px=cx+Math.cos(a)*r, py=cy+Math.sin(a)*r; const rr=r+coastJit(px,py,amp);
+    const x=cx+Math.cos(a)*rr, y=cy+Math.sin(a)*rr; if(i) ctx.lineTo(x,y); else ctx.moveTo(x,y); }
+  ctx.closePath(); }
+function bandPath(ctx,x0,y0,x1,y1,horizontal,amp){ const N=8; ctx.beginPath();
+  if(horizontal){ for(let i=0;i<=N;i++){ const x=x0+(x1-x0)*i/N; const y=y0+coastJit(x,y0,amp); if(i) ctx.lineTo(x,y); else ctx.moveTo(x,y); }
+    for(let i=N;i>=0;i--){ const x=x0+(x1-x0)*i/N; const y=y1+coastJit(x,y1,amp); ctx.lineTo(x,y); } }
+  else { for(let i=0;i<=N;i++){ const y=y0+(y1-y0)*i/N; const x=x0+coastJit(x0,y,amp); if(i) ctx.lineTo(x,y); else ctx.moveTo(x,y); }
+    for(let i=N;i>=0;i--){ const y=y0+(y1-y0)*i/N; const x=x1+coastJit(x1,y,amp); ctx.lineTo(x,y); } }
+  ctx.closePath(); }
+function fillLandShape(ctx,map,rf,amp,style){ const r=rf*TS; ctx.fillStyle=style;
+  for(let y=0;y<MAP_H;y++) for(let x=0;x<MAP_W;x++){ if(!isLandXY(map,x,y)) continue;
+    const cx=(x+0.5)*TS, cy=(y+0.5)*TS;
+    blobPath(ctx,cx,cy,r,amp); ctx.fill();
+    if(isLandXY(map,x+1,y)){ bandPath(ctx,cx,cy-r,cx+TS,cy+r,true,amp); ctx.fill(); }
+    if(isLandXY(map,x,y+1)){ bandPath(ctx,cx-r,cy,cx+r,cy+TS,false,amp); ctx.fill(); }
+    if(isLandXY(map,x+1,y)&&isLandXY(map,x,y+1)&&isLandXY(map,x+1,y+1)){ ctx.fillRect(cx,cy,TS,TS); } } }
+
+function ensureMapLayer(){ if(!G||!G.map) return null; const lite=gfxLite();
+  const key=(G.seed||0)+'|'+(lite?'L':'F')+'|'+G.map.t.length;
+  if(GFX.layer && GFX.key===key) return GFX.layer;
+  const S=lite?1.25:2; GFX.scale=S;
+  const cv=document.createElement('canvas'); cv.width=Math.ceil(MAP_W*TS*S); cv.height=Math.ceil(MAP_H*TS*S);
+  const c=cv.getContext('2d'); c.scale(S,S); paintMapLayer(c, G.map);
+  GFX.layer=cv; GFX.key=key; GFX.spark=null; return cv; }
+
+function paintMapLayer(c,map){ const W=MAP_W*TS, H=MAP_H*TS; const rng=mulberry32((G.seed||1)^0x51AE);
+  // deep sea with painterly mottling
+  const g=c.createLinearGradient(0,0,W*0.4,H); g.addColorStop(0,'#0f5a6e'); g.addColorStop(0.5,'#0c4a5e'); g.addColorStop(1,'#093b4e'); c.fillStyle=g; c.fillRect(0,0,W,H);
+  for(let i=0;i<420;i++){ const x=rng()*W, y=rng()*H, n=fbm(x/90,y/90,2); c.fillStyle=n>0.5?`rgba(40,130,150,${0.05+rng()*0.06})`:`rgba(4,26,40,${0.05+rng()*0.07})`;
+    c.beginPath(); c.ellipse(x,y,20+rng()*60,8+rng()*22,rng()*3,0,7); c.fill(); }
+  // reef shallows
+  for(let y=0;y<MAP_H;y++) for(let x=0;x<MAP_W;x++){ if(map.t[idx(x,y)]!==TILE_REEF) continue; const cx=(x+.5)*TS, cy=(y+.5)*TS;
+    const rg=c.createRadialGradient(cx,cy,2,cx,cy,TS*0.8); rg.addColorStop(0,'rgba(90,200,190,0.55)'); rg.addColorStop(1,'rgba(90,200,190,0)'); c.fillStyle=rg; c.fillRect(cx-TS,cy-TS,TS*2,TS*2); }
+  // shallows around land (layered so the colour deepens toward the coast)
+  c.save(); c.globalAlpha=0.16; fillLandShape(c,map,1.32,10,'#3fb3b0'); c.globalAlpha=0.22; fillLandShape(c,map,1.06,9,'#5fcdc0'); c.globalAlpha=0.35; fillLandShape(c,map,0.88,8,'#8fe0cc'); c.restore();
+  // foam rim, wet sand, dry sand
+  fillLandShape(c,map,0.8,8,'rgba(246,252,248,0.75)');
+  fillLandShape(c,map,0.74,8,'#c7a86a');
+  fillLandShape(c,map,0.69,8,'#ead49a');
+  // grass and jungle
+  fillLandShape(c,map,0.52,10,'#5a9a3e');
+  fillLandShape(c,map,0.44,12,'#3f8434');
+  // texture: jungle canopy tufts, hills, rocks, palms
+  for(let y=0;y<MAP_H;y++) for(let x=0;x<MAP_W;x++){ if(!isLandXY(map,x,y)) continue;
+    const cx=(x+.5)*TS, cy=(y+.5)*TS; const r=mulberry32(x*131+y*17+(G.seed||1));
+    const n4=DIRS4.filter(d=>isLandXY(map,x+d.x,y+d.y)).length;
+    const coast=n4<4;
+    for(let i=0;i<(coast?5:9);i++){ const a=r()*7, d=r()*TS*(coast?0.28:0.5); const px=cx+Math.cos(a)*d, py=cy+Math.sin(a)*d;
+      c.fillStyle=['#2f7030','#4c9a3c','#3a8236','#5aa848','#2a6228'][Math.floor(r()*5)]; c.beginPath(); c.arc(px,py,3+r()*5,0,7); c.fill();
+      c.fillStyle='rgba(255,255,200,0.10)'; c.beginPath(); c.arc(px-1.4,py-1.6,1.6+r()*2,0,7); c.fill(); }
+    if(n4===4 && r()>0.35){ drawHill(c,cx+(r()-0.5)*10,cy+(r()-0.5)*8,TS*(0.42+r()*0.2),r); }
+    if(coast){ // palms and rocks toward the sea side
+      const seaD=DIRS4.filter(d=>!isLandXY(map,x+d.x,y+d.y));
+      for(const d of seaD){ if(r()>0.45) drawPalmV3(c,cx+d.x*TS*0.5+(r()-0.5)*10,cy+d.y*TS*0.5+(r()-0.5)*10,TS*0.5,r);
+        if(r()>0.72) drawRocks(c,cx+d.x*TS*0.72,cy+d.y*TS*0.72,TS*0.16,r); } }
+  }
+  // reef rocks and surf
+  for(let y=0;y<MAP_H;y++) for(let x=0;x<MAP_W;x++){ if(map.t[idx(x,y)]!==TILE_REEF) continue; const r=mulberry32(x*97+y*13+5); const cx=(x+.5)*TS, cy=(y+.5)*TS;
+    for(let i=0;i<5;i++){ const px=cx+(r()-0.5)*TS*0.8, py=cy+(r()-0.5)*TS*0.8; drawRocks(c,px,py,TS*(0.06+r()*0.06),r);
+      c.strokeStyle='rgba(255,255,255,0.5)'; c.lineWidth=1; c.beginPath(); c.arc(px,py,TS*0.14,r()*3,r()*3+2); c.stroke(); } }
+  // port towns
+  for(const p of map.ports) drawPortTown(c,p,map);
+}
+
+function drawHill(c,x,y,s,r){ const g=c.createRadialGradient(x-s*0.3,y-s*0.35,2,x,y,s); g.addColorStop(0,'#8fbf5a'); g.addColorStop(0.55,'#4f8a36'); g.addColorStop(1,'rgba(30,70,30,0)');
+  c.fillStyle=g; c.beginPath(); c.ellipse(x,y,s,s*0.78,0,0,7); c.fill();
+  c.fillStyle='rgba(20,50,20,0.25)'; c.beginPath(); c.ellipse(x+s*0.2,y+s*0.25,s*0.7,s*0.4,0,0,7); c.fill();
+  if(r()>0.5){ c.fillStyle='rgba(150,140,110,0.7)'; c.beginPath(); c.moveTo(x-s*0.25,y+s*0.05); c.lineTo(x,y-s*0.42); c.lineTo(x+s*0.28,y+s*0.08); c.closePath(); c.fill();
+    c.fillStyle='rgba(240,235,220,0.55)'; c.beginPath(); c.moveTo(x-s*0.08,y-s*0.22); c.lineTo(x,y-s*0.42); c.lineTo(x+s*0.08,y-s*0.24); c.closePath(); c.fill(); } }
+function drawRocks(c,x,y,s,r){ for(let i=0;i<3;i++){ const px=x+(r()-0.5)*s*2, py=y+(r()-0.5)*s*1.4, rr=s*(0.5+r()*0.6);
+  c.fillStyle='rgba(0,0,0,0.25)'; c.beginPath(); c.ellipse(px+1.5,py+1.5,rr,rr*0.75,0,0,7); c.fill();
+  const g=c.createLinearGradient(px-rr,py-rr,px+rr,py+rr); g.addColorStop(0,'#b8b2a4'); g.addColorStop(1,'#5a5448'); c.fillStyle=g; c.beginPath(); c.ellipse(px,py,rr,rr*0.75,r()*2,0,7); c.fill(); } }
+function drawPalmV3(c,x,y,s,r){ r=r||Math.random; const lean=(r()-0.5)*0.8;
+  c.save(); c.translate(x,y);
+  c.fillStyle='rgba(20,40,20,0.28)'; c.beginPath(); c.ellipse(s*0.18,s*0.12,s*0.36,s*0.14,0.3,0,7); c.fill();
+  c.strokeStyle='#7a5228'; c.lineWidth=Math.max(1.4,s*0.07); c.lineCap='round'; c.beginPath(); c.moveTo(0,s*0.1); c.quadraticCurveTo(lean*s*0.3,-s*0.15,lean*s*0.5,-s*0.38); c.stroke();
+  const tx=lean*s*0.5, ty=-s*0.38;
+  for(let i=0;i<7;i++){ const a=i/7*Math.PI*2+r()*0.4; const len=s*(0.36+r()*0.12);
+    c.fillStyle=i%2?'#3f9a42':'#2f7e36'; c.beginPath(); c.moveTo(tx,ty);
+    c.quadraticCurveTo(tx+Math.cos(a-0.3)*len*0.6,ty+Math.sin(a-0.3)*len*0.6,tx+Math.cos(a)*len,ty+Math.sin(a)*len+len*0.15);
+    c.quadraticCurveTo(tx+Math.cos(a+0.3)*len*0.6,ty+Math.sin(a+0.3)*len*0.6,tx,ty); c.fill(); }
+  c.fillStyle='#6a4a20'; c.beginPath(); c.arc(tx,ty+1,s*0.05,0,7); c.fill();
+  c.restore(); }
+function drawPalm(ctx,x,y,sc,rng){ drawPalmV3(ctx,x,y,sc,rng); }
+
+function drawPortTown(c,p,map){ const nat=NATIONS[p.nation]||NATIONS.pirate; const x=p.x*TS, y=p.y*TS; const r=mulberry32(hashStr(p.id));
+  // which way is land?
+  let lx=0, ly=0; for(const d of DIRS8){ if(isLandXY(map,p.x+d.x,p.y+d.y)){ lx+=d.x; ly+=d.y; } }
+  const m=Math.hypot(lx,ly)||1; lx/=m; ly/=m; if(!lx&&!ly){ ly=-1; }
+  const cx=x+TS/2, cy=y+TS/2;
+  // sandy quay apron
+  c.fillStyle='#d8bf84'; c.beginPath(); c.ellipse(cx+lx*TS*0.3,cy+ly*TS*0.3,TS*0.62,TS*0.46,Math.atan2(ly,lx)+Math.PI/2,0,7); c.fill();
+  // pier into the water (opposite the land)
+  c.save(); c.translate(cx,cy); c.rotate(Math.atan2(-ly,-lx));
+  c.fillStyle='rgba(0,0,0,0.25)'; c.fillRect(TS*0.05,-TS*0.06+2,TS*0.62,TS*0.12);
+  c.fillStyle='#8a5a2a'; c.fillRect(TS*0.05,-TS*0.07,TS*0.62,TS*0.14);
+  c.strokeStyle='#5a3616'; c.lineWidth=0.8; for(let i=0;i<8;i++){ c.beginPath(); c.moveTo(TS*(0.08+i*0.075),-TS*0.07); c.lineTo(TS*(0.08+i*0.075),TS*0.07); c.stroke(); }
+  c.fillStyle='#4a2c12'; for(const px of [0.2,0.42,0.64]){ c.fillRect(TS*px,-TS*0.1,2.4,2.4); c.fillRect(TS*px,TS*0.08,2.4,2.4); }
+  c.restore();
+  // houses cluster on the land side
+  const roofs=p.nation==='spain'||p.nation==='france'?['#b8502a','#c8683a','#a04020']:p.nation==='netherlands'?['#8a3020','#6a4030','#a85a30']:p.nation==='england'?['#6a4a3a','#8a3a2a','#5a5a6a']:['#5a4030','#7a5a3a','#4a3a2a'];
+  const walls=['#efe2c4','#e8cfa0','#f4ead8','#d9b98a','#c8d8d0','#f0c8a0'];
+  const houses=[];
+  for(let i=0;i<7;i++){ const a=(r()-0.5)*2.2; const d=TS*(0.25+r()*0.45);
+    const dirA=Math.atan2(ly,lx)+a*0.6; houses.push({ x:cx+Math.cos(dirA)*d, y:cy+Math.sin(dirA)*d, w:TS*(0.16+r()*0.08), h:TS*(0.12+r()*0.06), roof:roofs[i%roofs.length], wall:walls[Math.floor(r()*walls.length)] }); }
+  houses.sort((a,b)=>a.y-b.y);
+  for(const h of houses) drawHouse(c,h.x,h.y,h.w,h.h,h.wall,h.roof);
+  // fort / church tower deeper inland
+  const fx=cx+lx*TS*0.72, fy=cy+ly*TS*0.72;
+  c.fillStyle='rgba(0,0,0,0.3)'; c.fillRect(fx-TS*0.13+2,fy-TS*0.1+2,TS*0.26,TS*0.24);
+  c.fillStyle=p.nation==='pirate'?'#7a6a52':'#bcae92'; c.fillRect(fx-TS*0.13,fy-TS*0.12,TS*0.26,TS*0.24);
+  c.fillStyle=p.nation==='pirate'?'#5a4a36':'#958a72'; for(let i=0;i<4;i++) c.fillRect(fx-TS*0.13+i*TS*0.07,fy-TS*0.16,TS*0.045,TS*0.05);
+  c.fillStyle='#3a2a1a'; c.fillRect(fx-TS*0.03,fy+TS*0.02,TS*0.06,TS*0.1);
+  // flag
+  drawFlagV3(c,fx+TS*0.06,fy-TS*0.5,TS*0.36,nat,0);
+}
+function drawHouse(c,x,y,w,h,wall,roof){ c.fillStyle='rgba(0,0,0,0.28)'; c.fillRect(x-w/2+2,y-h/2+2,w,h);
+  c.fillStyle=wall; c.fillRect(x-w/2,y-h/2,w,h);
+  c.fillStyle=roof; c.beginPath(); c.moveTo(x-w/2-1.5,y-h/2+1); c.lineTo(x,y-h/2-h*0.7); c.lineTo(x+w/2+1.5,y-h/2+1); c.closePath(); c.fill();
+  c.fillStyle='rgba(255,255,255,0.18)'; c.beginPath(); c.moveTo(x-w/2-1.5,y-h/2+1); c.lineTo(x,y-h/2-h*0.7); c.lineTo(x,y-h/2+1); c.closePath(); c.fill();
+  c.fillStyle='#3a2a1a'; c.fillRect(x-w*0.1,y,w*0.2,h/2); c.fillStyle='#5a7a8a'; c.fillRect(x-w*0.38,y-h*0.25,w*0.16,h*0.22); c.fillRect(x+w*0.22,y-h*0.25,w*0.16,h*0.22); }
+
+function drawFlagV3(ctx,x,y,h,nat,time){ ctx.save();
+  ctx.strokeStyle='#2a1a0a'; ctx.lineWidth=Math.max(1,h*0.06); ctx.beginPath(); ctx.moveTo(x,y+h*1.25); ctx.lineTo(x,y); ctx.stroke();
+  const fw=h*0.95, fh=h*0.6; const wv=time?Math.sin(time/300)*fh*0.08:0;
+  ctx.beginPath(); ctx.moveTo(x,y); ctx.quadraticCurveTo(x+fw*0.5,y-wv,x+fw,y+wv); ctx.lineTo(x+fw,y+fh+wv); ctx.quadraticCurveTo(x+fw*0.5,y+fh-wv,x,y+fh); ctx.closePath();
+  ctx.save(); ctx.clip();
+  const id=nat.id;
+  if(id==='england'){ ctx.fillStyle='#f4f0e4'; ctx.fillRect(x,y-4,fw,fh+8); ctx.fillStyle='#c81e3a'; ctx.fillRect(x+fw*0.38,y-4,fw*0.22,fh+8); ctx.fillRect(x,y+fh*0.38,fw,fh*0.24); }
+  else if(id==='spain'){ ctx.fillStyle='#f4ecd0'; ctx.fillRect(x,y-4,fw,fh+8); ctx.strokeStyle='#b01818'; ctx.lineWidth=fh*0.16; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+fw,y+fh); ctx.moveTo(x+fw,y); ctx.lineTo(x,y+fh); ctx.stroke(); }
+  else if(id==='france'){ ctx.fillStyle='#f6f3ea'; ctx.fillRect(x,y-4,fw,fh+8); ctx.fillStyle='#d8b030'; for(const [a,b] of [[0.3,0.35],[0.65,0.35],[0.48,0.68]]){ ctx.beginPath(); ctx.arc(x+fw*a,y+fh*b,fh*0.1,0,7); ctx.fill(); } }
+  else if(id==='netherlands'){ ctx.fillStyle='#d05a18'; ctx.fillRect(x,y-4,fw,fh/3+4); ctx.fillStyle='#f6f3ea'; ctx.fillRect(x,y+fh/3,fw,fh/3); ctx.fillStyle='#1d3f8f'; ctx.fillRect(x,y+fh*2/3,fw,fh/3+4); }
+  else { ctx.fillStyle='#141414'; ctx.fillRect(x,y-4,fw,fh+8); ctx.fillStyle='#f0e6c8'; ctx.beginPath(); ctx.arc(x+fw*0.5,y+fh*0.4,fh*0.18,0,7); ctx.fill();
+    ctx.strokeStyle='#f0e6c8'; ctx.lineWidth=Math.max(1,fh*0.08); ctx.beginPath(); ctx.moveTo(x+fw*0.3,y+fh*0.62); ctx.lineTo(x+fw*0.7,y+fh*0.86); ctx.moveTo(x+fw*0.7,y+fh*0.62); ctx.lineTo(x+fw*0.3,y+fh*0.86); ctx.stroke();
+    ctx.fillStyle='#141414'; ctx.fillRect(x+fw*0.42,y+fh*0.36,fw*0.05,fh*0.06); ctx.fillRect(x+fw*0.53,y+fh*0.36,fw*0.05,fh*0.06); }
+  ctx.restore();
+  ctx.strokeStyle='rgba(0,0,0,0.45)'; ctx.lineWidth=0.8; ctx.stroke();
+  ctx.restore(); }
+function drawFlag(ctx,x,y,h,nat){ drawFlagV3(ctx,x,y,h*0.85,nat,0); }
+
+// ---------- ships ----------
+const SHIP_LOOK={
+  sloop:{ L:0.74, W:0.30, masts:[-0.04], rig:'fore', ports:3, castle:0 },
+  schooner:{ L:0.82, W:0.28, masts:[-0.2,0.14], rig:'fore', ports:4, castle:0 },
+  brig:{ L:0.88, W:0.32, masts:[-0.2,0.14], rig:'square', ports:5, castle:0 },
+  frigate:{ L:0.96, W:0.33, masts:[-0.27,-0.02,0.22], rig:'square', ports:7, castle:1 },
+  galleon:{ L:1.0, W:0.39, masts:[-0.27,-0.02,0.22], rig:'square', ports:7, castle:2 }
+};
+function hullPath(ctx,L,W){ const h=L/2; ctx.beginPath();
+  ctx.moveTo(0,-h);
+  ctx.bezierCurveTo(W*0.42,-h*0.78, W*0.52,-h*0.35, W*0.5,-h*0.05);
+  ctx.lineTo(W*0.46,h*0.78);
+  ctx.quadraticCurveTo(W*0.44,h,W*0.24,h);
+  ctx.lineTo(-W*0.24,h);
+  ctx.quadraticCurveTo(-W*0.44,h,-W*0.46,h*0.78);
+  ctx.lineTo(-W*0.5,-h*0.05);
+  ctx.bezierCurveTo(-W*0.52,-h*0.35,-W*0.42,-h*0.78,0,-h);
+  ctx.closePath(); }
+function drawShipSprite(ctx,x,y,s,ship,opt){ opt=opt||{};
+  const look=SHIP_LOOK[ship.cls]||SHIP_LOOK.sloop; const nat=NATIONS[ship.nation]||NATIONS.pirate;
+  const face=opt.facing!=null?opt.facing:(ship.facing!=null?ship.facing:1);
+  const sunk=!!opt.sunk;
+  const L=s*look.L, W=L*look.W; const t=opt.time||0;
+  const sailFrac=ship.sailsMax?clamp(ship.sails/ship.sailsMax,0,1):1;
+  ctx.save(); ctx.translate(x,y); ctx.rotate(opt.angle!=null?opt.angle:face*Math.PI/2);
+  if(opt.alpha!=null) ctx.globalAlpha=opt.alpha;
+  // wake
+  if(opt.wake && !sunk){ ctx.strokeStyle='rgba(235,250,255,0.35)'; ctx.lineWidth=Math.max(1,s*0.02); ctx.lineCap='round';
+    for(const sd of [-1,1]){ ctx.beginPath(); ctx.moveTo(sd*W*0.4,L*0.4); ctx.quadraticCurveTo(sd*W*0.62,L*0.62,sd*W*0.8,L*0.78+Math.sin(t/400)*1.5); ctx.stroke(); }
+    ctx.fillStyle='rgba(235,250,255,0.35)'; ctx.beginPath(); ctx.ellipse(0,L*0.56,W*0.22,L*0.1,0,0,7); ctx.fill();
+    ctx.fillStyle='rgba(235,250,255,0.5)'; ctx.beginPath(); ctx.ellipse(0,-L*0.5,W*0.18,L*0.05,0,0,7); ctx.fill(); }
+  // shadow
+  ctx.fillStyle='rgba(0,20,30,0.35)'; ctx.save(); ctx.translate(s*0.05,s*0.06); hullPath(ctx,L*1.02,W*1.08); ctx.fill(); ctx.restore();
+  // hull
+  const hg=ctx.createLinearGradient(-W/2,0,W/2,0);
+  if(sunk){ hg.addColorStop(0,'#2a3238'); hg.addColorStop(1,'#46525a'); }
+  else { hg.addColorStop(0,'#3a2010'); hg.addColorStop(0.2,'#6e4220'); hg.addColorStop(0.5,'#8a5a2e'); hg.addColorStop(0.8,'#6e4220'); hg.addColorStop(1,'#3a2010'); }
+  ctx.fillStyle=hg; hullPath(ctx,L,W); ctx.fill();
+  ctx.strokeStyle=sunk?'#20282e':'#20120a'; ctx.lineWidth=Math.max(1,s*0.022); ctx.stroke();
+  // wale stripe in nation colour
+  if(!sunk){ ctx.save(); hullPath(ctx,L,W); ctx.clip(); ctx.strokeStyle=nat.id==='pirate'?'#1a1a1a':nat.color2; ctx.lineWidth=Math.max(1.2,W*0.12); hullPath(ctx,L*0.98,W*0.98); ctx.stroke(); ctx.restore(); }
+  // deck
+  ctx.fillStyle=sunk?'#56626a':'#c8a370'; hullPath(ctx,L*0.84,W*0.72); ctx.fill();
+  if(!sunk && s>36){ ctx.save(); hullPath(ctx,L*0.84,W*0.72); ctx.clip(); ctx.strokeStyle='rgba(90,58,28,0.35)'; ctx.lineWidth=0.7;
+    for(let i=-3;i<=3;i++){ ctx.beginPath(); ctx.moveTo(i*W*0.1,-L/2); ctx.lineTo(i*W*0.1,L/2); ctx.stroke(); } ctx.restore(); }
+  // gunports
+  if(!sunk){ const n=look.ports; ctx.fillStyle='#1a0e06';
+    for(let i=0;i<n;i++){ const yy=-L*0.3+i*(L*0.62/Math.max(1,n-1)); const gw=Math.max(1.5,W*0.1), gh=Math.max(1.5,L*0.035);
+      for(const sd of [-1,1]){ ctx.fillStyle='#e0b45a'; ctx.fillRect(sd*W*0.5-(sd>0?gw:0)-0.5*sd,yy-0.5,gw+1,gh+1); ctx.fillStyle='#120804'; ctx.fillRect(sd*W*0.5-(sd>0?gw:0),yy,gw,gh); } } }
+  // castles
+  if(look.castle && !sunk){ ctx.fillStyle='#6a3e1c'; ctx.fillRect(-W*0.38,L*0.24,W*0.76,L*0.22); ctx.strokeStyle='#e0b45a'; ctx.lineWidth=Math.max(0.8,s*0.012); ctx.strokeRect(-W*0.38,L*0.24,W*0.76,L*0.22);
+    ctx.fillStyle='#ffd88a'; for(let i=0;i<4;i++) ctx.fillRect(-W*0.3+i*W*0.17,L*0.44,W*0.08,L*0.02);
+    if(look.castle>1){ ctx.fillStyle='#6a3e1c'; ctx.fillRect(-W*0.3,-L*0.4,W*0.6,L*0.12); ctx.strokeRect(-W*0.3,-L*0.4,W*0.6,L*0.12); } }
+  // bowsprit
+  ctx.strokeStyle='#3a2412'; ctx.lineWidth=Math.max(1,s*0.022); ctx.beginPath(); ctx.moveTo(0,-L*0.42); ctx.lineTo(0,-L*0.66); ctx.stroke();
+  if(!sunk && sailFrac>0.05){ ctx.fillStyle='rgba(244,236,214,0.92)'; ctx.beginPath(); ctx.moveTo(0,-L*0.64); ctx.lineTo(W*0.28*sailFrac+1,-L*0.38); ctx.lineTo(0,-L*0.32); ctx.closePath(); ctx.fill(); ctx.strokeStyle='rgba(80,60,30,0.4)'; ctx.lineWidth=0.7; ctx.stroke(); }
+  // masts & sails
+  const sailCol=nat.id==='pirate'?'#e2d6b8':'#f4ecd6';
+  look.masts.forEach((m,mi)=>{ const my=m*L;
+    if(!sunk){ if(look.rig==='square'){ const span=W*(mi===1?1.9:1.65)*(0.55+0.45*sailFrac); const depth=L*0.09; const bulge=L*0.05;
+        // yard
+        ctx.strokeStyle='#3a2412'; ctx.lineWidth=Math.max(1,s*0.02); ctx.beginPath(); ctx.moveTo(-span/2,my); ctx.lineTo(span/2,my); ctx.stroke();
+        const sg=ctx.createLinearGradient(0,my-bulge,0,my+depth); sg.addColorStop(0,'#fffaf0'); sg.addColorStop(1,'#c9bb98');
+        ctx.fillStyle=sg; ctx.globalAlpha=(opt.alpha!=null?opt.alpha:1)*(0.55+0.45*sailFrac);
+        ctx.beginPath(); ctx.moveTo(-span/2,my); ctx.quadraticCurveTo(0,my-bulge*2,span/2,my); ctx.lineTo(span/2*0.92,my+depth); ctx.quadraticCurveTo(0,my+depth-bulge*1.6,-span/2*0.92,my+depth); ctx.closePath(); ctx.fill();
+        ctx.globalAlpha=opt.alpha!=null?opt.alpha:1; ctx.strokeStyle='rgba(90,70,40,0.55)'; ctx.lineWidth=0.8; ctx.stroke();
+        if(nat.id==='england'||nat.id==='spain'){ ctx.strokeStyle=nat.id==='england'?'rgba(200,30,58,0.7)':'rgba(176,24,24,0.7)'; ctx.lineWidth=Math.max(1,depth*0.18); ctx.beginPath(); ctx.moveTo(0,my-bulge*0.8); ctx.lineTo(0,my+depth-bulge*0.6); ctx.stroke(); }
+        if(sailFrac<0.85){ ctx.fillStyle='rgba(20,30,40,0.55)'; const hr=mulberry32(hashStr(ship.id||'x')+mi); const holes=Math.round((1-sailFrac)*6);
+          for(let k=0;k<holes;k++){ ctx.beginPath(); ctx.ellipse((hr()-0.5)*span*0.8,my+depth*(0.2+hr()*0.5),Math.max(1,span*0.05),Math.max(1,depth*0.14),hr()*3,0,7); ctx.fill(); } }
+      } else { // fore-and-aft: boom swings to leeward (starboard here)
+        const len=L*(look.masts.length>1?0.34:0.5)*(0.6+0.4*sailFrac); const wdt=W*0.55;
+        const sg=ctx.createLinearGradient(0,my,wdt,my+len); sg.addColorStop(0,'#fffaf0'); sg.addColorStop(1,'#cdbf9c');
+        ctx.fillStyle=sg; ctx.globalAlpha=(opt.alpha!=null?opt.alpha:1)*(0.55+0.45*sailFrac);
+        ctx.beginPath(); ctx.moveTo(0,my); ctx.quadraticCurveTo(wdt*1.1,my+len*0.4,wdt,my+len); ctx.lineTo(0,my+len*0.92); ctx.closePath(); ctx.fill();
+        ctx.globalAlpha=opt.alpha!=null?opt.alpha:1; ctx.strokeStyle='rgba(90,70,40,0.55)'; ctx.lineWidth=0.8; ctx.stroke();
+        ctx.strokeStyle='#3a2412'; ctx.lineWidth=Math.max(1,s*0.018); ctx.beginPath(); ctx.moveTo(0,my+len*0.92); ctx.lineTo(wdt,my+len); ctx.stroke();
+        if(sailFrac<0.85){ ctx.fillStyle='rgba(20,30,40,0.55)'; const hr=mulberry32(hashStr(ship.id||'x')+mi); for(let k=0;k<Math.round((1-sailFrac)*5);k++){ ctx.beginPath(); ctx.arc(wdt*(0.2+hr()*0.6),my+len*(0.2+hr()*0.6),Math.max(1,wdt*0.08),0,7); ctx.fill(); } } } }
+    ctx.fillStyle='#2a1808'; ctx.beginPath(); ctx.arc(0,my,Math.max(1.4,s*0.03),0,7); ctx.fill();
+    ctx.fillStyle='#c9a24a'; ctx.beginPath(); ctx.arc(0,my,Math.max(0.6,s*0.012),0,7); ctx.fill(); });
+  // ensign at stern (kept upright)
+  if(!sunk){ ctx.save(); ctx.translate(0,L*0.46); ctx.rotate(-(opt.angle!=null?opt.angle:face*Math.PI/2)); drawFlagV3(ctx,0,-s*0.2,s*0.17,nat,t); ctx.restore(); }
+  if(opt.selected){ ctx.strokeStyle='#ffe08a'; ctx.lineWidth=Math.max(1.5,s*0.025); ctx.setLineDash([4,3]); ctx.lineDashOffset=-(t/60)%14; ctx.beginPath(); ctx.ellipse(0,0,Math.max(W*1.1,s*0.4),L*0.66,0,0,7); ctx.stroke(); ctx.setLineDash([]); }
+  ctx.restore(); }
+
+// ---------- animated sea overlay on the map ----------
+function ensureSparks(){ if(GFX.spark) return GFX.spark; const out=[]; const r=mulberry32((G.seed||1)^0xBEEF);
+  for(let y=0;y<MAP_H;y++) for(let x=0;x<MAP_W;x++){ const t=G.map.t[idx(x,y)]; if(t===TILE_LAND) continue;
+    for(let i=0;i<2;i++) out.push({ x:(x+r())*TS, y:(y+r())*TS, ph:r()*6.28, sp:0.6+r()*0.8, len:3+r()*6, tx:x, ty:y }); }
+  GFX.spark=out; return out; }
+function drawSeaLife(ctx,time,x0,y0,x1,y1){ if(gfxLite()) return; const t=(time||performance.now())/1000;
+  // slow swell bands
+  ctx.lineWidth=1.2; ctx.lineCap='round';
+  for(let y=y0;y<y1;y++) for(let x=x0;x<x1;x++){ const tt=tileAt(G.map,x,y); if(tt===TILE_LAND) continue;
+    const px=x*TS, py=y*TS; const ph=t*0.7+x*0.55+y*0.35; const a=0.05+0.05*Math.sin(ph);
+    ctx.strokeStyle=`rgba(210,245,255,${a.toFixed(3)})`; ctx.beginPath(); ctx.moveTo(px+4,py+TS*0.4+Math.sin(ph)*2.5); ctx.quadraticCurveTo(px+TS*0.5,py+TS*0.3+Math.cos(ph)*2.5,px+TS-4,py+TS*0.42+Math.sin(ph+1)*2.5); ctx.stroke(); }
+  // sparkles
+  const sp=ensureSparks();
+  for(const s of sp){ if(s.tx<x0||s.tx>=x1||s.ty<y0||s.ty>=y1) continue; const v=Math.sin(t*s.sp*2+s.ph); if(v<0.82) continue;
+    const a=(v-0.82)/0.18*0.75; ctx.strokeStyle=`rgba(255,255,255,${a.toFixed(3)})`; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(s.x-s.len/2,s.y); ctx.lineTo(s.x+s.len/2,s.y); ctx.stroke(); } }
+
+function drawHideoutMarker(ctx,x,y,s,hideout){ const t=performance.now();
+  const cx=x+s/2, cy=y+s/2;
+  ctx.fillStyle='rgba(140,220,200,0.35)'; ctx.beginPath(); ctx.ellipse(cx,cy,s*0.62,s*0.5,0,0,7); ctx.fill();
+  ctx.fillStyle='rgba(246,252,248,0.75)'; ctx.beginPath(); ctx.ellipse(cx+s*0.08,cy-s*0.06,s*0.42,s*0.3,0.3,0,7); ctx.fill();
+  ctx.fillStyle='#ead49a'; ctx.beginPath(); ctx.ellipse(cx+s*0.08,cy-s*0.06,s*0.38,s*0.26,0.3,0,7); ctx.fill();
+  ctx.fillStyle='#3f8434'; ctx.beginPath(); ctx.ellipse(cx+s*0.14,cy-s*0.1,s*0.24,s*0.16,0.3,0,7); ctx.fill();
+  drawPalmV3(ctx,cx+s*0.12,cy-s*0.12,s*0.42,mulberry32(77));
+  drawRocks(ctx,cx-s*0.3,cy+s*0.14,s*0.07,mulberry32(5));
+  if(hideout&&hideout.built&&hideout.built.dock){ ctx.fillStyle='#8a5a2a'; ctx.fillRect(cx-s*0.36,cy+s*0.08,s*0.36,s*0.07); }
+  if(hideout&&hideout.claimed){ drawFlagV3(ctx,cx+s*0.24,cy-s*0.48,s*0.28,NATIONS.pirate,t); }
+  else { const pulse=0.5+0.5*Math.sin(t/400); ctx.strokeStyle=`rgba(255,224,138,${0.45+pulse*0.4})`; ctx.lineWidth=2; ctx.setLineDash([4,3]); ctx.beginPath(); ctx.arc(cx,cy,s*0.46+pulse*2,0,7); ctx.stroke(); ctx.setLineDash([]); } }
+
+// ---------- battle sea + effects ----------
+function ensureBattleLayer(W,H){ const key=[W,H,CV.cell,CV.ox,CV.oy,gfxLite()?1:0].map(v=>Math.round(v)).join('|');
+  if(GFX.bLayer&&GFX.bKey===key) return GFX.bLayer;
+  const dpr=CV.dpr||1; const cv=document.createElement('canvas'); cv.width=Math.ceil((W+160)*dpr); cv.height=Math.ceil((H+160)*dpr);
+  const c=cv.getContext('2d'); c.scale(dpr,dpr); c.translate(80,80);
+  const g=c.createLinearGradient(0,-80,0,H+80); g.addColorStop(0,'#0f566a'); g.addColorStop(0.5,'#0c4558'); g.addColorStop(1,'#083444'); c.fillStyle=g; c.fillRect(-80,-80,W+160,H+160);
+  const r=mulberry32(4242);
+  for(let i=0;i<260;i++){ const x=r()*(W+160)-80, y=r()*(H+160)-80; c.fillStyle=r()>0.5?`rgba(60,160,180,${0.05+r()*0.06})`:`rgba(2,20,30,${0.06+r()*0.08})`; c.beginPath(); c.ellipse(x,y,20+r()*70,6+r()*16,0.15,0,7); c.fill(); }
+  c.strokeStyle='rgba(220,250,255,0.07)'; c.lineWidth=1.4;
+  for(let i=0;i<140;i++){ const x=r()*(W+160)-80, y=r()*(H+160)-80, w=14+r()*30; c.beginPath(); c.moveTo(x,y); c.quadraticCurveTo(x+w/2,y-4,x+w,y); c.stroke(); }
+  // board: soft lighter rectangle + fine grid
+  const bw=CV.cell*BATTLE_W, bh=CV.cell*BATTLE_H;
+  c.fillStyle='rgba(120,210,220,0.06)'; c.fillRect(CV.ox,CV.oy,bw,bh);
+  c.strokeStyle='rgba(255,255,255,0.07)'; c.lineWidth=1;
+  for(let i=0;i<=BATTLE_W;i++){ c.beginPath(); c.moveTo(CV.ox+i*CV.cell,CV.oy); c.lineTo(CV.ox+i*CV.cell,CV.oy+bh); c.stroke(); }
+  for(let j=0;j<=BATTLE_H;j++){ c.beginPath(); c.moveTo(CV.ox,CV.oy+j*CV.cell); c.lineTo(CV.ox+bw,CV.oy+j*CV.cell); c.stroke(); }
+  c.strokeStyle='rgba(232,195,106,0.35)'; c.lineWidth=2; c.strokeRect(CV.ox,CV.oy,bw,bh);
+  GFX.bLayer=cv; GFX.bKey=key; return cv; }
+
+function drawBattleSea(ctx,W,H,now){ const L=ensureBattleLayer(W,H); const dpr=CV.dpr||1;
+  ctx.drawImage(L,-80,-80,(L.width/dpr),(L.height/dpr));
+  if(gfxLite()) return;
+  const t=now/1000; const w=DIRS8[((G.wind%8)+8)%8];
+  // wind streaks drifting with the wind
+  ctx.strokeStyle='rgba(230,250,255,0.10)'; ctx.lineWidth=1.2;
+  for(let i=0;i<26;i++){ const r=mulberry32(i*31+7); const bx=r()*W, by=r()*H; const sp=30+r()*30;
+    const x=((bx+w.x*t*sp)%W+W)%W, y=((by+w.y*t*sp)%H+H)%H; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+w.x*18+(w.y?6:0),y+w.y*18+(w.x?3:0)); ctx.stroke(); }
+  for(let i=0;i<60;i++){ const r=mulberry32(i*13+3); const x=CV.ox+r()*CV.cell*BATTLE_W, y=CV.oy+r()*CV.cell*BATTLE_H; const v=Math.sin(t*(1+r())*2+r()*6);
+    if(v>0.85){ ctx.strokeStyle=`rgba(255,255,255,${((v-0.85)/0.15*0.6).toFixed(3)})`; ctx.beginPath(); ctx.moveTo(x-3,y); ctx.lineTo(x+3,y); ctx.stroke(); } } }
+
+function fxAdd(o){ if(!B) return; if(!B.fx) B.fx=[]; B.fx.push(Object.assign({t0:performance.now()},o)); if(B.fx.length>220) B.fx.splice(0,B.fx.length-220); }
+function fxShot(u,t,side,ammo,res){ if(!B||!u||!t) return; const lite=gfxLite();
+  const p=battleCellPx(u.x,u.y), q=battleCellPx(t.x,t.y); const sd=DIRS4[side==='port'?(u.facing+3)%4:(u.facing+1)%4]; const fw=DIRS4[u.facing];
+  const n=lite?2:5;
+  for(let i=0;i<n;i++){ const off=(i-(n-1)/2)*CV.cell*0.22; const fx=p.x+fw.x*off+sd.x*CV.cell*0.3, fy=p.y+fw.y*off+sd.y*CV.cell*0.3;
+    fxAdd({ k:'flash', x:fx, y:fy, dx:sd.x, dy:sd.y, delay:i*70, life:160 });
+    fxAdd({ k:'smoke', x:fx+sd.x*6, y:fy+sd.y*6, delay:i*70, life:lite?900:1800, r0:CV.cell*0.12, r1:CV.cell*(0.4+Math.random()*0.2) }); }
+  const hits=res&&res.hit||1; const kind=ammo;
+  for(let i=0;i<(lite?2:4);i++) fxAdd({ k:'splash', x:q.x+(Math.random()-0.5)*CV.cell*1.4, y:q.y+(Math.random()-0.5)*CV.cell*1.4, delay:200+i*80, life:700 });
+  const pc=lite?6:16;
+  for(let i=0;i<pc;i++){ const a=Math.random()*Math.PI*2, v=40+Math.random()*90;
+    fxAdd({ k:'spark', x:q.x+(Math.random()-0.5)*CV.cell*0.3, y:q.y+(Math.random()-0.5)*CV.cell*0.3, vx:Math.cos(a)*v, vy:Math.sin(a)*v, delay:220, life:500+Math.random()*300,
+      col:kind==='chain'?'#f4ecd6':kind==='grape'?'#ffd060':'#b07a3a' }); }
+  fxAdd({ k:'text', x:q.x, y:q.y-CV.cell*0.4, delay:240, life:1300, txt:`−${hits} ${res&&res.vs||''}`, col:kind==='round'?'#ffb070':kind==='chain'?'#f4ecd6':'#ff7a6a' }); }
+function fxBoard(u,t){ if(!B||!u||!t) return; const p=battleCellPx(u.x,u.y), q=battleCellPx(t.x,t.y);
+  fxAdd({ k:'grapple', x:p.x, y:p.y, x2:q.x, y2:q.y, life:1600 });
+  for(let i=0;i<(gfxLite()?3:8);i++) fxAdd({ k:'clash', x:(p.x+q.x)/2+(Math.random()-0.5)*CV.cell*0.6, y:(p.y+q.y)/2+(Math.random()-0.5)*CV.cell*0.6, delay:150+i*120, life:280 });
+  fxAdd({ k:'smoke', x:(p.x+q.x)/2, y:(p.y+q.y)/2, delay:100, life:1400, r0:CV.cell*0.2, r1:CV.cell*0.7 }); }
+function drawFx(ctx,now){ if(!B||!B.fx||!B.fx.length) return; const w=DIRS8[((G.wind%8)+8)%8];
+  B.fx=B.fx.filter(f=>now-f.t0-(f.delay||0)<f.life);
+  for(const f of B.fx){ const age=now-f.t0-(f.delay||0); if(age<0) continue; const k=age/f.life;
+    if(f.k==='flash'){ const r=CV.cell*(0.22+0.3*k); const g=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,r); g.addColorStop(0,`rgba(255,250,210,${1-k})`); g.addColorStop(0.4,`rgba(255,170,60,${0.9*(1-k)})`); g.addColorStop(1,'rgba(255,120,20,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(f.x+f.dx*r*0.6,f.y+f.dy*r*0.6,r,0,7); ctx.fill(); }
+    else if(f.k==='smoke'){ const r=f.r0+(f.r1-f.r0)*k; const a=0.5*(1-k); ctx.fillStyle=`rgba(225,225,220,${a.toFixed(3)})`; ctx.beginPath(); ctx.arc(f.x+w.x*k*CV.cell*0.8,f.y+w.y*k*CV.cell*0.8-k*6,r,0,7); ctx.fill();
+      ctx.fillStyle=`rgba(160,160,155,${(a*0.5).toFixed(3)})`; ctx.beginPath(); ctx.arc(f.x+w.x*k*CV.cell*0.8+r*0.3,f.y+w.y*k*CV.cell*0.8+r*0.2,r*0.6,0,7); ctx.fill(); }
+    else if(f.k==='splash'){ ctx.strokeStyle=`rgba(240,252,255,${(1-k).toFixed(3)})`; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(f.x,f.y,4+k*CV.cell*0.3,0,7); ctx.stroke();
+      ctx.fillStyle=`rgba(240,252,255,${(1-k).toFixed(3)})`; for(let i=0;i<5;i++){ const a=i*1.26; const d=k*CV.cell*0.25; ctx.beginPath(); ctx.arc(f.x+Math.cos(a)*d,f.y+Math.sin(a)*d-Math.sin(k*Math.PI)*8,1.8,0,7); ctx.fill(); } }
+    else if(f.k==='spark'){ const s=age/1000; ctx.fillStyle=f.col; ctx.globalAlpha=1-k; ctx.fillRect(f.x+f.vx*s-1.5,f.y+f.vy*s+30*s*s-1.5,3,3); ctx.globalAlpha=1; }
+    else if(f.k==='text'){ ctx.globalAlpha=k<0.7?1:(1-k)/0.3; ctx.font=`bold ${Math.round(Math.max(13,CV.cell*0.28))}px Georgia`; ctx.textAlign='center'; ctx.lineWidth=3; ctx.strokeStyle='rgba(0,0,0,0.8)'; ctx.strokeText(f.txt,f.x,f.y-k*CV.cell*0.5); ctx.fillStyle=f.col; ctx.fillText(f.txt,f.x,f.y-k*CV.cell*0.5); ctx.globalAlpha=1; }
+    else if(f.k==='grapple'){ ctx.strokeStyle=`rgba(60,40,20,${(1-k*0.6).toFixed(3)})`; ctx.lineWidth=1.6; for(let i=-1;i<=1;i++){ ctx.beginPath(); ctx.moveTo(f.x+i*6,f.y+i*4); ctx.quadraticCurveTo((f.x+f.x2)/2,(f.y+f.y2)/2+10,f.x2+i*6,f.y2+i*4); ctx.stroke(); } }
+    else if(f.k==='clash'){ ctx.strokeStyle=`rgba(255,240,180,${(1-k).toFixed(3)})`; ctx.lineWidth=2; const r=6+k*10; for(let i=0;i<4;i++){ const a=i*Math.PI/4; ctx.beginPath(); ctx.moveTo(f.x-Math.cos(a)*r,f.y-Math.sin(a)*r); ctx.lineTo(f.x+Math.cos(a)*r,f.y+Math.sin(a)*r); ctx.stroke(); } } } }
+
+function drawBattleUnit(ctx,u,now){ const p=battleCellPx(u.x,u.y); const size=CV.cell*(BATTLE_W===7?2.1:1.95);
+  if(u.sunk){ const age=now-(u.sinkAt||0);
+    if(age<2200){ const k=age/2200; drawShipSprite(ctx,p.x,p.y+k*6,size*(1-0.25*k),u.ship,{facing:u.facing,alpha:1-k,angle:u.facing*Math.PI/2+k*0.35,time:now});
+      ctx.fillStyle=`rgba(240,252,255,${(0.7*(1-k)).toFixed(3)})`; for(let i=0;i<7;i++){ const r=mulberry32(i+7); ctx.beginPath(); ctx.arc(p.x+(r()-0.5)*CV.cell, p.y+(r()-0.5)*CV.cell-(k*20*r()),2+r()*3,0,7); ctx.fill(); }
+      ctx.strokeStyle=`rgba(240,252,255,${(0.6*(1-k)).toFixed(3)})`; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(p.x,p.y,CV.cell*(0.3+k*0.6),0,7); ctx.stroke(); }
+    else { const r=mulberry32(hashStr(u.id||'w')); ctx.fillStyle='rgba(90,60,30,0.7)'; for(let i=0;i<6;i++){ ctx.save(); ctx.translate(p.x+(r()-0.5)*CV.cell*0.8,p.y+(r()-0.5)*CV.cell*0.8); ctx.rotate(r()*3); ctx.fillRect(-6,-1.5,12,3); ctx.restore(); }
+      ctx.strokeStyle='rgba(240,252,255,0.18)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(p.x,p.y,CV.cell*0.42,0,7); ctx.stroke(); }
+    return; }
+  { const k=0.5+0.5*Math.sin(now/700+(u.x*3+u.y)); ctx.strokeStyle=`rgba(230,250,255,${(0.18+0.12*k).toFixed(3)})`; ctx.lineWidth=2; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(u.facing*Math.PI/2); ctx.beginPath(); ctx.ellipse(0,0,size*0.2+k*2,size*0.44+k*2,0,0,7); ctx.stroke(); ctx.restore(); }
+  drawShipSprite(ctx,p.x,p.y,size,u.ship,{facing:u.facing,selected:u===B.sel,wake:false,time:now});
+  // hull & crew pips
+  const bw=Math.max(34,CV.cell*0.8); const by=p.y+CV.cell*0.46;
+  ctx.fillStyle='rgba(10,10,10,0.6)'; ctx.fillRect(p.x-bw/2-1,by-1,bw+2,8);
+  ctx.fillStyle=u.side==='player'?'#7fe0a0':'#e07060'; ctx.fillRect(p.x-bw/2,by,bw*clamp(u.ship.hull/Math.max(1,u.ship.hullMax),0,1),3);
+  ctx.fillStyle='#f4ecd6'; ctx.fillRect(p.x-bw/2,by+3.5,bw*clamp(u.ship.sails/Math.max(1,u.ship.sailsMax),0,1),2.5);
+  if(u.captured){ ctx.save(); ctx.translate(p.x+CV.cell*0.3,p.y-CV.cell*0.5); ctx.strokeStyle='#2a1a0a'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(0,-CV.cell*0.4); ctx.stroke(); ctx.fillStyle='#fffaf0'; ctx.fillRect(0,-CV.cell*0.4,CV.cell*0.3,CV.cell*0.18); ctx.restore(); } }
+
+function drawArcs(ctx,sel,now){ if(!sel||sel.side!=='player'||sel.sunk) return;
+  const d=DIRS4[sel.facing]; const fx=sel.x+d.x, fy=sel.y+d.y;
+  if(inBattle(fx,fy)&&!unitAt(fx,fy)){ const p=battleCellPx(fx,fy); ctx.fillStyle='rgba(127,224,255,0.22)'; roundRect(ctx,p.x-CV.cell/2+3,p.y-CV.cell/2+3,CV.cell-6,CV.cell-6,8); ctx.fill();
+    ctx.fillStyle='rgba(200,245,255,0.8)'; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(sel.facing*Math.PI/2); ctx.beginPath(); ctx.moveTo(0,-CV.cell*0.2); ctx.lineTo(CV.cell*0.14,CV.cell*0.06); ctx.lineTo(-CV.cell*0.14,CV.cell*0.06); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  const pulse=0.5+0.5*Math.sin(now/260);
+  for(const side of ['port','starboard']){ const cells=broadsideCells(sel,side); if(!cells.length) continue;
+    const hasFoe=cells.some(c=>{ const t=unitAt(c.c,c.r); return t&&t.side!==sel.side; });
+    cells.forEach((cell,i)=>{ const p=battleCellPx(cell.c,cell.r); const foe=unitAt(cell.c,cell.r); const a=(hasFoe?0.32:0.14)*(1-i*0.18);
+      ctx.fillStyle=hasFoe?`rgba(255,120,60,${a.toFixed(3)})`:`rgba(255,200,120,${a.toFixed(3)})`; roundRect(ctx,p.x-CV.cell/2+3,p.y-CV.cell/2+3,CV.cell-6,CV.cell-6,8); ctx.fill();
+      ctx.strokeStyle=hasFoe?`rgba(255,140,80,${(0.6+pulse*0.4).toFixed(3)})`:'rgba(255,210,140,0.45)'; ctx.lineWidth=hasFoe?2.2:1.4; ctx.setLineDash([6,4]); roundRect(ctx,p.x-CV.cell/2+3,p.y-CV.cell/2+3,CV.cell-6,CV.cell-6,8); ctx.stroke(); ctx.setLineDash([]);
+      if(foe&&foe.side!==sel.side){ ctx.strokeStyle=`rgba(255,90,60,${(0.7+pulse*0.3).toFixed(3)})`; ctx.lineWidth=2.4; ctx.beginPath(); ctx.arc(p.x,p.y,CV.cell*0.42,0,7); ctx.moveTo(p.x-CV.cell*0.55,p.y); ctx.lineTo(p.x-CV.cell*0.28,p.y); ctx.moveTo(p.x+CV.cell*0.28,p.y); ctx.lineTo(p.x+CV.cell*0.55,p.y); ctx.moveTo(p.x,p.y-CV.cell*0.55); ctx.lineTo(p.x,p.y-CV.cell*0.28); ctx.moveTo(p.x,p.y+CV.cell*0.28); ctx.lineTo(p.x,p.y+CV.cell*0.55); ctx.stroke(); } });
+    const last=cells[cells.length-1]; const p=battleCellPx(last.c,last.r);
+    ctx.font=`bold ${Math.round(Math.max(10,CV.cell*0.2))}px Georgia`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.lineWidth=3; ctx.strokeStyle='rgba(0,0,0,0.7)';
+    const lab=side==='port'?'PORT':'STARBOARD'; ctx.strokeText(lab,p.x,p.y+CV.cell*0.36); ctx.fillStyle=hasFoe?'#ffcf9a':'rgba(255,230,190,0.8)'; ctx.fillText(lab,p.x,p.y+CV.cell*0.36); } }
+
+// improved wind rose
+function drawWindRose(ctx,x,y,r,wind){ ctx.save(); ctx.translate(x,y);
+  ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.beginPath(); ctx.arc(2,3,r+3,0,7); ctx.fill();
+  const g=ctx.createRadialGradient(-r*0.3,-r*0.3,2,0,0,r+3); g.addColorStop(0,'#f6e8c4'); g.addColorStop(1,'#c9ad78'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(0,0,r+3,0,7); ctx.fill();
+  ctx.strokeStyle='#5a3a1c'; ctx.lineWidth=2; ctx.stroke(); ctx.strokeStyle='rgba(90,58,28,0.5)'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(0,0,r*0.78,0,7); ctx.stroke();
+  for(let i=0;i<8;i++){ const a=i*Math.PI/4; const l=i%2?r*0.5:r*0.78; ctx.fillStyle=i%2?'#a68456':'#6a4a24'; ctx.beginPath(); ctx.moveTo(Math.cos(a-Math.PI/2)*l,Math.sin(a-Math.PI/2)*l); ctx.lineTo(Math.cos(a-Math.PI/2+0.25)*r*0.16,Math.sin(a-Math.PI/2+0.25)*r*0.16); ctx.lineTo(Math.cos(a-Math.PI/2-0.25)*r*0.16,Math.sin(a-Math.PI/2-0.25)*r*0.16); ctx.closePath(); ctx.fill(); }
+  ctx.fillStyle='#3a1a0a'; ctx.font=`bold ${Math.max(9,r*0.3)}px Georgia`; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('N',0,-r*0.98); 
+  ctx.rotate(wind*Math.PI/4);
+  ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.moveTo(1.5,-r*0.66+2); ctx.lineTo(r*0.2+1.5,r*0.2+2); ctx.lineTo(1.5,r*0.05+2); ctx.lineTo(-r*0.2+1.5,r*0.2+2); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#1e9ad0'; ctx.beginPath(); ctx.moveTo(0,-r*0.66); ctx.lineTo(r*0.2,r*0.2); ctx.lineTo(0,r*0.05); ctx.lineTo(-r*0.2,r*0.2); ctx.closePath(); ctx.fill(); ctx.strokeStyle='#0a3a5a'; ctx.lineWidth=1; ctx.stroke();
+  ctx.restore(); }
+
+function drawAppIcon(s){ const cv=document.createElement('canvas'); cv.width=cv.height=s; const c=cv.getContext('2d');
+  const bg=c.createRadialGradient(s*0.45,s*0.35,s*0.05,s*0.5,s*0.55,s*0.7); bg.addColorStop(0,'#2a8a98'); bg.addColorStop(0.55,'#0d4a58'); bg.addColorStop(1,'#071c24'); c.fillStyle=bg; c.fillRect(0,0,s,s);
+  c.fillStyle='#f0d48a'; c.beginPath(); c.arc(s*0.74,s*0.24,s*0.1,0,7); c.fill();
+  c.fillStyle='#ead49a'; c.beginPath(); c.ellipse(s*0.26,s*0.76,s*0.26,s*0.1,0,0,7); c.fill();
+  c.fillStyle='#3f8434'; c.beginPath(); c.ellipse(s*0.26,s*0.72,s*0.2,s*0.08,0,0,7); c.fill();
+  drawPalmV3(c,s*0.24,s*0.66,s*0.32,mulberry32(4));
+  drawShipSprite(c,s*0.6,s*0.56,s*0.62,{cls:'brig',nation:'pirate',sails:50,sailsMax:50,id:'icon'},{facing:0,angle:-0.5,wake:true});
+  c.strokeStyle='#e8c36a'; c.lineWidth=s*0.035; c.beginPath(); c.arc(s/2,s/2,s*0.46,0,7); c.stroke(); return cv; }
+
+// ---- 16_tutorial.js ----
+// v0.3: First Voyage tutorial, Goals / What now? panel, first-time tips
+const TUT={ on:false, i:0, steps:null, timer:null, ctx:{}, last:'' };
+function tutVisible(e){ if(!e) return false; const r=e.getBoundingClientRect(); return r.width>0&&r.height>0; }
+function tutQ(...sels){ return ()=>{ for(const s of sels){ const list=document.querySelectorAll(s); for(const e of list) if(tutVisible(e)) return e; } return null; }; }
+function tutCrewBtn(){ return tutQ('#mb-crew','#btn-crew','#btn-crew2')(); }
+function tutBackBtn(...extra){ return ()=> tutQ('#mobback', ...extra)(); }
+function tutTileRect(x,y){ const cv=MAPV.cv; if(!cv) return null; const r=cv.getBoundingClientRect(); const z=MAPV.z||1;
+  return { left:r.left+(x*TS-MAPV.cam.x)*z, top:r.top+(y*TS-MAPV.cam.y)*z, width:TS*z, height:TS*z }; }
+function tutCellRect(c,rw){ const cv=CV.cv; if(!cv||!B) return null; const r=cv.getBoundingClientRect(); const z=CV.z||1; const dpr=CV.dpr||1; const W=cv.width/dpr, H=cv.height/dpr;
+  const sx=wx=>(wx-W/2+CV.panX)*z+W/2, sy=wy=>(wy-H/2+CV.panY)*z+H/2;
+  const x0=CV.ox+c*CV.cell, y0=CV.oy+rw*CV.cell; return { left:r.left+sx(x0), top:r.top+sy(y0), width:CV.cell*z, height:CV.cell*z }; }
+function tutCenterTile(x,y){ if(!MAPV.cv) return; const v=viewSize(); MAPV.cam.x=x*TS-v.w/2+TS/2; MAPV.cam.y=y*TS-v.h*0.42+TS/2; clampCam(); MAPV.lastMove=performance.now(); }
+function tutPort(id){ return G.map.ports.find(p=>p.id===id); }
+function tutMerchant(){ return G.fleets.find(f=>!f.dead&&f.bounty); }
+function tutRefillWind(){ const f=playerFleet(); if(f&&f.mp<30){ f.mp=40; f.mpMax=Math.max(f.mpMax,40); } }
+function tutEnsurePort(){ if(CUR_PORT) return CUR_PORT; const n=tutPort('nassau'); const f=playerFleet(); f.x=n.x; f.y=n.y; closeAllModals(); dockAt(n); return CUR_PORT; }
+
+function tutSetupScenario(){ const f=playerFleet(); const n=tutPort('nassau'); const m=tutMerchant();
+  G.wind=2; // wind from the west, blowing east (cheap to sail east)
+  const cand=[]; for(let y=0;y<MAP_H;y++) for(let x=0;x<MAP_W;x++){ if(tileAt(G.map,x,y)!==TILE_SEA||portAt(x,y)) continue; if(typeof isHideoutTile==='function'&&isHideoutTile(x,y)) continue; cand.push({x,y}); }
+  const md=(a,b)=>Math.abs(a.x-b.x)+Math.abs(a.y-b.y);
+  // sail practice: 2 tiles from the start, prefer east (downwind)
+  const sail=cand.filter(c=>md(c,f)===2&&!(c.x===n.x&&c.y===n.y)).sort((a,b)=>((b.x-f.x)-(a.x-f.x))||(Math.abs(a.y-f.y)-Math.abs(b.y-f.y)))[0]||cand[0];
+  // merchant: 3-4 tiles from Nassau, not on the sail tile, on a short path
+  const mpos=cand.filter(c=>{ const d=md(c,n); return d>=3&&d<=4&&!(c.x===sail.x&&c.y===sail.y)&&md(c,sail)>=2; }).sort((a,b)=>(b.x-a.x))[0]||cand[1];
+  if(m){ m.x=mpos.x; m.y=mpos.y; const ms=flagshipOf(m); if(ms){ ms.crew=6; } m.mp=0; }
+  TUT.ctx.sail=sail; TUT.ctx.merch={x:mpos.x,y:mpos.y};
+  tutRefillWind(); MAPV.range=null; MAPV.path=null; MAPV.dest=null; centerOnFleet(f); renderAll(); }
+
+function tutBattleSetup(){ if(!B) return; const p=B.units.find(u=>u.side==='player'), e=B.units.find(u=>u.side==='enemy'); if(!p||!e) return;
+  B.units.filter(u=>u.side==='player').forEach((u,i)=>{ u.x=1; u.y=3+i*2; u.facing=1; });
+  p.x=Math.min(2,BATTLE_W-4); p.y=3; p.facing=1; e.x=p.x+2; e.y=3; e.facing=1; e.ship.crew=Math.min(e.ship.crew,6); B.sel=p; }
+
+function startTutorial(){
+  try{ if(G&&!G.tutorial&&!G.over) autoSave(); }catch(e){}
+  closeAllModals(); hideFirstTip();
+  if(typeof B!=='undefined'&&B){ try{ closeCombatUI(); }catch(e){} B=null; }
+  for(const id of ['port','captain','fleet','crew','hideout']){ const e=document.getElementById(id); if(e) e.classList.add('hidden'); }
+  CUR_PORT=null;
+  const name=(G&&G.player&&G.player.name)||prefGet('wm_capname','Reese')||'Reese';
+  startGame({ name, difficulty:'easy', seed:42, shipName:'The Kestrel', tutorial:true });
+  TUT.on=true; TUT.i=0; TUT.ctx={}; TUT.steps=tutSteps(); TUT.last='';
+  tutSetupScenario();
+  document.getElementById('tut').classList.remove('hidden'); document.documentElement.classList.add('tut-on');
+  tutEnter();
+  clearInterval(TUT.timer); TUT.timer=setInterval(tutTick,150);
+}
+function tutStop(){ TUT.on=false; clearInterval(TUT.timer); TUT.timer=null; const t=document.getElementById('tut'); if(t) t.classList.add('hidden'); document.documentElement.classList.remove('tut-on'); }
+function tutRelease(){ // turn the tutorial voyage into a normal one
+  if(!G) return; if(G.tutorial){ G.tutorial=null; try{ spawnWorldAI(Math.random); }catch(e){ console.error(e); } }
+  refreshAllMp(); const f=playerFleet(); if(f) MAPV.range=tilesInRange(G.map,f.x,f.y,f.mp,G.player,G.wind); renderAll(); }
+function tutSkip(){ tutStop(); tutRelease(); prefSet('wm_tut_done','1'); toast('Tutorial skipped — the sea is yours. Tap Goals any time for ideas.'); }
+
+function tutEnter(){ const st=TUT.steps[TUT.i]; if(!st) return tutFinish();
+  TUT.ctx.scrolled=false; TUT.last='';
+  try{ if(st.enter) st.enter(); }catch(e){ console.error(e); }
+  tutRenderCard(); tutPlace(); }
+function tutNext(){ TUT.i++; if(TUT.i>=TUT.steps.length) return tutFinish(); tutEnter(); }
+function tutTick(){ if(!TUT.on) return; if(!G||!G.tutorial){ tutStop(); return; }
+  const st=TUT.steps[TUT.i]; if(!st){ tutFinish(); return; }
+  if(!B) tutRefillWind();
+  if(MAPV.range&&MAPV.range.size>60) MAPV.range=null;
+  let ok=false; try{ ok=!!(st.done&&st.done()); }catch(e){ ok=false; }
+  if(ok){ tutNext(); return; }
+  tutPlace(); }
+
+function tutRenderCard(){ const st=TUT.steps[TUT.i]; const card=document.getElementById('tut-card'); if(!card||!st) return;
+  const txt=typeof st.text==='function'?st.text():st.text;
+  const action=!!st.done;
+  card.innerHTML=`<div class="tut-top"><span class="tut-step">First Voyage · ${TUT.i+1} / ${TUT.steps.length}</span><button class="tut-skip" id="tut-skip" type="button">Skip tutorial</button></div>
+    <div class="tut-title">${st.title}</div><div class="tut-text">${txt}</div>
+    <div class="tut-btns">${action?`<span class="tut-wait">${icon('target')} Your move${st.hint?': '+st.hint:''}</span><button class="btn small" id="tut-auto" type="button">Do it for me</button>`:`<button class="btn primary" id="tut-next" type="button">Next ▸</button>`}</div>`;
+  const nx=card.querySelector('#tut-next'); if(nx) nx.onclick=()=>tutNext();
+  const au=card.querySelector('#tut-auto'); if(au) au.onclick=()=>{ try{ if(st.auto) st.auto(); }catch(e){ console.error(e); } setTimeout(()=>{ if(TUT.on&&TUT.steps[TUT.i]===st){ let ok=false; try{ ok=st.done(); }catch(e){} if(ok) tutNext(); } },60); };
+  card.querySelector('#tut-skip').onclick=()=>tutSkip(); }
+
+function tutPlace(){ const st=TUT.steps[TUT.i]; if(!st) return;
+  const ring=document.getElementById('tut-ring'), arrow=document.getElementById('tut-arrow'), card=document.getElementById('tut-card');
+  let r=null; try{ const t=st.target?st.target():null; if(t){ if(t.getBoundingClientRect){ if(tutVisible(t)){ r=t.getBoundingClientRect();
+          if(!TUT.ctx.scrolled&&(r.top<50||r.bottom>window.innerHeight-60)){ TUT.ctx.scrolled=true; try{ t.scrollIntoView({block:'center'}); }catch(e){} r=t.getBoundingClientRect(); } } }
+        else r=t; } }catch(e){ r=null; }
+  const vh=window.innerHeight, vw=window.innerWidth;
+  let key='none';
+  if(r){ const pad=6; const L=Math.round(r.left-pad), T=Math.round(r.top-pad), W=Math.round(r.width+pad*2), H=Math.round(r.height+pad*2); key=[L,T,W,H].join(',');
+    if(key!==TUT.last){ ring.style.cssText=`display:block;left:${L}px;top:${T}px;width:${W}px;height:${H}px`;
+      const above=T>90; const ax=Math.round(L+W/2-14); const ay=above?T-40:T+H+6;
+      arrow.style.cssText=`display:block;left:${ax}px;top:${ay}px`; arrow.className=above?'down':'up';
+      const cy=T+H/2; card.className=cy>vh*0.5?'at-top':'at-bottom'; } }
+  else if(key!==TUT.last){ ring.style.cssText='display:none'; arrow.style.cssText='display:none'; card.className='at-bottom'; }
+  TUT.last=key; }
+
+function tutSteps(){
+  const S=[]; const f=()=>playerFleet();
+  const atTile=(p)=>{ const fl=f(); return fl&&p&&fl.x===p.x&&fl.y===p.y; };
+  const tile=(get)=>()=>{ const p=get(); return p?tutTileRect(p.x,p.y):null; };
+  const crewN=()=>livingPlayerCrew().filter(s=>s.shipId!=='hideout').length;
+  S.push({ title:'Welcome aboard, Captain', text:'This short, safe voyage shows you how to play Windward Marque. Each step lights up the button to press. Do it yourself, or tap <b>Do it for me</b>. You can skip the tutorial at any time and replay it from the main menu.' });
+  S.push({ title:'Your purse and your people', target:tutQ('#res'), text:`The top bar shows ${icon('gold','in')} <b>gold</b>, ${icon('crew','in')} <b>crew</b> (every one a named sailor), ${icon('morale','in')} <b>morale</b>, and ${icon('stores','in')} <b>stores</b> — how many days of food and water are left.` });
+  S.push({ title:'Day and wind', target:tutQ('#daylbl'), text:'This is the day and the wind. Every day brings fresh sailing and sometimes a new wind. You pay wages and eat stores each day.' });
+  S.push({ title:'Read the compass', target:()=>{ const cv=MAPV.cv; if(!cv) return null; const r=cv.getBoundingClientRect(); return {left:r.left+10,top:r.top+14,width:72,height:72}; },
+    text:'The blue arrow shows where the wind blows. Sailing <b>with</b> it is cheap (1), across it costs 2, and straight <b>into</b> it costs 3. Today it blows east.' });
+  S.push({ title:'Lay a course', target:tile(()=>TUT.ctx.sail), enter:()=>{ const p=TUT.ctx.sail; tutCenterTile(p.x,p.y); MAPV.path=null; MAPV.dest=null; },
+    text:'Tap the lit sea tile <b>once</b>. A gold dashed line shows your course and its wind cost.', hint:'tap the tile',
+    done:()=>{ const p=TUT.ctx.sail; return (MAPV.dest&&MAPV.dest.x===p.x&&MAPV.dest.y===p.y)||atTile(p); }, auto:()=>{ const p=TUT.ctx.sail; planSailTo(p.x,p.y); } });
+  S.push({ title:'Set sail', target:tile(()=>TUT.ctx.sail), text:'Tap the same tile <b>again</b> (or the Sail button) to go.', hint:'tap it again',
+    done:()=>atTile(TUT.ctx.sail), auto:()=>{ const p=TUT.ctx.sail; if(!MAPV.dest) planSailTo(p.x,p.y); executeSail(); } });
+  S.push({ title:'Into port', target:tile(()=>tutPort('nassau')), enter:()=>{ const n=tutPort('nassau'); tutCenterTile(n.x,n.y); },
+    text:'<b>Nassau</b> is a pirate haven — anyone may dock. Tap it twice to sail in. Sailing back west is into the wind, so it costs more.', hint:'tap Nassau twice',
+    done:()=>CUR_PORT&&CUR_PORT.id==='nassau', auto:()=>{ closeAllModals(); const n=tutPort('nassau'); const fl=f(); fl.x=n.x; fl.y=n.y; MAPV.path=null; MAPV.dest=null; dockAt(n); } });
+  S.push({ title:'The recruiting table', target:tutQ('[data-tab=crew]'), text:'Ports have tabs. Tap <b>Recruit</b> to see who is looking for a berth.', hint:'tap Recruit',
+    done:()=>CUR_PORT&&PORT_TAB==='crew', auto:()=>{ tutEnsurePort(); PORT_TAB='crew'; renderPort(); } });
+  S.push({ title:'Hire a sailor', target:tutQ('.reccard [data-hire]','.reccard'), enter:()=>{ TUT.ctx.crew0=crewN(); if(G.player.gold<300) G.player.gold=300; },
+    text:'Every recruit is a real person with rolls — <b>Str, Agi, Wit, Nrv, Con</b> — and sometimes a skill. Better rolls cost more to sign <i>and</i> more in daily wages. Tap <b>Hire</b> on anyone you like.', hint:'hire one',
+    done:()=>crewN()>(TUT.ctx.crew0||0), auto:()=>{ const port=tutEnsurePort(); const pool=ensureHirePool(port); const cheap=pool.slice().sort((a,b)=>recruitPrice(a,port)-recruitPrice(b,port))[0]; if(!cheap||!hireRecruit(port,cheap)){ TUT.ctx.crew0=-1; } } });
+  S.push({ title:'Outfitting', target:tutQ('[data-tab=outfit]'), text:'Tap <b>Outfitting</b> — stores, weapons and training.', hint:'tap Outfitting',
+    done:()=>CUR_PORT&&PORT_TAB==='outfit', auto:()=>{ tutEnsurePort(); PORT_TAB='outfit'; renderPort(); } });
+  S.push({ title:'Provisions', target:tutQ('#of-top7'), enter:()=>{ TUT.ctx.days0=daysOfFood(); }, text:'Everyone aboard eats and drinks every day. Run out and the crew starves. Stores also take hold space — a small sloop with a big crew cannot carry many days. Tap <b>Top up 7 days</b>.', hint:'top up',
+    done:()=>daysOfFood()>(TUT.ctx.days0||0), auto:()=>{ tutEnsurePort(); if(G.player.gold<200) G.player.gold=200; if(!topUpSupplies(7,CUR_PORT)){ const m=mouthsToFeed(); G.supplies.food=Math.max(G.supplies.food||0,m*7); G.supplies.water=Math.max(G.supplies.water||0,m*7); } renderAll(); renderPort(); } });
+  S.push({ title:'The shipyard', target:tutQ('[data-tab=yard]'), text:'Tap <b>Shipyard</b> to repair and improve your ship.', hint:'tap Shipyard',
+    done:()=>CUR_PORT&&PORT_TAB==='yard', auto:()=>{ tutEnsurePort(); PORT_TAB='yard'; renderPort(); } });
+  S.push({ title:'Upgrade the Kestrel', target:tutQ('[data-up="sails"]','[data-up="hull"]'), enter:()=>{ if(G.player.gold<450) G.player.gold=450; renderTop(); if(CUR_PORT) renderPort(); },
+    text:'Gold makes your ship better. More canvas means more speed; a stronger hull takes more shot. Tap one <b>upgrade</b>.', hint:'buy an upgrade',
+    done:()=>{ const s=flagshipOf(f()); const u=(s&&s.upgrades)||{}; return (u.hull||0)+(u.sails||0)+(u.guns||0)>0; }, auto:()=>{ const s=flagshipOf(f()); upgradeShip(s,'sails')||upgradeShip(s,'hull'); if(CUR_PORT) renderPort(); } });
+  S.push({ title:'Back to sea', target:()=>tutQ('#mobback','#pt-leave')(), text:'Leave port with the button at the bottom (or <b>Leave</b>).', hint:'leave port',
+    done:()=>!CUR_PORT&&!shown('port'), auto:()=>closePort() });
+  S.push({ title:'Meet your crew', target:tutCrewBtn, text:'Tap <b>Crew</b> to see your ship’s company.', hint:'tap Crew',
+    done:()=>shown('crew'), auto:()=>openCrew() });
+  S.push({ title:'Stations', target:tutQ('.crewlist .sailorrow','.crewlist'), text:'Each sailor works a <b>station</b> — guns, rigging, boarding, surgeon, cook and more. They get better at the work they do. A good gunner hits harder; a surgeon saves lives.' });
+  S.push({ title:'Auto-assign', target:tutQ('#cr-auto'), text:'Tap <b>Auto-assign best</b> to put everyone where they are strongest. You can always move people by hand.', hint:'tap Auto-assign',
+    done:()=>!!TUT.ctx.autoDone, auto:()=>{ if(!shown('crew')) openCrew(); autoAssignFleet(); renderCrew(); } });
+  S.push({ title:'Close the roster', target:tutBackBtn('#cr-x'), text:'Go back to the sea.', hint:'close Crew', done:()=>!shown('crew'), auto:()=>closeCrew() });
+  S.push({ title:'An easy prize', target:tile(()=>{ const m=tutMerchant(); return m?{x:m.x,y:m.y}:null; }), enter:()=>{ const m=tutMerchant(); if(m) tutCenterTile(m.x,m.y); },
+    text:'That Spanish merchant, the <i>Santa Clara</i>, is easy pickings. Tap her <b>twice</b> to sail alongside.', hint:'tap the merchant twice',
+    done:()=>!!document.querySelector('#en-fight')||!!B, auto:()=>{ closeAllModals(); const m=tutMerchant(); if(!m) return; const fl=f(); const adj=DIRS4.map(d=>({x:m.x+d.x,y:m.y+d.y})).find(p=>walkable(G.map,p.x,p.y)&&!portAt(p.x,p.y)); if(adj){ fl.x=adj.x; fl.y=adj.y; } beginEncounter(m); } });
+  S.push({ title:'Fight!', target:tutQ('#en-fight'), text:'You can fight, try to flee, or let her go. Tap <b>Fight</b>.', hint:'tap Fight',
+    done:()=>!!B, auto:()=>{ const b=document.querySelector('#en-fight'); if(b) b.click(); } });
+  const me=()=>B&&B.units.find(u=>u.side==='player'&&!u.sunk);
+  const foe=()=>B&&B.units.find(u=>u.side==='enemy');
+  S.push({ title:'A sea battle', target:()=>{ const u=me(); return u?tutCellRect(u.x,u.y):null; }, text:'This is your ship. The merchant is just east. Ships fire <b>broadsides</b> — from their left (<b>port</b>) or right (<b>starboard</b>) side, never from the bow.' });
+  S.push({ title:'Turn', target:tutQ('#cb-tl'), text:'Tap <b>↺ Turn</b> to swing your side toward the merchant.', hint:'turn',
+    done:()=>{ const u=me(); return u&&(u.facing===0||u.facing===2); }, auto:()=>battleTurn(-1) });
+  S.push({ title:'Choose your shot', target:tutQ('[data-ammo=grape]'), text:'<b>Round</b> shot smashes hulls, <b>chain</b> rips sails, <b>grape</b> sweeps the deck before boarding. Tap <b>Grape</b>.', hint:'pick Grape',
+    done:()=>B&&B.ammo==='grape', auto:()=>battleSetAmmo('grape') });
+  S.push({ title:'Fire!', target:()=>{ const u=me(); if(!u) return null; return tutQ(u.facing===0?'#cb-fs':'#cb-fp')(); },
+    text:()=>{ const u=me(); const sb=u&&u.facing===0; return `The orange boxes show where your guns reach — the merchant is inside them. Tap <b>💥 ${sb?'Starboard':'Port'}</b> to fire.`; }, hint:'fire',
+    done:()=>B&&!!B.lastPlayerFire, auto:()=>{ const u=me(); battleFire(u&&u.facing===0?'starboard':'port'); } });
+  S.push({ title:'End your turn', target:tutQ('#cb-wait'), text:'Guns need a turn to reload. Tap <b>End turn</b>.', hint:'end turn',
+    done:()=>B&&B.round>=2, auto:()=>battleEndShip() });
+  S.push({ title:'Close in', target:()=>{ const u=me(); if(!u) return null; return tutQ(u.facing===0?'#cb-tr':'#cb-tl')(); }, text:'Now turn to face the merchant (east).', hint:'turn east',
+    done:()=>{ const u=me(); return u&&u.facing===1; }, auto:()=>{ const u=me(); battleTurn(u&&u.facing===0?1:-1); } });
+  S.push({ title:'Lay alongside', target:tutQ('#cb-fwd'), text:'Tap <b>▲ Sail</b> to move right next to her.', hint:'sail',
+    done:()=>{ const u=me(); return u&&adjacentEnemies(u).length>0; }, auto:()=>battleForward() });
+  S.push({ title:'Board her!', target:tutQ('#cb-bd'), text:'Your boarding party storms her deck. Numbers, skill, strength, weapons and morale all count. Tap <b>⚔ Board</b>.', hint:'board',
+    done:()=>!B||B.over, auto:()=>battleBoard() });
+  S.push({ title:'Casualty report', target:tutQ('.casrep','.battle-end'), text:'After every fight you see who was <b>hurt, killed or saved</b>. Wounded sailors heal over days — faster with a surgeon. In a real fight, some die <b>for good</b>.' });
+  S.push({ title:'Collect the spoils', target:tutQ('#br-ok'), text:'Tap <b>Continue</b> to take the plunder.', hint:'continue',
+    done:()=>!B, auto:()=>{ const b=document.querySelector('#br-ok'); if(b) b.click(); } });
+  S.push({ title:'Keep the prize', target:tutQ('#cp-take'), text:'You can add a captured ship to your fleet (up to three) or scuttle it for gold. Tap <b>Add to fleet</b>.', hint:'add to fleet',
+    done:()=>shipsOf(f()).length>=2||!document.querySelector('#cp-take'), auto:()=>{ const b=document.querySelector('#cp-take'); if(b) b.click(); } });
+  S.push({ title:'Protect a favourite', target:tutCrewBtn, enter:()=>{ closeAllModals(); }, text:'Some sailors become favourites. Open <b>Crew</b> again.', hint:'tap Crew', done:()=>shown('crew'), auto:()=>openCrew() });
+  S.push({ title:'Pick a sailor', target:tutQ('.sailorrow[data-sid]'), text:'Tap any sailor to open their card.', hint:'tap a sailor',
+    done:()=>shown('crew')&&CREW_VIEW==='detail', auto:()=>{ const s=livingPlayerCrew()[0]; if(s) openCrew(s.id); } });
+  S.push({ title:'Keep them safe', target:tutQ('#sd-prot'), text:'<b>Protect / reserve</b> keeps a sailor out of the boarding rush. For full safety, leave them ashore at your cove before a hard fight.', hint:'protect',
+    done:()=>{ const s=G.crew.find(x=>x.id===CREW_FOCUS); return !!(s&&s.protected); }, auto:()=>{ const s=G.crew.find(x=>x.id===CREW_FOCUS)||livingPlayerCrew()[0]; if(s){ setSailorProtected(s,true); renderCrew(); } } });
+  S.push({ title:'Close the card', target:tutBackBtn('#cr-x'), text:'Head back to the map.', hint:'close Crew', done:()=>!shown('crew'), auto:()=>closeCrew() });
+  S.push({ title:'Saltkey Cove', target:tile(()=>G.hideout), enter:()=>{ closeAllModals(); tutCenterTile(G.hideout.x,G.hideout.y); },
+    text:'This hidden cove can become your base. Tap it <b>twice</b> to sail there and claim it.', hint:'tap the cove twice',
+    done:()=>shown('hideout'), auto:()=>{ closeAllModals(); const fl=f(); fl.x=G.hideout.x; fl.y=G.hideout.y; MAPV.path=null; MAPV.dest=null; openHideout(); } });
+  S.push({ title:'Build a dock', target:tutQ('#ho-build'), enter:()=>{ if(G.player.gold<300) G.player.gold=300; if(G.hideout) G.hideout.wood=Math.max(G.hideout.wood||0,20); HO_SEL='dock'; renderHideout(); },
+    text:'Buildings cost gold and timber and take days. Some are <b>either-or</b>: choosing one closes the other for good. Tap <b>Build</b> for the dock.', hint:'build',
+    done:()=>!!(G.hideout&&((G.hideout.building&&G.hideout.building.id==='dock')||hideoutBuilt('dock'))), auto:()=>{ HO_SEL='dock'; startHideoutBuild('dock'); renderHideout(); } });
+  S.push({ title:'Time passes', target:tutQ('#hcv'), text:'Work goes on while you sail. Each <b>End day</b> brings it closer. Sailors left here are safe, and can heal or train.' });
+  S.push({ title:'Leave the cove', target:tutBackBtn('#ho-x'), text:'Back to sea.', hint:'leave', done:()=>!shown('hideout'), auto:()=>closeHideout() });
+  S.push({ title:'Letters of marque', target:tile(()=>tutPort('portroyal')||G.map.ports.find(p=>p.nation==='england')), enter:()=>{ const p=tutPort('portroyal')||G.map.ports.find(p=>p.nation==='england'); if(p) tutCenterTile(p.x,p.y); },
+    text:'National ports like this one offer a <b>letter of marque</b> (last port tab). One nation becomes your ally — better prices and missions — and its rival becomes your enemy. You may hold only one.' });
+  S.push({ title:'End the day', target:tutQ('#mb-end','#btn-end'), text:'When you run out of sailing, tap <b>End</b> to start a new day. That is the whole rhythm: sail, trade, fight, build, rest.' });
+  return S; }
+
+function tutFinish(){ tutStop(); prefSet('wm_tut_done','1');
+  const html=`<h2>${icon('star')} You’re ready, Captain</h2>
+    <p>That’s the whole loop. Here is what to do next:</p>
+    <ol class="nextlist">
+      <li><b>Capture another merchant.</b> Use grape shot, lay alongside and board.</li>
+      <li><b>Finish the dock at Saltkey Cove</b>, then add a warehouse or tavern.</li>
+      <li><b>Earn 1,000 gold</b> — trade cheap goods to ports that pay more, and take prizes.</li>
+      <li><b>Sign a letter of marque</b> at an English, Spanish, French or Dutch port.</li>
+      <li>Keep your <b>stores</b> above a few days and pay your crew.</li>
+    </ol>
+    <p class="dim">Tap <b>Goals</b> any time for suggestions that fit your voyage.</p>
+    <div class="row"><button class="btn primary" id="tf-keep">Keep sailing this voyage</button><button class="btn" id="tf-new">Start a fresh voyage</button><button class="btn" id="tf-menu">Main menu</button></div>`;
+  const m=modal(html,'tutdone');
+  m.querySelector('#tf-keep').onclick=()=>{ closeModal(m); tutRelease(); try{ autoSave(); }catch(e){} toast('Fair winds! Navies and pirates now sail these waters.'); };
+  m.querySelector('#tf-new').onclick=()=>{ closeModal(m); tutRelease(); openMenu(); const s=document.getElementById('mn-setup'); if(s) s.style.display='block'; };
+  m.querySelector('#tf-menu').onclick=()=>{ closeModal(m); tutRelease(); openMenu(); }; }
+
+function offerTutorialPrompt(){ if(prefGet('wm_tut_prompt','1')==='0'||prefGet('wm_tut_done','0')==='1') return;
+  const m=modal(`<h2>First time at sea?</h2><p>The <b>First Voyage</b> tutorial walks you through sailing, port, crew, battle and your cove — about five minutes. You can skip it at any time.</p>
+    <label class="chk"><input type="checkbox" id="tp-no"> Don’t ask again</label>
+    <div class="row"><button class="btn primary" id="tp-go">Take the tutorial</button><button class="btn" id="tp-skip">No thanks, just sail</button></div>`,'tutprompt');
+  const remember=()=>{ if(m.querySelector('#tp-no').checked) prefSet('wm_tut_prompt','0'); };
+  m.querySelector('#tp-go').onclick=()=>{ remember(); closeModal(m); startTutorial(); };
+  m.querySelector('#tp-skip').onclick=()=>{ remember(); closeModal(m); }; }
+
+// ---------------- Goals / What now? ----------------
+function goalsList(){ if(!G) return []; const out=[]; const f=playerFleet(); const ships=f?shipsOf(f).length:0;
+  const crew=livingPlayerCrew().filter(s=>s.shipId!=='hideout').length; const st=G.stats||{captures:0,sunk:0}; const h=G.hideout||{};
+  const days=typeof daysOfFood==='function'?daysOfFood():99;
+  const add=(id,title,hint,prog,pct)=>out.push({id,title,hint,prog,pct});
+  if(days<4) add('stores','Top up your stores','Dock at any friendly port → Outfitting → Top up 7 days.',`${days} days left`,clamp(days/7,0,1));
+  if(crew<14) add('crew','Hire more hands','Dock and open Recruit. More hands means stronger boarding and faster healing.',`${crew} / 14`,crew/14);
+  if((st.captures||0)<1) add('capture','Capture a merchant','Merchants sail between ports. Grape shot, lay alongside, then Board.','0 / 1',0);
+  if(!h.claimed) add('cove','Claim Saltkey Cove','Sail onto the cove marker (Cove?) on the map.','',0);
+  else if(!Object.keys(h.built||{}).length) add('build',h.building?`Finish the ${h.building.name}`:'Build at the cove',h.building?`${h.building.left} days to go — end days while you sail.`:'Visit the cove and raise a Dock or Warehouse.','',h.building?clamp(1-h.building.left/Math.max(1,h.building.total||h.building.left),0,1):0);
+  if(G.player.gold<1000) add('gold','Earn 1,000 gold','Buy goods cheap, sell where they pay more — or take prizes.',`${G.player.gold} / 1,000`,G.player.gold/1000);
+  if(!G.player.marque) add('marque','Sign a letter of marque','Visit an English, Spanish, French or Dutch port → Letter of marque.','',0);
+  if(ships<2) add('fleet','Grow your fleet to 2 ships','Keep a captured prize, or buy a hull in a shipyard.',`${ships} / 2`,ships/2);
+  if((st.captures||0)<3) add('capture3','Take 3 prizes','Each capture brings gold, cargo and sometimes new sailors.',`${st.captures||0} / 3`,(st.captures||0)/3);
+  if(h.claimed&&Object.keys(h.built||{}).length<3) add('build3','Raise 3 buildings at the cove','Dock, warehouse, tavern, infirmary…',`${Object.keys(h.built||{}).length} / 3`,Object.keys(h.built||{}).length/3);
+  if(G.player.level<3) add('rank','Reach captain rank 3','Win battles and finish missions for experience.',`Rank ${G.player.level}`,G.player.level/3);
+  if(G.player.gold<5000) add('gold5','Amass 5,000 gold','A rich captain can buy a frigate.',`${G.player.gold} / 5,000`,G.player.gold/5000);
+  if(!out.length) add('free','Rule the Windward Main','Take galleons, build out the cove, and pick your nation.','',1);
+  return out; }
+function goalHints(){ if(!G) return []; const h=[]; const f=playerFleet(); const days=typeof daysOfFood==='function'?daysOfFood():99;
+  if(days<=2) h.push(`<b class="bad">Stores are nearly gone (${days} days).</b> Dock and top up before the crew starves.`);
+  if(G.player.unpaid>0) h.push('<b class="bad">The crew is unpaid.</b> Sell cargo or take a prize — morale is falling.');
+  const wounded=livingPlayerCrew().filter(s=>s.status==='wounded').length; if(wounded) h.push(`${wounded} sailor${wounded>1?'s are':' is'} wounded. They heal over days; a surgeon or the cove infirmary helps.`);
+  if(f&&f.mp===0) h.push('You have no sailing left today — tap <b>End</b> to start a new day.');
+  if(f){ const p=portAt(f.x,f.y); if(p) h.push(`You are at <b>${p.name}</b> — tap <b>Port</b> to dock.`); }
+  if(G.pendingSailorLevels&&G.pendingSailorLevels.length) h.push('A sailor has ranked up — open <b>Crew</b> to choose their craft.');
+  if(G.mission) h.push(`Mission: ${escapeHtml(G.mission.desc)}`);
+  if(G.hideout&&G.hideout.building) h.push(`At the cove: the ${G.hideout.building.name} needs ${G.hideout.building.left} more day${G.hideout.building.left>1?'s':''}.`);
+  if(G.player.morale<35) h.push('Morale is low. Pay wages, keep ale aboard, and win a fight.');
+  return h; }
+function openGoals(){ if(!G){ toast('Start a voyage first.'); return; } hideFirstTip();
+  const gl=goalsList().slice(0,3); const hints=goalHints();
+  const html=`<h2>${icon('goal')} Goals — what now?</h2>
+    <div class="goallist">${gl.map((g,i)=>`<div class="goal"><div class="gnum">${i+1}</div><div class="gbody"><b>${g.title}</b>${g.prog?`<span class="gprog">${g.prog}</span>`:''}
+      <div class="dim">${g.hint}</div>${g.pct!=null?`<div class="bar gbar"><i style="width:${Math.round(clamp(g.pct,0,1)*100)}%"></i></div>`:''}</div></div>`).join('')}</div>
+    ${hints.length?`<h3>Right now</h3><ul class="hints">${hints.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}
+    <div class="row"><button class="btn" id="gl-tut">Replay tutorial</button><button class="btn" id="gl-help">How to play</button><button class="btn primary" id="gl-ok">Close</button></div>`;
+  const m=modal(html,'goals');
+  m.querySelector('#gl-ok').onclick=()=>closeModal(m);
+  m.querySelector('#gl-help').onclick=()=>{ closeModal(m); openHelp(); };
+  m.querySelector('#gl-tut').onclick=()=>{ closeModal(m); startTutorial(); }; }
+function updateGoalChip(){ const el=document.getElementById('goalchip'); if(!el) return;
+  const show=!!G&&!G.over&&!G.tutorial&&!TUT.on&&prefGet('wm_goalchip','1')!=='0';
+  if(!show){ el.classList.add('hidden'); return; }
+  const g=goalsList()[0]; const txt=g?g.title:'What now?'; const htm=`${icon('goal')}<span>${escapeHtml(txt)}</span><b>›</b>`;
+  if(el.dataset.t!==txt){ el.dataset.t=txt; el.innerHTML=htm; }
+  el.classList.remove('hidden');
+  // contextual first-time tips that depend on state
+  try{ const days=daysOfFood(); if(days<=3) firstTip('stores'); const f=playerFleet(); if(f&&f.mp===0&&G.day<=6) firstTip('endday'); }catch(e){} }
+
+// ---------------- first-time tips ----------------
+const FIRST_TIPS={
+  port:'<b>In port:</b> Trade goods, Recruit sailors, Outfit (stores, weapons), the Shipyard, and Letters of marque. Leave with the gold button at the bottom.',
+  battle:'<b>Battle:</b> turn so your <b>side</b> faces the enemy, choose shot, fire a broadside. Lay alongside and <b>Board</b> to capture.',
+  crew:'<b>Crew:</b> tap a sailor to see their card. <b>Auto-assign best</b> fills stations. Protect favourites, or leave them at the cove.',
+  cove:'<b>Your cove:</b> tap a pin on the picture (or a card below) to pick a building, then <b>Build</b>. Either-or choices close the other path.',
+  stores:'<b>Stores are low.</b> Dock at a port and use Outfitting → Top up 7 days, or the crew will go hungry.',
+  endday:'<b>Out of sailing for today.</b> Tap <b>End</b> (hourglass) to start a new day and catch a fresh wind.',
+  wounded:'<b>A sailor is wounded.</b> They heal over a few days — faster with a surgeon aboard or the cove infirmary.'
+};
+function tipsSeen(){ try{ return JSON.parse(prefGet('wm_tips_seen','{}'))||{}; }catch(e){ return {}; } }
+function firstTip(id){ if(!FIRST_TIPS[id]||TUT.on||(G&&G.tutorial)) return; if(prefGet('wm_tips','1')==='0') return;
+  const seen=tipsSeen(); if(seen[id]) return; seen[id]=1; prefSet('wm_tips_seen',JSON.stringify(seen));
+  const el=document.getElementById('ftip'); if(!el) return;
+  el.innerHTML=`<div class="ft-body">${icon('star')}<div>${FIRST_TIPS[id]}</div></div><div class="ft-btns"><button class="btn small" id="ft-off" type="button">Turn tips off</button><button class="btn small primary" id="ft-ok" type="button">Got it</button></div>`;
+  el.classList.remove('hidden');
+  el.querySelector('#ft-ok').onclick=()=>hideFirstTip();
+  el.querySelector('#ft-off').onclick=()=>{ prefSet('wm_tips','0'); hideFirstTip(); toast('Tips off. Turn them back on in ☰ Menu.'); };
+  clearTimeout(firstTip._t); firstTip._t=setTimeout(hideFirstTip,14000); }
+function hideFirstTip(){ const el=document.getElementById('ftip'); if(el) el.classList.add('hidden'); }
 
 
 </script>
