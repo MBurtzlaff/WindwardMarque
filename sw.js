@@ -1,5 +1,5 @@
-// windward-marque-v0.3.0-1a4dd1098e
-const CACHE='windward-marque-v0.3.0-1a4dd1098e';
+// windward-marque-v0.4.0-cb748723b0
+const CACHE='windward-marque-v0.4.0-cb748723b0';
 const FILES=['./','./index.html','./manifest.json','./icons/apple-touch-icon.png','./icons/icon-192.png','./icons/icon-512.png','./assets/cove.webp','./assets/fonts/im-fell-sc.woff2','./assets/fonts/pirata-one.woff2','./assets/parchment.webp','./assets/port.webp','./assets/portraits.webp','./assets/title.webp'];
 self.addEventListener('install',e=>{ e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting())); });
 self.addEventListener('activate',e=>{ e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())); });

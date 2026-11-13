@@ -349,6 +349,32 @@ html.mob #tut-card.at-top{ top:calc(var(--tbh) + var(--sat) + 6px); } html.mob.c
 .hints{ margin:4px 0; padding-left:20px; line-height:1.5; }
 .nextlist{ line-height:1.55; padding-left:22px; }
 .chk{ display:flex; align-items:center; gap:8px; margin-top:8px; } .chk input{ transform:scale(1.3); }
+
+/* ---- v0.4: armory, kit, nations, sound ---- */
+.armcard .gh b{ font-size:1.02em; }
+.gearline{ font-size:.86em; opacity:.9; }
+.gearrow{ border-top:1px dashed rgba(90,58,28,.35); padding:6px 0; }
+.gearrow .btn.small{ font-size:.85em; }
+.enc-odds{ margin:6px 0 10px; }
+.rivalcard{ display:flex; gap:10px; align-items:center; padding:8px; margin:6px 0; border-radius:10px; background:rgba(122,42,26,.10); border:1px solid rgba(122,42,26,.35); }
+.rivalcard .spic{ flex:none; width:52px; height:52px; }
+.rivalcard.waiting{ opacity:.6; }
+.rivalcard.defeated{ opacity:.75; background:rgba(47,122,56,.10); border-color:rgba(47,122,56,.35); }
+.natlist{ display:flex; flex-direction:column; gap:8px; }
+.natcard{ padding:8px 10px; border-radius:10px; background:rgba(255,248,230,.55); border:1px solid rgba(90,58,28,.3); }
+.natcard .gh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.natcard .psflag{ width:22px; height:16px; border-radius:3px; display:inline-block; border:1px solid rgba(0,0,0,.35); }
+.natbars{ display:grid; grid-template-columns:auto 1fr; gap:4px 10px; align-items:center; margin:6px 0; }
+.bar.repbar, .bar.heatbar{ position:relative; height:9px; }
+.bar.repbar i{ position:absolute; top:0; bottom:0; }
+.bar.repbar i.pos{ background:#2f7a38; } .bar.repbar i.neg{ background:#a8321e; }
+.bar.repbar::after{ content:''; position:absolute; left:50%; top:-2px; bottom:-2px; width:2px; background:rgba(0,0,0,.45); }
+.bar.heatbar i{ background:linear-gradient(90deg,#e0b040,#c0401e); }
+.volrow{ display:flex; align-items:center; gap:8px; margin:6px 0; }
+.volrow span{ min-width:58px; } .volrow input[type=range]{ flex:1; min-height:34px; accent-color:#7a2a1a; } .volrow output{ min-width:30px; text-align:right; }
+#z-mute.muted, #cb-mute.muted{ opacity:.7; filter:grayscale(1); }
+.infamy{ margin-top:4px; }
+.reps{ cursor:pointer; }
 </style>
 </head>
 <body>
@@ -363,12 +389,14 @@ html.mob #tut-card.at-top{ top:calc(var(--tbh) + var(--sat) + 6px); } html.mob.c
   <button class="btn" id="btn-crew2" data-tip="Ship's company — unique sailors">👥 Crew</button>
   <button class="btn" id="btn-hideout2" data-tip="Your hidden cove">🏝 Hideout</button>
   <button class="btn" id="btn-goals2" data-tip="Goals — what to do next">📜 Goals</button>
+  <button class="btn" id="btn-nations2" data-tip="Nations, standing, navy alert and rival captains">⚑ Nations</button>
+  <button class="btn" id="btn-sound" data-tip="Sound and music volume">🔊 Sound</button>
 </div>
 <div id="mapwrap">
   <canvas id="map"></canvas>
   <button id="goalchip" class="hidden" type="button" data-tip="Your current goals — tap for ideas"></button>
   <div id="navhint">Drag to pan · pinch to zoom · tap a sea hex, tap again to sail · hold for info <button class="btn" id="hint-ok">OK</button></div>
-  <div id="zoombar"><button class="btn small" id="z-out" data-tip="Zoom out">－</button><button class="btn small" id="z-in" data-tip="Zoom in">＋</button><button class="btn small" id="z-fit" data-tip="Fit your fleet on screen">Fit</button><button class="btn small" id="z-ctr" data-tip="Center on your fleet">◎</button></div>
+  <div id="zoombar"><button class="btn small" id="z-out" data-tip="Zoom out">－</button><button class="btn small" id="z-in" data-tip="Zoom in">＋</button><button class="btn small" id="z-fit" data-tip="Fit your fleet on screen">Fit</button><button class="btn small" id="z-ctr" data-tip="Center on your fleet">◎</button><button class="btn small" id="z-nat" data-tip="Nations and rival captains">⚑</button><button class="btn small" id="z-mute" data-tip="Sound on / off">🔊</button></div>
 </div>
 <div id="side" class="panel">
   <div id="side-hero"></div>
@@ -379,6 +407,7 @@ html.mob #tut-card.at-top{ top:calc(var(--tbh) + var(--sat) + 6px); } html.mob.c
     <button class="btn" id="btn-hideout">Hideout</button>
     <button class="btn" id="btn-center">Center</button>
     <button class="btn" id="btn-goals">Goals</button>
+    <button class="btn" id="btn-nations">Nations</button>
   </div>
   <canvas id="minimap" width="240" height="180"></canvas>
   <div id="side-log"></div>
@@ -410,7 +439,7 @@ html.mob #tut-card.at-top{ top:calc(var(--tbh) + var(--sat) + 6px); } html.mob.c
 // ---- 00_boot.js ----
 // Windward Marque — shared utilities
 const GAME_TITLE='Windward Marque';
-const GAME_VERSION='0.3.0';
+const GAME_VERSION='0.4.0';
 const TS=48;
 const SAVE_KEY='wm_save';
 const AUTO_KEY='wm_autosave';
@@ -884,7 +913,7 @@ function repStanding(n){ if(n==='pirate') return 'haven';
   const cap=G.player; const v=cap.reputation[n]||0;
   if(cap.marque===n) return 'allied';
   if(cap.marque && NATIONS[cap.marque].rival===n) return 'hostile';
-  if(v>=40) return 'friendly'; if(v>=15) return 'friendly'; if(v>-15) return 'neutral'; if(v>-40) return 'unfriendly'; return 'hostile'; }
+  if(v>=60) return 'allied'; if(v>=15) return 'friendly'; if(v>-15) return 'neutral'; if(v>-40) return 'unfriendly'; return 'hostile'; }
 function repLabel(s){ return ({allied:'Allied',friendly:'Friendly',neutral:'Neutral',unfriendly:'Unfriendly',hostile:'Hostile',haven:'Haven'})[s]||s; }
 function adjustRep(nation, delta, silent){ if(!NATION_IDS.includes(nation)) return; G.player.reputation[nation]=clamp((G.player.reputation[nation]||0)+delta,-100,100); if(!silent) addLog(`Your name with ${NATIONS[nation].name} is now <b>${repLabel(repStanding(nation))}</b>.`); }
 function canDock(port){ if(port.nation==='pirate') return true; return repStanding(port.nation)!=='hostile'; }
@@ -1062,8 +1091,10 @@ function applyPerk(pid){ const p=PERKS.find(x=>x.id===pid); if(!p) return false;
 
 function endDay(){ if(!G||G.over) return; if(typeof B!=='undefined'&&B){ toast('Finish the battle first.'); return; }
   const f=playerFleet(); const crew=fleetCrew(f); const wage=crewWage(G.player,crew);
-  if(G.player.gold>=wage){ G.player.gold-=wage; G.player.unpaid=0; G.player.morale=clamp(G.player.morale+(G.player.perks||[]).includes('iron_discipline')?2:-1,0,100); }
-  else { G.player.unpaid++; G.player.morale=clamp(G.player.morale-12,0,100); addLog('You cannot pay the crew. Morale falls.');
+  const owed=G.player.owed||0;
+  if(G.player.gold>=wage){ G.player.gold-=wage; G.player.unpaid=0; G.player.morale=clamp(G.player.morale+((G.player.perks||[]).includes('iron_discipline')?2:0)+(G.player.morale<55?1:G.player.morale>85?-1:0),0,100); // v0.4: paid crews settle toward content
+    if(owed>0){ const pay=Math.min(owed,G.player.gold); G.player.gold-=pay; G.player.owed=owed-pay; if(pay) addLog(`Back pay settled: ${pay} gold${G.player.owed?` (${G.player.owed} still owed)`:''}.`); if(!G.player.owed) G.player.morale=clamp(G.player.morale+6,0,100); } }
+  else { const part=G.player.gold; G.player.gold=0; G.player.owed=Math.min(owed+(wage-part), wage*8); G.player.unpaid++; G.player.morale=clamp(G.player.morale-6,0,100); addLog(`You cannot pay the crew in full. They sail on shares — ${G.player.owed} gold owed. Morale falls.`);
     if(G.player.morale<30 && !(G.crew&&G.crew.length)){ for(const s of shipsOf(f)){ const d=Math.min(s.crew-2, 1+Math.floor(Math.random()*3)); if(d>0){ s.crew-=d; addLog(`${d} sailors slip away from ${s.name}.`); } } } }
   // reef/sail repair at sea is slow
   for(const s of shipsOf(f)){ if(s.sails<s.sailsMax) s.sails=Math.min(s.sailsMax,s.sails+1);
@@ -1126,7 +1157,7 @@ function afterBattleWorld(result, you, foe){ // result: {won, captured:[ships], 
     if(result.captured.length) offerCapturedShips(result.captured);
     else banner('The sea takes them. You take the gold.', 2200);
   } else {
-    G.player.morale=clamp(G.player.morale-14,0,100);
+    G.player.morale=clamp(G.player.morale-(result.lost?14:6),0,100); // v0.4: breaking off clean stings less than losing a ship
     if(shipsOf(you).every(s=>s.hull<=0||((typeof crewCount==='function'?crewCount(s):s.crew)<=0))){ you.dead=true; gameOver(false,'Your last ship is lost. The wind forgets your name.'); return; }
     // flee: nudge away and maybe lose some cargo
     nudgeOff(you,foe); addLog('You break off, bloodied.');
@@ -1135,7 +1166,7 @@ function afterBattleWorld(result, you, foe){ // result: {won, captured:[ships], 
 }
 
 function offerCapturedShips(list){ const f=playerFleet(); const room=MAX_FLEET-shipsOf(f).length;
-  const takeOne=(ship,scuttle)=>{ if(scuttle || room<=0){ const gold=Math.round((SHIP_CLASSES[ship.cls].cost)*0.18)+80; G.player.gold+=gold; addLog(`You scuttle ${ship.name} for ${gold} gold.`); toast(`Scuttled ${ship.name} (+${gold} gold)`); }
+  const takeOne=(ship,scuttle)=>{ if(scuttle || room<=0){ const gold=Math.round((SHIP_CLASSES[ship.cls].cost)*0.2)+80; G.player.gold+=gold; addLog(`You scuttle ${ship.name} for ${gold} gold.`); toast(`Scuttled ${ship.name} (+${gold} gold)`); }
     else { const fromNat=ship.nation; ship.nation='pirate'; ship.hull=Math.max(8,ship.hull); ship.crew=Math.max(4,Math.floor(ship.crewMax*0.25)); refreshShipDerived(ship,G.player); if(!G.ships.includes(ship)) G.ships.push(ship); if(!f.ships.includes(ship.id)) f.ships.push(ship.id); if(typeof staffPrizeShip==='function') staffPrizeShip(ship, Math.min(ship.crew, Math.max(2,Math.floor(ship.crewMax*0.15))), fromNat); addLog(`The prize ${ship.name} joins your fleet.`); toast(`${ship.name} joins your colours!`); if(typeof offerPrizeJoiners==='function') offerPrizeJoiners(fromNat); }
     restockDerived(); renderAll(); };
   if(list.length===1 && room>0){ const sh=list[0];
@@ -1251,18 +1282,23 @@ function battleBoard(){ const u=B.sel; if(!u||B.over||u.side!=='player') return 
   const t=foes[0];
   const atkCap=G.player, defCap=(B.foe.captain)||{skills:{boarding:1}};
   const atkCrew=typeof boardingStrength==='function'?boardingStrength(u.ship,'player'):u.ship.crew;
-  const defCrew=t.ship.crew||0;
+  const defCrew=(t.ship.crew||0)*(typeof enemyArmsMult==='function'?enemyArmsMult(B.foe):1);
+  const party=(typeof ableSailors==='function'&&shipHasNamedCrew(u.ship))?ableSailors(u.ship).filter(s=>s.station==='boarding'):[];
   let atk=atkCrew*(1+skillBonus(atkCap,'boarding')*0.16)*(clamp(G.player.morale,20,100)/80);
   let def=defCrew*(1+skillBonus(defCap,'boarding')*0.16);
   if(G.tutorial) def*=0.3;
   if(typeof fxBoard==='function') fxBoard(u,t);
   if((G.player.perks||[]).includes('close_quarters')) atk*=1.25;
-  const aLoss=Math.max(1,Math.round(def*0.25*(0.8+Math.random()*0.4)));
+  if(party.length&&typeof partyArmsSummary==='function') clog(`Your boarders go in with ${partyArmsSummary(party)}.`);
+  const guard=typeof partyGuard==='function'?partyGuard(party):0;
+  const aLoss=Math.max(1,Math.round(def*0.25*(0.8+Math.random()*0.4)*(1-guard)));
   const dLoss=Math.max(2,Math.round(atk*0.35*(0.8+Math.random()*0.4)));
   if(typeof inflictCrewHits==='function'&&typeof shipHasNamedCrew==='function'&&shipHasNamedCrew(u.ship)) inflictCrewHits(u.ship,{ hits:aLoss, kind:'boarding', numeric:aLoss, killBias:G.tutorial?0:0.35 });
   else u.ship.crew=Math.max(0,u.ship.crew-aLoss);
   t.ship.crew=Math.max(0,t.ship.crew-dLoss);
   if(typeof trainStation==='function') trainStation(u.ship,'boarding','cutlass',8);
+  let thrown=0; for(const s of party){ if(s.gear&&s.gear.throw&&!s.dead){ s.gear.throw=null; thrown++; } } if(thrown) clog(`${thrown} grenado${thrown>1?'s':''} thrown.`);
+  for(const s of party){ if(!s.dead&&s.gear&&s.gear.ranged&&typeof trainSailor==='function') trainSailor(s,'musket',4); }
   clog(`Boarding ${t.ship.name}! You lose ${aLoss} crew, they lose ${dLoss}.`);
   if(t.ship.crew<=0 || atk>def*0.85){ t.captured=true; t.ship.crew=Math.max(2,Math.floor(t.ship.crewMax*0.15)); clog(`You take ${t.ship.name}!`); }
   else clog('They throw you back.');
@@ -1319,7 +1355,8 @@ function aiBattleShip(e){ const foes=living('player'); if(!foes.length) return;
   if(adjacentEnemies(e).length && e.ship.crew>=8){ // board if they have grape advantage or crew lead
     const t=adjacentEnemies(e)[0];
     if(e.ship.crew>t.ship.crew*0.8){ B.sel=e; // reuse board math from their side
-      const atk=e.ship.crew*1.1, def=t.ship.crew*(1+skillBonus(G.player,'boarding')*0.16);
+      const tParty=(typeof shipHasNamedCrew==='function'&&shipHasNamedCrew(t.ship))?ableSailors(t.ship).filter(s=>s.station!=='reserve'):[];
+      const atk=e.ship.crew*1.1*(typeof enemyArmsMult==='function'?enemyArmsMult(B.foe):1), def=(tParty.length&&typeof boardingStrength==='function'?boardingStrength(t.ship,'player')*(1+(typeof partyGuard==='function'?partyGuard(tParty)*2:0)):t.ship.crew)*(1+skillBonus(G.player,'boarding')*0.16);
       const aLoss=Math.max(1,Math.round(def*0.2)); const dLoss=Math.max(1,Math.round(atk*0.28));
       e.ship.crew=Math.max(0,e.ship.crew-aLoss);
       if(typeof inflictCrewHits==='function'&&typeof shipHasNamedCrew==='function'&&shipHasNamedCrew(t.ship)) inflictCrewHits(t.ship,{hits:dLoss,kind:'boarding',numeric:dLoss,killBias:0.35});
@@ -1358,7 +1395,7 @@ function finishBattle(won){ if(!B||B.over) return; B.over=true;
   const captured=[], sunk=[];
   let lootGold=0; const lootCargo=emptyCargo();
   for(const u of B.units.filter(x=>x.side==='enemy')){
-    if(u.captured){ captured.push(u.ship); lootGold+=80+Math.round(SHIP_CLASSES[u.ship.cls].cost*0.08); }
+    if(u.captured){ captured.push(u.ship); lootGold+=110+Math.round(SHIP_CLASSES[u.ship.cls].cost*0.10); if(B.foe&&B.foe.role==='merchant') lootGold+=irnd(15,40)*(CLASS_ORDER.indexOf(u.ship.cls)+1); }
     else if(u.sunk){ sunk.push(u.ship); lootGold+=40+Math.round(SHIP_CLASSES[u.ship.cls].cost*0.05); }
     if(u.captured||u.sunk){ for(const g of GOODS){ lootCargo[g]+=u.ship.cargo[g]||0; u.ship.cargo[g]=0; } }
   }
@@ -1370,6 +1407,7 @@ function finishBattle(won){ if(!B||B.over) return; B.over=true;
   if(won && typeof gainSailorXP==='function'){ for(const s of livingPlayerCrew().filter(x=>x.shipId!=='hideout'&&x.status==='ok')) gainSailorXP(s, 8+irnd(0,6)); }
   const cas=B.casualties||{killed:[],wounded:[],saved:[]};
   // remove lost player ships
+  const nBefore=you.ships.length;
   you.ships = you.ships.filter(id=>{ const s=G.ships.find(x=>x.id===id); return s && s.hull>0 && !B.units.some(u=>u.id===id&&u.captured&&u.side==='player'); });
   foe.ships = foe.ships.filter(id=>!captured.some(s=>s.id===id) && !sunk.some(s=>s.id===id));
   const summary=`<h2>${won?'Victory':'You are beaten'}</h2>
@@ -1381,8 +1419,9 @@ function finishBattle(won){ if(!B||B.over) return; B.over=true;
       ${cas.killed.length?`<p class="bad">Killed: ${cas.killed.join(', ')}</p>`:''}
       ${cas.wounded.length?`<p>Wounded: ${cas.wounded.join(', ')}</p>`:''}
       ${cas.saved.length?`<p class="good">The surgeon pulled through: ${cas.saved.join(', ')}</p>`:''}</div>`:''}
+    ${typeof battleArmsResult==='function'?battleArmsResult(won,captured):''}
     <div class="row"><button class="btn primary" id="br-ok">Continue</button></div>`;
-  const youF=you, foeF=foe, res={won,captured,sunk,lootGold,lootCargo};
+  const youF=you, foeF=foe, res={won,captured,sunk,lootGold,lootCargo,lost:nBefore-you.ships.length};
   const m=modal(summary,'battle-end');
   m.querySelector('#br-ok').onclick=()=>{ closeModal(m); closeCombatUI(); afterBattleWorld(res,youF,foeF); if(typeof openSailorLevelUp==='function') openSailorLevelUp(); };
 }
@@ -1431,6 +1470,7 @@ function refreshCombatUI(){ if(!B) return;
         <button class="btn small" id="cb-zout">－</button>
         <button class="btn small" id="cb-zin">＋</button>
         <button class="btn small" id="cb-fit" data-tip="Fit the whole battlefield">Fit</button>
+        <button class="btn small" id="cb-mute" data-tip="Sound on / off">🔊</button>
       </div>`;
     act.querySelectorAll('[data-ammo]').forEach(b=>b.onclick=()=>battleSetAmmo(b.dataset.ammo));
     act.querySelector('#cb-tl').onclick=()=>battleTurn(-1);
@@ -1441,6 +1481,7 @@ function refreshCombatUI(){ if(!B) return;
     act.querySelector('#cb-bd').onclick=()=>battleBoard();
     act.querySelector('#cb-retreat').onclick=()=>battleRetreat();
     act.querySelector('#cb-wait').onclick=()=>battleEndShip();
+    { const mb=act.querySelector('#cb-mute'); if(mb) mb.onclick=()=>audToggleMute(); if(typeof updateMuteButtons==='function') updateMuteButtons(audMuted()); }
     act.querySelector('#cb-zin').onclick=()=>{ CV.z=Math.min(2.4,(CV.z||1)*1.15); };
     act.querySelector('#cb-zout').onclick=()=>{ CV.z=Math.max(0.7,(CV.z||1)/1.15); if(CV.z===1){ CV.panX=0; CV.panY=0; } };
     act.querySelector('#cb-fit').onclick=()=>{ CV.z=1; CV.panX=0; CV.panY=0; toast('Battlefield fitted'); };
@@ -1753,6 +1794,12 @@ function openHelp(){ modal(`<h2>How to play ${GAME_TITLE}</h2>
     <h3>Battle</h3>
     <p>Fights are turn-based on a sea grid. Your ship faces a direction. <b>Sail</b> moves one hex that way (upwind costs 2). <b>Turn</b> changes facing. Cannons fire in <b>broadsides</b> — to the left (port) or right (starboard), not out of the bow.</p>
     <p>Choose shot: <b>Round</b> smashes hulls (sink them), <b>Chain</b> rips sails (they cannot run), <b>Grape</b> cuts down crew (makes boarding easier). Lay alongside and <b>Board</b> to capture a ship and add it to your fleet (up to three).</p>
+    <h3>Weapons and armour</h3>
+    <p>Each sailor carries their own kit: a blade (cutlass, axe or pike), a firearm (pistol or musket), grenados (used up when thrown) and armour (jerkin or breastplate). Kit suits some people better: an axe wants Strength, a musket wants Agility and Wits, grenados want Nerve. Buy kit in a port's <b>Armory</b> tab, then hand it out on the Crew screen or tap <b>Auto-equip best</b>. When a sailor dies their kit is lost — unless you win the fight and <b>strip the dead</b> (a Crew screen rule). Captured ships give up their arms.</p>
+    <h3>Nations, navies and rivals</h3>
+    <p>Tap <b>⚑ Nations</b> to see where you stand. Preying on a nation raises its <b>navy alert</b>: more patrols, then hunter squadrons. Allied ports (your letter of marque, or a standing of 60+) are a safe harbour (the alert cools faster, prices are better); unfriendly ports charge a fee; hostile ports turn you away unless you bribe the harbourmaster. As your <b>infamy</b> grows, named rival pirate captains appear. Each has a personality, grows stronger by taking prizes, and hunts you when they think they can win — beat one for their bounty and their ship.</p>
+    <h3>Sound</h3>
+    <p>Music and effects can be set in ☰ Menu → Sound, or muted with the 🔊 button on the map and in battle. The iPhone silent switch also mutes the game.</p>
     <h3>Your captain</h3>
     <p>Win fights and finish missions to gain experience. Each rank you pick a skill with a real downside — you cannot have everything. The five crafts are Gunnery, Navigation, Boarding, Leadership and Trade.</p>
     <h3>The crew</h3>
@@ -1846,7 +1893,7 @@ function renderPort(){ const port=CUR_PORT; const el=document.getElementById('po
     </div>
     <div class="goldline">${icon('gold','in')} <b>${G.player.gold}</b> gold · ${icon('crew','in')} ${typeof livingPlayerCrew==='function'?livingPlayerCrew().filter(s=>s.shipId!=='hideout').length:''} aboard · ${icon('stores','in')} ${typeof daysOfFood==='function'?daysOfFood():'?'} days of stores</div>
     <div class="ptabs">
-      ${[['trade','Trade'],['crew','Recruit'],['outfit','Outfitting'],['yard','Shipyard'],['marque','Letter of marque']].map(([id,lab])=>`<button class="btn ${PORT_TAB===id?'primary':''}" data-tab="${id}">${lab}</button>`).join('')}
+      ${[['trade','Trade'],['crew','Recruit'],['outfit','Outfitting'],['arms','Armory'],['yard','Shipyard'],['marque','Letter of marque']].map(([id,lab])=>`<button class="btn ${PORT_TAB===id?'primary':''}" data-tab="${id}">${lab}</button>`).join('')}
     </div>
     <div class="pbody">${portBody(port)}</div>
   </div>`;
@@ -1862,6 +1909,7 @@ function portBody(port){
   if(PORT_TAB==='outfit') return typeof outfitHtml==='function'?outfitHtml(port):'';
   if(PORT_TAB==='yard') return yardHtml(port)+(typeof yardExtrasHtml==='function'?yardExtrasHtml(port):'');
   if(PORT_TAB==='marque') return marqueHtml(port);
+  if(PORT_TAB==='arms') return typeof armsTabHtml==='function'?armsTabHtml(port):'';
   return '';
 }
 
@@ -1926,6 +1974,7 @@ function bindPortBody(port){
     const pool=ensureHirePool(port); const s=pool.find(x=>x.id===b.dataset.hire); if(s) hireRecruit(port,s); });
   const cro=document.getElementById('cr-open'); if(cro) cro.onclick=()=>openCrew();
   if(typeof bindOutfit==='function') bindOutfit(port);
+  if(PORT_TAB==='arms'&&typeof bindArmsTab==='function') bindArmsTab(port);
   const rp=document.getElementById('yd-rep'); if(rp) rp.onclick=()=>doRepair(port);
   document.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>{ const s=G.ships.find(x=>x.id===b.dataset.sid); if(s) upgradeShip(s,b.dataset.up); });
   document.querySelectorAll('[data-hull]').forEach(b=>b.onclick=()=>buyHull(b.dataset.hull,port));
@@ -2014,6 +2063,8 @@ function reviveGame(obj){ if(!obj) throw new Error('Empty save.');
   if(typeof migrateCrewIfNeeded==='function') migrateCrewIfNeeded(g);
   if(typeof ensureSupplies==='function') ensureSupplies(g);
   if(typeof ensureHideout==='function') ensureHideout(g);
+  if(typeof ensureArms==='function') ensureArms(g);
+  if(typeof ensureWorld==='function') ensureWorld(g);
   if(typeof rebuildUsedNames==='function') rebuildUsedNames(g);
   if(!g.stats) g.stats={captures:0,sunk:0};
   g.tutorial=null;
@@ -2114,7 +2165,7 @@ function hasSave(){ try{ return !!(localStorage.getItem(SAVE_KEY)||localStorage.
 // ---- 10_mobile.js ----
 // Phone layout, pinch-zoom, reversible settings, PWA
 const MOB={ touch:false, phone:false, land:true, safe:{t:0,r:0,b:0,l:0}, lastTouch:-1e9, lp:null, suppressUntil:0 };
-const MOB_PREF_KEYS=['wm_layout','wm_text','wm_mapzoom','wm_tapconfirm','wm_navhint','wm_crew_autoperk','wm_tips','wm_tips_seen','wm_goalchip','wm_fx','wm_tut_prompt'];
+const MOB_PREF_KEYS=['wm_layout','wm_text','wm_mapzoom','wm_tapconfirm','wm_navhint','wm_crew_autoperk','wm_tips','wm_tips_seen','wm_goalchip','wm_fx','wm_tut_prompt','wm_vol_music','wm_vol_sfx','wm_mute'];
 
 function mobPref(){ return prefGet('wm_layout','auto'); }
 function mobIsPhoneish(){ let coarse=false; try{ coarse=matchMedia('(pointer:coarse)').matches || (navigator.maxTouchPoints>0 && matchMedia('(hover:none)').matches); }catch(e){}
@@ -2138,6 +2189,7 @@ function mobResetPhoneDefaults(opt){ opt=opt||{};
   MAPV.z=1.05;
   mobDetect(); try{ resizeMap(); }catch(e){}
   try{ gfxInvalidate(); updateGoalChip(); }catch(e){}
+  try{ audApplyPrefs(); }catch(e){}
   if(opt.toast!==false) toast('Phone defaults restored. Your saves are untouched.'); }
 
 function mobHandleResetQuery(){ try{ const u=new URL(location.href); if(u.searchParams.get('reset')!=='layout') return;
@@ -2227,9 +2279,10 @@ function openMobMore(){ const items=[...document.querySelectorAll('#topbar .btn'
     <div class="mobset"><b>Goal banner on the map</b>
       <label><input type="radio" name="mgoal" value="1" ${prefGet('wm_goalchip','1')!=='0'?'checked':''}> On</label>
       <label><input type="radio" name="mgoal" value="0" ${prefGet('wm_goalchip','1')==='0'?'checked':''}> Off</label></div>
+    ${typeof soundSettingsHtml==='function'?soundSettingsHtml():''}
     <div class="mobset"><button class="btn" id="mm-tut" type="button">⭐ Play the First Voyage tutorial</button></div>
     <div class="mobset"><button class="btn" id="mm-reset" type="button">↩ Reset to phone defaults</button>
-      <div class="dim" style="margin-top:4px;line-height:1.4">Clears layout, text size, zoom, graphics, tips and goal-banner settings. <b>Does not touch your saves.</b></div></div>
+      <div class="dim" style="margin-top:4px;line-height:1.4">Clears layout, text size, zoom, graphics, tips, goal-banner and sound settings. <b>Does not touch your saves.</b></div></div>
     <div class="row" style="margin-top:8px"><button class="btn" id="mm-exsave">⬆ Export saves</button><button class="btn" id="mm-imsave">⬇ Import saves</button></div>
     ${ios&&!isStandalone()?'<div class="mobset dim">📲 To install: open this page in <b>Safari</b>, tap <b>Share</b> (□↑) → <b>Add to Home Screen</b>.</div>':''}
     <div class="row"><button class="btn" id="mm-close">Close</button></div>`;
@@ -2241,6 +2294,7 @@ function openMobMore(){ const items=[...document.querySelectorAll('#topbar .btn'
   root.querySelectorAll('input[name=mtips]').forEach(r=>r.onchange=()=>{ if(r.checked){ prefSet('wm_tips',r.value); if(r.value==='0') hideFirstTip(); } });
   root.querySelectorAll('input[name=mgoal]').forEach(r=>r.onchange=()=>{ if(r.checked){ prefSet('wm_goalchip',r.value); updateGoalChip(); } });
   root.querySelector('#mm-tipsre').onclick=()=>{ prefDel('wm_tips_seen'); prefSet('wm_tips','1'); toast('Tips will show again.'); closeModal(root); openMobMore(); };
+  if(typeof bindSoundSettings==='function') bindSoundSettings(root);
   root.querySelector('#mm-tut').onclick=()=>{ closeModal(root); startTutorial(); };
   root.querySelector('#mm-reset').onclick=()=>{ closeModal(root); mobResetPhoneDefaults(); try{ openMobMore(); }catch(_){} };
   root.querySelector('#mm-exsave').onclick=()=>downloadSaveBundle();
@@ -2371,11 +2425,11 @@ function recruitPrice(sailor, port){ const tot=attrSum(sailor); const stars=stan
     if(port.nation==='pirate') mult*=0.92;
     if(typeof G!=='undefined'&&G&&G.player) mult*=(1-skillBonus(G.player,'trade')*0.025); }
   return Math.max(6,Math.round(fee*mult)); }
-function recruitWage(sailor){ const tot=attrSum(sailor); const stars=standoutCount(sailor);
-  let w=0.6+Math.max(0,tot-32)*0.05+stars*0.2;
+function recruitWage(sailor, diffId){ const tot=attrSum(sailor); const stars=standoutCount(sailor);
+  let w=0.5+Math.max(0,tot-32)*0.05+stars*0.2;
   const start=startingSkillOf(sailor); if(start) w+=0.35+start.level*0.2;
-  if(typeof G!=='undefined'&&G) w*=(DIFF[G.difficulty]||DIFF.normal).wage;
-  return Math.max(1,Math.round(w)); }
+  const dId=diffId||(typeof G!=='undefined'&&G&&G.difficulty); if(dId) w*=(DIFF[dId]||DIFF.normal).wage;
+  return Math.max(0.5,Math.round(w*10)/10); } // v0.4: fractional wages so a plain deckhand costs about half a gold a day
 
 function pickOrigin(rng, prefer){ if(prefer&&ORIGIN_NAMES[prefer]&&rng()<0.55) return prefer;
   const keys=Object.keys(ORIGIN_NAMES); return keys[Math.floor(rng()*keys.length)]; }
@@ -2547,7 +2601,7 @@ function inflictCrewHits(ship, opts){ opts=opts||{};
   if(!pool.length) pool=ableSailors(ship);
   for(let i=0;i<hits&&pool.length;i++){ const s=pickCasualty(pool, kind); if(!s) break;
     pool=pool.filter(x=>x.id!==s.id);
-    let die=Math.random()<killBias*(1-(s.attrs.con||8)*0.03);
+    let die=Math.random()<killBias*(1-(s.attrs.con||8)*0.03)*(1-(kind!=='starve'&&typeof sailorArmor==='function'?sailorArmor(s):0));
     if(die){ const ch=surgeonSaveChance(ship);
       if(Math.random()<ch){ die=false; saved.push(s); if(typeof consumeSupply==='function') consumeSupply('medicine',1); trainSailor(bestSurgeonAboard(ship),'surgeon',10); } }
     if(die){ killSailor(s, kind==='boarding'?'cut down in the boarding':kind==='grape'?'swept by grape shot':kind==='starve'?'the stores ran out':kind==='raid'?'killed in a raid on the hideout':'splinters from the hull'); killed.push(s); }
@@ -2587,7 +2641,7 @@ recruitCrew = function(port, qty){ qty=Math.max(1,qty|0); ensureHirePool(port); 
   while(n<qty&&port.hirePool&&port.hirePool.length){ if(!hireRecruit(port, port.hirePool[0])) break; n++; }
   return n; }
 
-crewWage = function(captain, crewTotal){ if(G&&G.crew&&G.crew.length){ let w=livingPlayerCrew().reduce((a,s)=>a+(s.wage||1),0);
+crewWage = function(captain, crewTotal){ if(G&&G.crew&&G.crew.length){ let w=livingPlayerCrew().reduce((a,s)=>a+(s.wage||0.5),0);
     if((captain.perks||[]).includes('iron_discipline')) w=Math.round(w*1.25);
     w*=Math.max(0.75,1-(captain.skills.leadership||0)*0.03); return Math.max(1,Math.round(w)); }
   const lead=(captain&&captain.skills.leadership)||0; let w=(crewTotal||0)*0.35*(DIFF[G&&G.difficulty]||DIFF.normal).wage; if((captain.perks||[]).includes('iron_discipline')) w*=1.25; w*=Math.max(0.7,1-lead*0.04); return Math.max(1,Math.round(w)); }
@@ -2598,8 +2652,9 @@ fleetCrew = function(fleet){ if(!fleet) return 0; const ships=shipsOf(fleet);
 
 function dailyCrewTick(f, wage){ if(!G||!G.crew) return;
   if(G.player.gold>=0&&G.player.unpaid===0){ for(const s of livingPlayerCrew()) s.loyalty=clamp((s.loyalty||50)+1,0,100); }
-  if(G.player.unpaid>0){ const pool=livingPlayerCrew().filter(s=>s.shipId!=='hideout').sort((a,b)=>(a.loyalty||50)-(b.loyalty||50));
-    const n=Math.min(pool.length, 1+Math.floor(Math.random()*3));
+  if(G.player.unpaid>0){ const pool=livingPlayerCrew().filter(s=>s.shipId!=='hideout').sort((a,b)=>(a.loyalty||50)-(b.loyalty||50)).slice(0,Math.max(0,livingPlayerCrew().length-8)); // v0.4: a loyal skeleton crew of 8 sails on shares
+    // v0.4: crews sail on shares for a while; they start to slip away once morale breaks or the debt drags on
+    const n=(G.player.morale<45||G.player.unpaid>4)?Math.min(pool.length, G.player.unpaid>8?2:1):0;
     for(let i=0;i<n;i++){ const s=pool[i]; if(!s) break; addLog(`${sailorName(s)} slipped away in the night (unpaid).`); G.crew=G.crew.filter(x=>x.id!==s.id); } }
   const cookBonus=shipsOf(f).reduce((a,sh)=>a+stationScore(sh,'cook'),0);
   G.player.morale=clamp(G.player.morale+Math.min(3,Math.floor(cookBonus/4)),0,100);
@@ -2666,9 +2721,9 @@ function findSailor(id){ return (G&&G.crew||[]).find(s=>s.id===id)||null; }
 // Provisions, weapons, cannons, paid skill training — gold sinks with trade-offs
 const SUPPLY_KINDS=['food','water','ale','medicine'];
 const SUPPLY_INFO={
-  food:{ name:'Food', unit:'crate', perCrate:40, cargo:1, cost:8, desc:'One crate holds forty rations — one ration feeds one mouth for a day.' },
-  water:{ name:'Water', unit:'cask', perCrate:40, cargo:1, cost:5, desc:'One cask holds forty rations of water.' },
-  ale:{ name:'Ale & rum', unit:'keg', perCrate:40, cargo:1, cost:10, desc:'Keeps spirits up. Too little breeds mutiny; too much makes sloppy hands.' },
+  food:{ name:'Food', unit:'crate', perCrate:60, cargo:1, cost:12, desc:'One crate holds sixty rations — one ration feeds one mouth for a day.' },
+  water:{ name:'Water', unit:'cask', perCrate:60, cargo:1, cost:8, desc:'One cask holds sixty rations of water.' },
+  ale:{ name:'Ale & rum', unit:'keg', perCrate:80, cargo:1, cost:20, desc:'Keeps spirits up. Too little breeds mutiny; too much makes sloppy hands.' },
   medicine:{ name:'Medicine', unit:'chest', perCrate:1, cargo:1, cost:18, desc:'Helps the surgeon save the wounded.' }
 };
 const ALE_RATIONS={
@@ -2760,7 +2815,10 @@ function topUpSupplies(days, port){ days=Math.max(1,days|0); const m=mouthsToFee
     for(let d=days-1; d>=1; d--){ let sp=0; for(const k of ['food','water','ale']){ const info=SUPPLY_INFO[k]; const nd=k==='ale'?Math.ceil(d*m*r.per):d*m; sp+=Math.ceil(Math.max(0,nd-supplyCount(k))/info.perCrate)*info.cargo; }
       if(sp>0 && cargoFree()>=sp && d>daysOfFood()){ toast(`The hold only has room for ${d} days — topping up to that.`); return topUpSupplies(d, port); } }
     toast('Not enough hold space to top up — sell some cargo first.'); return false; }
-  if(G.player.gold<gold){ toast(`Need ${gold} gold to top up ${days} days.`); return false; }
+  if(G.player.gold<gold){ // v0.4: when money is short, buy as many days as the purse allows
+    for(let d=days-1; d>=1; d--){ let gg=0; for(const k of ['food','water','ale']){ const info=SUPPLY_INFO[k]; const nd=k==='ale'?Math.ceil(d*m*r.per):d*m; gg+=Math.ceil(Math.max(0,nd-supplyCount(k))/info.perCrate)*info.cost; }
+      if(gg>0 && G.player.gold>=gg && d>daysOfFood()){ toast(`Gold is short — topping up ${d} day${d>1?'s':''} instead.`); return topUpSupplies(d, port); } }
+    toast(`Need ${gold} gold to top up ${days} days.`); return false; }
   for(const k of ['food','water','ale']){ if(crates[k]>0){ G.player.gold-=crates[k]*SUPPLY_INFO[k].cost; G.supplies[k]+=crates[k]*SUPPLY_INFO[k].perCrate; } }
   addLog(`Topped up stores for ${days} days (${gold} gold).`); toast(`Stores ready for ${days} days at sea.`);
   renderAll(); if(typeof renderPort==='function') renderPort(); return true; }
@@ -2777,7 +2835,7 @@ function consumeDailySupplies(){ if(!G||!G.supplies) return;
   if(grogNeed && grog<grogNeed){ dMorale-=6; if((G.aleRation||'normal')!=='none') addLog('The grog ran short.'); }
   if(r.effect){ /* heavy grog slack: applied in combat via grogPenalty() */ }
   G.player.morale=clamp(G.player.morale+dMorale,0,100);
-  if(G.player.morale<25 && Math.random()<0.12){ const pool=livingPlayerCrew().filter(s=>s.shipId!=='hideout'&&!s.protected).sort((a,b)=>(a.loyalty||50)-(b.loyalty||50));
+  if(G.player.morale<25 && Math.random()<0.12 && livingPlayerCrew().length>8){ const pool=livingPlayerCrew().filter(s=>s.shipId!=='hideout'&&!s.protected).sort((a,b)=>(a.loyalty||50)-(b.loyalty||50));
     if(pool[0]){ addLog(`${sailorName(pool[0])} deserted in the night (low morale).`); G.crew=G.crew.filter(x=>x.id!==pool[0].id); } }
   G.voyageDays=(G.voyageDays||0)+1; }
 
@@ -2855,7 +2913,7 @@ const HIDEOUT_BUILDINGS={
   careening:{ id:'careening', name:'Careening yard', cost:220, days:4, wood:10, desc:'Hull repairs here cost even less, and a careened ship sails a little cleaner for a week.', requires:'dock', either:'dock_spec' },
   slipway:{ id:'slipway', name:'Slipway', cost:260, days:5, wood:14, desc:'You can build a sloop or schooner here, slowly, instead of buying one in port.', requires:'dock', either:'dock_spec' },
   // either-or: arms
-  armory:{ id:'armory', name:'Armory', cost:190, days:4, wood:6, desc:'Cutlasses, pistols and muskets cost less here, and issued weapons are kept sharp (+boarding).', requires:null, either:'arms' },
+  armory:{ id:'armory', name:'Armory', cost:190, days:4, wood:6, desc:'Weapons and armour cost a quarter less at the cove, and your blades are kept sharp (+10% in the boarding rush).', requires:null, either:'arms' },
   foundry:{ id:'foundry', name:'Foundry', cost:240, days:5, wood:8, desc:'Cast extra guns and recast batteries for less. Culverins and carronades are cheaper here.', requires:null, either:'arms' },
   // defenses (stackable-ish; first tier then either-or eyes)
   palisade:{ id:'palisade', name:'Palisade & lookouts', cost:130, days:3, wood:8, desc:'A first ring of defense. Raiders think twice. Lookouts give a little warning.', requires:null },
@@ -2919,9 +2977,9 @@ function hideoutDayTick(){ if(!G||!G.hideout||!G.hideout.claimed) return;
       h.shipBuilding=null; } }
   // income trickle
   let gold=0;
-  if(h.built.market) gold+=irnd(2,5);
-  if(h.built.smugglers){ gold+=irnd(4,8); if(Math.random()<0.08){ for(const n of ['england','spain','france','netherlands']) G.player.reputation[n]=clamp((G.player.reputation[n]||0)-1,-100,100); } }
-  if(h.built.fishery){ gold+=irnd(2,4); if(Math.random()<0.4) G.supplies.food=(G.supplies.food||0)+2; }
+  if(h.built.market) gold+=irnd(4,8); // v0.4 tuning: buildings pay back in about a month
+  if(h.built.smugglers){ gold+=irnd(7,12); if(Math.random()<0.08){ for(const n of ['england','spain','france','netherlands']) G.player.reputation[n]=clamp((G.player.reputation[n]||0)-1,-100,100); } }
+  if(h.built.fishery){ gold+=irnd(4,7); if(Math.random()<0.4) G.supplies.food=(G.supplies.food||0)+2; }
   if(gold){ G.player.gold+=gold; h.lastIncome=gold; }
   // tavern morale for crew ashore
   if(h.built.tavern){ for(const s of (G.crew||[]).filter(x=>x.shipId==='hideout'&&!x.dead)){ s.morale=clamp((s.morale||50)+3,0,100); s.loyalty=clamp((s.loyalty||50)+1,0,100); }
@@ -3056,18 +3114,22 @@ function renderCrew(){ const el=document.getElementById('crew'); if(!el||el.clas
       <button class="btn ${CREW_VIEW!=='fallen'?'primary':''}" id="cr-roster">Roster (${living.length})</button>
       <button class="btn ${CREW_VIEW==='fallen'?'primary':''}" id="cr-fallen">Fallen (${fallen.length})</button>
       <button class="btn" id="cr-auto">Auto-assign best</button>
+      <button class="btn" id="cr-arm">Auto-equip best</button>
     </div>
     <div class="row" style="margin-top:6px;justify-content:flex-start">
       <span class="dim">Sort</span>
       ${[['name','Name'],['station','Station'],['level','Rank'],['wage','Wage'],['status','Status']].map(([id,lab])=>`<button class="btn small ${CREW_SORT===id?'primary':''}" data-csort="${id}">${lab}</button>`).join('')}
     </div>
     <label class="dim" style="display:block;margin:8px 0"><input type="checkbox" id="cr-autoperk" ${crewAutoPerk()?'checked':''}> Auto-pick sailor crafts (or you will choose when they rank up)</label>
+    <label class="dim" style="display:block;margin:0 0 8px"><input type="checkbox" id="cr-strip" ${(G.rules&&G.rules.stripDead)!==false?'checked':''}> Strip the dead: recover the fallen's weapons after a win (untick to bury them with their kit — the crew likes that)</label>
     ${CREW_VIEW==='fallen'?fallenHtml(fallen):(focus?sailorDetailHtml(focus):rosterHtml(living))}
   </div>`;
   el.querySelector('#cr-x').onclick=()=>closeCrew();
   el.querySelector('#cr-roster').onclick=()=>{ CREW_VIEW='roster'; CREW_FOCUS=null; renderCrew(); };
   el.querySelector('#cr-fallen').onclick=()=>{ CREW_VIEW='fallen'; CREW_FOCUS=null; renderCrew(); };
   el.querySelector('#cr-auto').onclick=()=>{ autoAssignFleet(); renderCrew(); };
+  el.querySelector('#cr-arm').onclick=()=>{ autoEquipFleet(); renderCrew(); };
+  el.querySelector('#cr-strip').onchange=e=>{ ensureArms(G); G.rules.stripDead=e.target.checked; toast(e.target.checked?'You will strip the dead of their kit after a win.':'The fallen keep their weapons.'); };
   el.querySelector('#cr-autoperk').onchange=e=>{ prefSet('wm_crew_autoperk', e.target.checked?'1':'0'); toast(e.target.checked?'Sailor crafts will be chosen for you.':'You will choose a craft when a sailor ranks up.'); };
   el.querySelectorAll('[data-csort]').forEach(b=>b.onclick=()=>{ CREW_SORT=b.dataset.csort; renderCrew(); });
   bindCrewBody();
@@ -3084,6 +3146,7 @@ function sailorRowHtml(s){ const st=STATIONS[s.station]||STATIONS.guns; const wo
       <div><b>${escapeHtml(sailorName(s))}</b> ${s.protected?'<span class="tag">Protected</span>':''} ${wounded?'<span class="tag bad">Wounded</span>':''}</div>
       <div class="dim">Rank ${s.level} · ${escapeHtml(s.originAdj||'')} · ${st.name} · ${where}</div>
       <div class="dim">${skillLine(s)} · ${s.wage} gold/day</div>
+      <div class="dim gearline">${typeof gearLine==='function'?gearLine(s):''}</div>
     </div>
   </button>`; }
 function fallenHtml(list){
@@ -3113,6 +3176,7 @@ function sailorDetailHtml(s){ const st=STATIONS[s.station]||STATIONS.guns;
         ${(s.perks||[]).length?`<p>Crafts: ${(s.perks||[]).map(id=>{ const p=CREW_PERKS.find(x=>x.id===id); return p?p.name:id; }).join(', ')}</p>`:''}
       </div>
     </div>
+    ${typeof sailorGearHtml==='function'?sailorGearHtml(s):''}
     <h3>Skills</h3>${skills}
     <h3>Station</h3><div class="row" style="justify-content:flex-start">${stations}</div>
     <div class="row" style="justify-content:flex-start">
@@ -3128,6 +3192,7 @@ function bindCrewBody(){
   document.querySelectorAll('[data-station]').forEach(b=>b.onclick=()=>{ if(!s) return; setSailorStation(s,b.dataset.station); renderCrew(); renderAll(); });
   const pr=document.getElementById('sd-prot'); if(pr) pr.onclick=()=>{ if(!s) return; setSailorProtected(s,!s.protected); renderCrew(); renderAll(); };
   const as=document.getElementById('sd-ashore'); if(as) as.onclick=()=>{ if(!s) return; if(!G.hideout||!G.hideout.claimed){ toast('Claim Saltkey Cove first.'); return; } leaveSailorAshore(s); renderCrew(); renderAll(); };
+  if(s&&typeof bindSailorGear==='function') bindSailorGear(s);
   const rc=document.getElementById('sd-recall'); if(rc) rc.onclick=()=>{ if(!s) return; if(recallSailor(s)) { toast(sailorName(s)+' comes back aboard.'); renderCrew(); renderAll(); } };
 }
 
@@ -3166,11 +3231,9 @@ function outfitHtml(port){ const f=playerFleet(); const days=daysOfFood(); const
     <h3>Grog ration</h3>
     <p class="dim">${r.note}</p>
     <div class="row" style="justify-content:flex-start">${Object.values(ALE_RATIONS).map(a=>`<button class="btn ${G.aleRation===a.id?'primary':''}" data-ration="${a.id}">${a.name}</button>`).join('')}</div>
-    <h3>Personal weapons</h3>
-    <p class="dim">Issued to the boarding party. They raise the rush and the musketry.</p>
-    ${Object.keys(WEAPON_INFO).map(k=>{ const info=WEAPON_INFO[k]; return `<div class="goodcard"><div class="gh"><b>${info.name}</b><span>You have ${(G.armory&&G.armory[k])||0}</span></div>
-      <div class="gp">${info.desc} · ${info.cost} gold</div>
-      <div class="mktbtns"><button class="btn small" data-wpn="${k}" data-n="1">Buy 1</button><button class="btn small" data-wpn="${k}" data-n="5">Buy 5</button></div></div>`; }).join('')}
+    <h3>Weapons &amp; armour</h3>
+    <p class="dim">Each sailor now carries their own kit. Buy it in the <b>Armory</b> tab and hand it out on the Crew screen.</p>
+    <div class="row" style="justify-content:flex-start"><button class="btn" id="of-arms">Open the Armory</button></div>
     <h3>Paid training</h3>
     <p class="dim">Some ports specialise. Training here takes gold and a little time (the lesson is learned at once; the days are noted).</p>
     ${living.length?`<label>Train <select id="of-who">${living.map(s=>`<option value="${s.id}">${escapeHtml(sailorName(s))} (rank ${s.level})</option>`).join('')}</select></label>
@@ -3185,7 +3248,7 @@ function bindOutfit(port){
   const t7=document.getElementById('of-top7'); if(t7) t7.onclick=()=>topUpSupplies(7,port);
   const t14=document.getElementById('of-top14'); if(t14) t14.onclick=()=>topUpSupplies(14,port);
   document.querySelectorAll('[data-ration]').forEach(b=>b.onclick=()=>setAleRation(b.dataset.ration));
-  document.querySelectorAll('[data-wpn]').forEach(b=>b.onclick=()=>buyWeapon(b.dataset.wpn,+b.dataset.n));
+  const oa=document.getElementById('of-arms'); if(oa) oa.onclick=()=>{ PORT_TAB='arms'; renderPort(); };
   document.querySelectorAll('[data-train]').forEach(b=>b.onclick=()=>{
     const sel=document.getElementById('of-who'); const s=sel&&findSailor(sel.value); const offer=portTrainOffer(port).find(o=>o.skill===b.dataset.train);
     if(s&&offer) startCrewTraining(s, offer);
@@ -3988,6 +4051,8 @@ function tutSteps(){
   S.push({ title:'Stations', target:tutQ('.crewlist .sailorrow','.crewlist'), text:'Each sailor works a <b>station</b> — guns, rigging, boarding, surgeon, cook and more. They get better at the work they do. A good gunner hits harder; a surgeon saves lives.' });
   S.push({ title:'Auto-assign', target:tutQ('#cr-auto'), text:'Tap <b>Auto-assign best</b> to put everyone where they are strongest. You can always move people by hand.', hint:'tap Auto-assign',
     done:()=>!!TUT.ctx.autoDone, auto:()=>{ if(!shown('crew')) openCrew(); autoAssignFleet(); renderCrew(); } });
+  S.push({ title:'Weapons', target:tutQ('#cr-arm'), text:'Every sailor carries their <b>own kit</b>. There are cutlasses and pistols in the stores — tap <b>Auto-equip best</b> to hand them to the boarding party. Axes suit strong arms, muskets sharp eyes. Buy more in a port\'s <b>Armory</b> tab.', hint:'tap Auto-equip',
+    done:()=>!!TUT.ctx.equipped, auto:()=>{ if(!shown('crew')) openCrew(); autoEquipFleet(); renderCrew(); } });
   S.push({ title:'Close the roster', target:tutBackBtn('#cr-x'), text:'Go back to the sea.', hint:'close Crew', done:()=>!shown('crew'), auto:()=>closeCrew() });
   S.push({ title:'An easy prize', target:tile(()=>{ const m=tutMerchant(); return m?{x:m.x,y:m.y}:null; }), enter:()=>{ const m=tutMerchant(); if(m) tutCenterTile(m.x,m.y); },
     text:'That Spanish merchant, the <i>Santa Clara</i>, is easy pickings. Tap her <b>twice</b> to sail alongside.', hint:'tap the merchant twice',
@@ -4082,7 +4147,7 @@ function goalsList(){ if(!G) return []; const out=[]; const f=playerFleet(); con
   return out; }
 function goalHints(){ if(!G) return []; const h=[]; const f=playerFleet(); const days=typeof daysOfFood==='function'?daysOfFood():99;
   if(days<=2) h.push(`<b class="bad">Stores are nearly gone (${days} days).</b> Dock and top up before the crew starves.`);
-  if(G.player.unpaid>0) h.push('<b class="bad">The crew is unpaid.</b> Sell cargo or take a prize — morale is falling.');
+  if(G.player.unpaid>0||G.player.owed>0) h.push(`<b class="bad">The crew is sailing on shares — ${G.player.owed||0} gold back pay owed.</b> Sell cargo or take a prize; the debt is paid first, and morale falls until it is.`);
   const wounded=livingPlayerCrew().filter(s=>s.status==='wounded').length; if(wounded) h.push(`${wounded} sailor${wounded>1?'s are':' is'} wounded. They heal over days; a surgeon or the cove infirmary helps.`);
   if(f&&f.mp===0) h.push('You have no sailing left today — tap <b>End</b> to start a new day.');
   if(f){ const p=portAt(f.x,f.y); if(p) h.push(`You are at <b>${p.name}</b> — tap <b>Port</b> to dock.`); }
@@ -4131,6 +4196,608 @@ function firstTip(id){ if(!FIRST_TIPS[id]||TUT.on||(G&&G.tutorial)) return; if(p
   el.querySelector('#ft-off').onclick=()=>{ prefSet('wm_tips','0'); hideFirstTip(); toast('Tips off. Turn them back on in ☰ Menu.'); };
   clearTimeout(firstTip._t); firstTip._t=setTimeout(hideFirstTip,14000); }
 function hideFirstTip(){ const el=document.getElementById('ftip'); if(el) el.classList.add('hidden'); }
+
+// ---- 17_arms.js ----
+// v0.4 — per-sailor weapons and armour: catalog, stash, equip, auto-equip, loot, boarding math, v0.3 migration
+const ARMS={
+  cutlass:{ id:'cutlass', name:'Cutlass', slot:'melee', cost:16, melee:0.42, attr:{str:0.5,agi:0.5}, skill:'cutlass', desc:'The sailor\'s blade. Good in any hand.' },
+  axe:{ id:'axe', name:'Boarding axe', slot:'melee', cost:20, melee:0.55, attr:{str:1}, req:{str:10}, skill:'cutlass', desc:'Hooks, hatches and helmets. Wants a strong arm (Str 10+).' },
+  pike:{ id:'pike', name:'Boarding pike', slot:'melee', cost:18, melee:0.32, guard:0.12, attr:{str:0.5,con:0.5}, skill:'cutlass', desc:'Holds the rail. Fewer of your boarders fall, and it shines when they board you.' },
+  pistol:{ id:'pistol', name:'Pistol', slot:'ranged', cost:26, shot:0.34, attr:{agi:0.6,nerve:0.4}, skill:'musket', desc:'One loud shot before the clash. Steady nerves help (Agi, Nerve).' },
+  musket:{ id:'musket', name:'Musket', slot:'ranged', cost:34, shot:0.55, attr:{agi:0.5,wits:0.5}, req:{wits:9}, skill:'musket', desc:'Picks off officers from the rail. Wants a clear head (Agi, Wits; Wits 9+).' },
+  grenade:{ id:'grenade', name:'Grenado', slot:'throw', cost:9, shot:0.5, attr:{nerve:1}, desc:'A clay pot of powder. Used up when thrown. Bold hands throw best (Nerve).' },
+  jerkin:{ id:'jerkin', name:'Leather jerkin', slot:'armor', cost:22, armor:0.25, attr:{con:0.3}, desc:'Turns a glancing blade. A hit is less likely to kill.' },
+  cuirass:{ id:'cuirass', name:'Steel breastplate', slot:'armor', cost:60, armor:0.42, melee:-0.05, attr:{con:0.5}, req:{str:11}, natOnly:true, desc:'Heavy navy steel. Much harder to kill, a little slower (Str 11+). Nation ports only.' }
+};
+const ARM_SLOTS=['melee','ranged','throw','armor'];
+const SLOT_NAME={ melee:'Blade', ranged:'Firearm', throw:'Grenados', armor:'Armour' };
+const ARM_ICON={ melee:'⚔', ranged:'🔫', throw:'💣', armor:'🛡' };
+
+function ensureArms(g){ g=g||G; if(!g) return g;
+  if(!g.wageV4 && g.crew){ g.wageV4=true; for(const s of g.crew){ if(s.dead) continue; s.wage=recruitWage(s, g.difficulty||'normal')+((s.perks||[]).includes('quick_study')?1:0); } }
+  if(!g.stash) g.stash={};
+  for(const k in ARMS) if(g.stash[k]==null) g.stash[k]=0;
+  if(!g.rules) g.rules={ stripDead:true };
+  if(g.rules.stripDead==null) g.rules.stripDead=true;
+  for(const s of (g.crew||[])){ if(!s.gear) s.gear={ melee:null, ranged:null, throw:null, armor:null }; for(const sl of ARM_SLOTS) if(!(sl in s.gear)) s.gear[sl]=null; }
+  // v0.3: the old shared armory pool becomes real items on the boarders, the rest go to the stores
+  if(g.armory && !g.armsMigrated){ g.armsMigrated=true; const save=G; G=g;
+    try{ const pool=g.armory; const map={ cutlass:'cutlass', axe:'axe', pistol:'pistol', musket:'musket' };
+      for(const k in map) g.stash[map[k]]=(g.stash[map[k]]||0)+(pool[k]|0);
+      autoEquipFleet(true); }
+    finally{ G=save; }
+    g.armsMigrated=true; g.armory={ cutlass:0, pistol:0, musket:0, axe:0 }; }
+  g.armsMigrated=true;
+  return g; }
+
+function armFit(s, item){ if(!s||!item) return 0; let f=1;
+  for(const k in (item.attr||{})) f+=item.attr[k]*(((s.attrs[k]||8)-10)/10);
+  if(item.skill) f+=(s.skills[item.skill]||0)*0.08;
+  if(!meetsReq(s,item)) f*=0.5;
+  return clamp(f,0.25,2); }
+function meetsReq(s, item){ for(const k in (item.req||{})) if((s.attrs[k]||0)<item.req[k]) return false; return true; }
+function reqText(item){ const r=item.req||{}; const ks=Object.keys(r); return ks.length?ks.map(k=>ATTR_NAME[k]+' '+r[k]+'+').join(', '):''; }
+function synergyText(item){ const ks=Object.keys(item.attr||{}); return ks.length?ks.map(k=>ATTR_NAME[k]).join(' + '):'—'; }
+function armStatText(item){ const p=[]; if(item.melee>0) p.push('Rush +'+Math.round(item.melee*100)); if(item.shot) p.push('Shot +'+Math.round(item.shot*100)); if(item.guard) p.push('Guard '+Math.round(item.guard*100)+'%'); if(item.armor) p.push('Armour '+Math.round(item.armor*100)+'%'); if(item.melee<0) p.push('Rush '+Math.round(item.melee*100)); return p.join(' · '); }
+
+// fighting value one sailor brings to a boarding rush (without weapons it is the v0.3 number minus a little)
+function sailorFightValue(s, opts){ opts=opts||{}; let v=1+(s.skills.cutlass||0)*0.5+(s.attrs.str||8)*0.05+(s.attrs.nerve||8)*0.04;
+  const g=s.gear||{}; let any=false;
+  if(g.melee&&ARMS[g.melee]){ v+=ARMS[g.melee].melee*armFit(s,ARMS[g.melee])*2*(G&&G.hideout&&G.hideout.built&&G.hideout.built.armory?1.1:1); any=true; }
+  if(g.ranged&&ARMS[g.ranged]){ v+=ARMS[g.ranged].shot*armFit(s,ARMS[g.ranged])*1.6; any=true; }
+  if(g.throw&&ARMS[g.throw]&&!opts.noThrow){ v+=ARMS[g.throw].shot*armFit(s,ARMS[g.throw])*1.6; any=true; }
+  if(g.armor&&ARMS[g.armor]&&ARMS[g.armor].melee) v+=ARMS[g.armor].melee*2;
+  if(!any) v*=0.82; // belaying pins and bare knuckles
+  return v; }
+function sailorArmor(s){ const g=s&&s.gear; if(!g||!g.armor||!ARMS[g.armor]) return 0; const it=ARMS[g.armor]; return clamp(it.armor*(meetsReq(s,it)?1:0.6)*(1+((s.attrs.con||8)-10)*0.02),0,0.6); }
+function partyGuard(list){ if(!list.length) return 0; let g=0; for(const s of list){ const m=s.gear&&s.gear.melee; if(m&&ARMS[m]&&ARMS[m].guard) g+=ARMS[m].guard*armFit(s,ARMS[m]); } return clamp(g/list.length,0,0.25); }
+function partyArmsSummary(list){ const c={}; for(const s of list) for(const sl of ARM_SLOTS){ const id=s.gear&&s.gear[sl]; if(id) c[id]=(c[id]||0)+1; }
+  const bits=Object.keys(c).map(k=>c[k]+' '+armPlural(k,c[k]));
+  const bare=list.filter(s=>!s.gear||(!s.gear.melee&&!s.gear.ranged)).length;
+  return (bits.length?bits.join(', '):'no weapons')+(bare?` · ${bare} bare-handed`:''); }
+
+boardingStrength = function(ship, side){ if(side==='player'&&shipHasNamedCrew(ship)){
+    const all=ableSailors(ship).filter(s=>s.station!=='reserve');
+    const boarders=all.filter(s=>s.station==='boarding');
+    const support=all.filter(s=>s.station!=='boarding');
+    let sc=boarders.reduce((a,s)=>a+sailorFightValue(s),0);
+    sc+=support.reduce((a,s)=>a+0.3+((s.gear&&s.gear.melee)?0.12:0),0);
+    if(typeof grogPenalty==='function') sc*=(1+(grogPenalty()||0));
+    return Math.max(1,sc); }
+  return (ship.crew||0)*enemyArmsMult(); };
+weaponBonusFor = function(){ return 0; };
+
+// how well armed an enemy crew is: merchants are poorly armed, navies well drilled, rivals by their level
+function enemyArmsMult(foe){ foe=foe||(typeof B!=='undefined'&&B&&B.foe); if(!foe) return 1;
+  let m=foe.role==='merchant'?0.85:foe.role==='navy'?1.15:1.05;
+  if(foe.rival) m+=0.06*(foe.rival.level||1);
+  if(foe.hunter) m+=0.1;
+  return m; }
+
+function stashCount(id){ return (G&&G.stash&&G.stash[id])||0; }
+function armsPrice(id, port){ const it=ARMS[id]; if(!it) return 0; let p=it.cost;
+  if(port){ const st=repStanding(port.nation); if(st==='allied') p*=0.85; else if(st==='friendly') p*=0.95; else if(st==='unfriendly') p*=1.15;
+    if(port.id==='hideout'&&G.hideout&&G.hideout.built&&G.hideout.built.armory) p*=0.75; }
+  p*=(1-skillBonus(G.player,'trade')*0.02);
+  return Math.max(3,Math.round(p)); }
+function armsAvailable(id, port){ const it=ARMS[id]; if(!it) return false; if(it.natOnly && (!port||port.nation==='pirate')) return false; return true; }
+function buyArms(id, qty, port){ const it=ARMS[id]; if(!it||!armsAvailable(id,port)) return false; qty=Math.max(1,qty|0);
+  const each=armsPrice(id,port); const n=Math.min(qty, Math.floor(G.player.gold/each)); if(n<=0){ toast('Not enough gold.'); return false; }
+  G.player.gold-=each*n; G.stash[id]=(G.stash[id]||0)+n; sfx('coins');
+  addLog(`Bought ${n} ${armPlural(id,n)} for ${each*n} gold.`); toast(`+${n} ${it.name}${n>1?'s':''} in the stores.`);
+  renderAll(); if(typeof renderPort==='function') renderPort(); return n; }
+function sellArms(id, qty, port){ const it=ARMS[id]; qty=Math.min(qty|0||1, stashCount(id)); if(!it||qty<=0){ toast('None in the stores.'); return false; }
+  const each=Math.max(1,Math.round(it.cost*0.45)); G.stash[id]-=qty; G.player.gold+=each*qty; sfx('coins');
+  toast(`Sold ${qty} ${armPlural(id,qty)} for ${each*qty} gold.`); renderAll(); if(typeof renderPort==='function') renderPort(); return true; }
+// old v0.3 entry point keeps working
+buyWeapon = function(kind, qty){ return buyArms(kind, qty, typeof CUR_PORT!=='undefined'?CUR_PORT:null); };
+
+function equipItem(s, id){ const it=ARMS[id]; if(!s||!it) return false; if(stashCount(id)<=0){ toast('None left in the stores.'); return false; }
+  const sl=it.slot; if(s.gear[sl]) G.stash[s.gear[sl]]=(G.stash[s.gear[sl]]||0)+1;
+  G.stash[id]--; s.gear[sl]=id; sfx('tap');
+  if(!meetsReq(s,it)) toast(`${sailorName(s)} struggles with the ${it.name.toLowerCase()} (${reqText(it)} needed). It works at half strength.`);
+  if(typeof TUT!=='undefined'&&TUT.on) TUT.ctx.equipped=true; return true; }
+function unequipSlot(s, sl){ if(!s||!s.gear||!s.gear[sl]) return false; G.stash[s.gear[sl]]=(G.stash[s.gear[sl]]||0)+1; s.gear[sl]=null; return true; }
+
+// pull everything back into the stores, then give the best fit to the people who need it most
+function autoEquipFleet(silent){ if(!G) return; ensureArms(G);
+  const crew=livingPlayerCrew().filter(s=>s.status!=='dead');
+  for(const s of crew) for(const sl of ARM_SLOTS) unequipSlot(s,sl);
+  const at=s=>s.shipId!=='hideout';
+  const boarders=crew.filter(s=>at(s)&&s.station==='boarding').sort((a,b)=>sailorFightValue(b)-sailorFightValue(a));
+  const others=crew.filter(s=>at(s)&&s.station!=='boarding'&&s.station!=='reserve');
+  const reserve=crew.filter(s=>!boarders.includes(s)&&!others.includes(s));
+  const give=(list, slot)=>{ for(const s of list){ let best=null, bv=0;
+      for(const id in ARMS){ const it=ARMS[id]; if(it.slot!==slot||stashCount(id)<=0) continue;
+        const v=(slot==='armor'?it.armor*10:(it.melee||0)+(it.shot||0)+(it.guard||0))*armFit(s,it)*(meetsReq(s,it)?1:0.4);
+        if(v>bv){ bv=v; best=id; } }
+      if(best){ G.stash[best]--; s.gear[slot]=best; } } };
+  give(boarders,'melee'); give(boarders,'ranged'); give(boarders,'throw'); give(boarders,'armor');
+  give(others,'armor'); give(others,'melee'); give(reserve,'armor');
+  if(typeof TUT!=='undefined'&&TUT.on) TUT.ctx.equipped=true;
+  if(!silent){ const armed=boarders.filter(s=>s.gear.melee).length; toast(`Weapons handed out: ${armed}/${boarders.length} boarders armed. Spares stay in the stores.`); sfx('clash',0.4); }
+  try{ renderAll(); }catch(e){} }
+
+// gear of the dead: recovered after a battle you win (if you strip the dead), otherwise lost
+function dropGearOnDeath(s, how){ if(!s||!s.gear) return; const items=ARM_SLOTS.map(sl=>s.gear[sl]).filter(Boolean); if(!items.length) return;
+  s.gear={ melee:null, ranged:null, throw:null, armor:null };
+  if(typeof B!=='undefined'&&B&&!B.over){ B.dropped=(B.dropped||[]).concat(items); return; }
+  if(how==='raid') return; // the raiders carry it off
+  if(G.rules&&G.rules.stripDead){ for(const id of items) G.stash[id]=(G.stash[id]||0)+1; } }
+(function(){ const base=killSailor; killSailor=function(s, how){ const alive=s&&!s.dead; const gear=s&&s.gear?Object.assign({},s.gear):null;
+    base(s, how); if(alive&&gear){ s.gear=gear; dropGearOnDeath(s, how&&how.includes('raid')?'raid':how); }
+    if(alive&&typeof sfx==='function') sfx('bell'); }; })();
+
+function rollArmsLoot(foe, captured){ const out={}; if(!captured||!captured.length) return out;
+  const add=(id,n)=>{ if(n>0) out[id]=(out[id]||0)+n; };
+  for(const sh of captured){ const sz=CLASS_ORDER.indexOf(sh.cls)+1;
+    if(foe.role==='merchant'){ add('cutlass',irnd(0,1+sz)); add('pistol',irnd(0,sz)); if(Math.random()<0.3) add('jerkin',1); }
+    else if(foe.role==='navy'){ add('musket',irnd(1,1+sz)); add('pike',irnd(0,1+sz)); add('jerkin',irnd(0,sz)); if(Math.random()<0.25*sz) add('cuirass',1); }
+    else { add('axe',irnd(0,1+sz)); add('pistol',irnd(1,1+sz)); add('grenade',irnd(1,2+sz)); add('cutlass',irnd(0,sz)); }
+    if(foe.rival){ add(pick(['cuirass','musket','axe']),1+Math.floor((foe.rival.level||1)/2)); } }
+  return out; }
+function armPlural(id,n){ const nm=ARMS[id].name.toLowerCase(); return n>1?(/s$/.test(nm)?nm+'es':nm+'s'):nm; }
+function armsLootText(loot){ const ks=Object.keys(loot||{}).filter(k=>loot[k]>0); return ks.length?ks.map(k=>loot[k]+' '+armPlural(k,loot[k])).join(', '):''; }
+
+// hook called from finishBattle: loot + recovered gear from your own dead
+function battleArmsResult(won, captured){ if(!G) return ''; ensureArms(G); const bits=[];
+  const dropped=(B&&B.dropped)||[];
+  if(dropped.length){ if(won&&G.rules.stripDead){ for(const id of dropped) G.stash[id]=(G.stash[id]||0)+1; bits.push(`<p>You recover the fallen's kit: ${dropped.length} item${dropped.length>1?'s':''} back in the stores.</p>`); }
+    else if(won){ G.player.morale=clamp(G.player.morale+Math.min(4,dropped.length),0,100); bits.push(`<p class="dim">The fallen go over the side with their weapons, as is proper. The crew notices (+morale).</p>`); }
+    else bits.push(`<p class="bad">${dropped.length} weapon${dropped.length>1?'s':''} lost with the fallen.</p>`); }
+  if(won&&captured&&captured.length&&B&&B.foe){ const loot=rollArmsLoot(B.foe, captured); for(const k in loot) G.stash[k]=(G.stash[k]||0)+loot[k];
+    const t=armsLootText(loot); if(t) bits.push(`<p class="good">Arms taken: ${t}.</p>`); }
+  // grenades thrown this fight are gone
+  return bits.join(''); }
+
+function armsTabHtml(port){ ensureArms(G); const crew=livingPlayerCrew();
+  const carried=id=>crew.reduce((a,s)=>a+ARM_SLOTS.filter(sl=>s.gear&&s.gear[sl]===id).length,0);
+  return `<p>Each sailor carries their own kit. Buy it here, then hand it out on the Crew screen — or tap <b>Auto-equip best</b>. Kit suits some sailors better than others: an axe wants Strength, a musket wants Agility and Wits.</p>
+    <div class="row" style="justify-content:flex-start"><button class="btn primary" id="ar-auto">Auto-equip best</button><button class="btn" id="ar-crew">Open crew</button></div>
+    ${Object.values(ARMS).map(it=>{ const ok=armsAvailable(it.id,port); const pr=armsPrice(it.id,port);
+      return `<div class="goodcard armcard" data-arm="${it.id}">
+        <div class="gh"><b>${ARM_ICON[it.slot]} ${it.name}</b><span>Stores ${stashCount(it.id)} · carried ${carried(it.id)}</span></div>
+        <div class="gp">${SLOT_NAME[it.slot]} · ${armStatText(it)} · suits ${synergyText(it)}${it.req?` · needs ${reqText(it)}`:''}</div>
+        <div class="gp dim">${it.desc}</div>
+        <div class="mktbtns">${ok?`<button class="btn small" data-abuy="${it.id}" data-n="1">Buy 1 · ${pr}</button><button class="btn small" data-abuy="${it.id}" data-n="5">Buy 5 · ${pr*5}</button>`:'<span class="dim">Not sold in a pirate haven.</span>'}
+        <button class="btn small" data-asell="${it.id}" ${stashCount(it.id)?'':'disabled'}>Sell 1 · ${Math.round(it.cost*0.45)}</button></div>
+      </div>`; }).join('')}
+    <p class="dim">Gold ${G.player.gold}.${G.hideout&&G.hideout.built&&G.hideout.built.armory?' Your cove armory sells for less at Saltkey Cove.':''}</p>`; }
+function bindArmsTab(port){
+  document.querySelectorAll('[data-abuy]').forEach(b=>b.onclick=()=>buyArms(b.dataset.abuy,+b.dataset.n,port));
+  document.querySelectorAll('[data-asell]').forEach(b=>b.onclick=()=>sellArms(b.dataset.asell,1,port));
+  const a=document.getElementById('ar-auto'); if(a) a.onclick=()=>{ autoEquipFleet(); if(typeof renderPort==='function') renderPort(); };
+  const c=document.getElementById('ar-crew'); if(c) c.onclick=()=>openCrew(); }
+
+function gearLine(s){ const g=s.gear||{}; const bits=ARM_SLOTS.filter(sl=>g[sl]).map(sl=>ARMS[g[sl]].name); return bits.length?bits.join(' · '):'Unarmed'; }
+function sailorGearHtml(s){ ensureArms(G);
+  const slots=ARM_SLOTS.map(sl=>{ const id=s.gear[sl]; const it=id&&ARMS[id];
+    const opts=Object.values(ARMS).filter(x=>x.slot===sl&&stashCount(x.id)>0&&x.id!==id);
+    return `<div class="gearrow">
+      <div><span class="dim">${ARM_ICON[sl]} ${SLOT_NAME[sl]}</span> <b>${it?it.name:'—'}</b>${it?` <span class="dim">fit ${Math.round(armFit(s,it)*100)}%${meetsReq(s,it)?'':' · <span class="bad">needs '+reqText(it)+'</span>'}</span>`:''}</div>
+      <div class="row" style="justify-content:flex-start;margin:2px 0">
+        ${it?`<button class="btn small" data-unequip="${sl}">Unequip</button>`:''}
+        ${opts.map(x=>`<button class="btn small" data-equip="${x.id}">${x.name} (${stashCount(x.id)}) · fit ${Math.round(armFit(s,x)*100)}%</button>`).join('')}
+        ${!it&&!opts.length?'<span class="dim">None in the stores — buy in a port Armory.</span>':''}
+      </div></div>`; }).join('');
+  return `<h3 id="sd-gear">Kit</h3><p class="dim">Rush value ${sailorFightValue(s).toFixed(1)} · killed less often with armour (${Math.round(sailorArmor(s)*100)}%).</p>${slots}`; }
+function bindSailorGear(s){ if(!s) return;
+  document.querySelectorAll('[data-equip]').forEach(b=>b.onclick=()=>{ equipItem(s,b.dataset.equip); renderCrew(); });
+  document.querySelectorAll('[data-unequip]').forEach(b=>b.onclick=()=>{ unequipSlot(s,b.dataset.unequip); sfx('tap'); renderCrew(); }); }
+
+// bot / test helper: a sensible starter kit purchase for the boarding party
+function simBuyArms(port){ const n=livingPlayerCrew().filter(s=>s.station==='boarding'&&s.shipId!=='hideout').length;
+  const have=k=>stashCount(k)+livingPlayerCrew().filter(s=>s.gear&&Object.values(s.gear).includes(k)).length;
+  const need=Math.max(0,n-have('cutlass')-have('axe')-have('pike')); if(need>0&&G.player.gold>400) buyArms('cutlass',Math.min(need,4),port);
+  const pn=Math.max(0,Math.ceil(n/2)-have('pistol')-have('musket')); if(pn>0&&G.player.gold>700) buyArms('pistol',Math.min(pn,3),port); }
+
+// ---- 18_world.js ----
+// v0.4 — a living Main: named rival captains, navy heat & hunter squadrons, infamy, respawning trade, bribes, nations screen
+const RIVAL_DEFS=[
+  { id:'elira', name:'Red Elira', ship:'Black Joke', pers:'bold', home:'tortuga', infamy:0 },
+  { id:'rourke', name:'Calico Ned Rourke', ship:'Merry Widow', pers:'cunning', home:'nassau', infamy:12 },
+  { id:'sable', name:'Madame Sable Chastain', ship:'Nightjar', pers:'cautious', home:'tortuga', infamy:28 },
+  { id:'teague', name:'“Gallows” Teague', ship:'Hangman’s Due', pers:'cruel', home:'nassau', infamy:48 }
+];
+const RIVAL_GIVEN=['Silas','Anne','Bartholomew','Grace','Jago','Mercy','Obadiah','Ysolde','Cutter','Hester'];
+const RIVAL_SUR=['Vane','Kidd','Lowe','Morgan','Thatch','Ashby','Crane','Dagger','Hollow','Rackham'];
+const RIVAL_SHIPS=['Revenge','Ghost of Avalon','Scarlet Dawn','Kraken’s Due','Saint Nobody','Black Tide','Bloody Mary','Sea Wolf'];
+const PERSONALITY={
+  bold:{ id:'bold', name:'Bold', attack:0.85, flee:1.8, range:2, desc:'Picks a fight at even odds and loves a brawl.' },
+  cunning:{ id:'cunning', name:'Cunning', attack:1.1, flee:1.3, range:1, desc:'Strikes when you are hurt and slips away when you are not.' },
+  cautious:{ id:'cautious', name:'Cautious', attack:1.35, flee:1.1, range:0, desc:'Only attacks a sure thing. Hard to catch.' },
+  cruel:{ id:'cruel', name:'Cruel', attack:0.95, flee:2.4, range:4, desc:'Hunts you across the Main and gives no quarter.' }
+};
+function infamyLabel(v){ return v<10?'Unknown':v<25?'Whispered about':v<50?'Notorious':v<80?'Feared':'A legend of the Main'; }
+function heatLabel(v){ return v<15?'Quiet':v<35?'Watchful':v<55?'Patrols out':v<75?'Hunting you':'Squadrons at sea'; }
+
+function ensureWorld(g){ g=g||G; if(!g) return g;
+  if(g.infamy==null){ const st=g.stats||{}; g.infamy=Math.round((st.captures||0)*4+(st.sunk||0)*2); }
+  if(!g.heat){ g.heat={}; for(const n of NATION_IDS){ const r=(g.player.reputation||{})[n]||0; g.heat[n]=clamp(Math.round(-r/2),0,60); } }
+  for(const n of NATION_IDS) if(g.heat[n]==null) g.heat[n]=0;
+  if(!g.rivals){ g.rivals=RIVAL_DEFS.map(d=>({ id:d.id, name:d.name, shipName:d.ship, pers:d.pers, home:d.home, infamy:d.infamy, level:1, xp:0, status:'waiting', fleetId:null, bountyBase:0, prizes:0 }));
+    // the v0.3 Black Joke becomes Red Elira's ship
+    const bj=(g.fleets||[]).find(f=>!f.dead&&f.owner!=='player'&&f.role==='pirate'&&f.captain&&f.captain.name==='Red Elira');
+    if(bj){ const r=g.rivals[0]; r.status='active'; r.fleetId=bj.id; bj.rival={ id:r.id, name:r.name, level:r.level, pers:r.pers }; } }
+  if(!g.bribes) g.bribes={};
+  return g; }
+function rivalById(id){ return (G&&G.rivals||[]).find(r=>r.id===id)||null; }
+function rivalBounty(r){ return Math.round(180+r.level*140+(r.prizes||0)*40); }
+function rivalClass(level){ return level>=7?'frigate':level>=5?'brig':level>=3?'schooner':'sloop'; }
+function rivalFleetOf(r){ return r&&r.fleetId?(G.fleets||[]).find(f=>f.id===r.fleetId&&!f.dead):null; }
+
+function spawnRival(r){ const home=G.map.ports.find(p=>p.id===r.home)||pick(G.map.ports.filter(p=>p.nation==='pirate'));
+  const pos=spawnNearbySea(home.x,home.y); const sh=makeShip(rivalClass(r.level),'pirate',r.shipName);
+  sh.upgrades.guns=Math.min(2,Math.floor(r.level/3)); refreshShipDerived(sh,null); sh.crew=Math.round(sh.crewMax*clamp(0.55+r.level*0.04,0.5,0.9)); refreshShipDerived(sh,null);
+  const lv=1+Math.floor(r.level/2);
+  const cap={ name:r.name, skills:{ gunnery:lv, navigation:1+Math.floor(r.level/3), boarding:lv, leadership:1, trade:0 }, perks:[] };
+  const f=makeFleet('ai','pirate',pos.x,pos.y,[sh],{ role:'pirate', home:home.id, personality:'rival', captain:cap, rival:{ id:r.id, name:r.name, level:r.level, pers:r.pers } });
+  G.fleets.push(f); r.fleetId=f.id; r.status='active'; return f; }
+function syncRivalFleet(r){ const f=rivalFleetOf(r); if(!f) return; f.rival.level=r.level;
+  const want=rivalClass(r.level); const sh=flagshipOf(f);
+  if(sh&&CLASS_ORDER.indexOf(want)>CLASS_ORDER.indexOf(sh.cls)){ upgradeShipClass(sh,want); addRumour(`${r.name} has taken a bigger ship — the ${SHIP_CLASSES[want].name} ${sh.name}.`); }
+  if(sh){ sh.crew=Math.max(sh.crew, Math.round(sh.crewMax*clamp(0.55+r.level*0.04,0.5,0.9))); }
+  if(f.captain){ const lv=1+Math.floor(r.level/2); f.captain.skills.gunnery=lv; f.captain.skills.boarding=lv; } }
+function rivalGain(r, xp){ r.xp=(r.xp||0)+xp; while(r.xp>=40+r.level*20 && r.level<10){ r.xp-=40+r.level*20; r.level++; syncRivalFleet(r);
+    if(r.level>=3) addRumour(`Word in the taverns: ${r.name} grows stronger (level ${r.level}). Bounty now ${rivalBounty(r)} gold.`); } }
+function addRumour(t){ if(!G) return; G.rumours=G.rumours||[]; G.rumours.unshift({ day:G.day, t }); G.rumours=G.rumours.slice(0,12); addLog('🗣 '+t); }
+
+function fleetPower(f){ if(!f) return 0; const ss=shipsOf(f);
+  if(f.owner==='player') return ss.reduce((a,s)=>a+(typeof boardingStrength==='function'?boardingStrength(s,'player'):s.crew)+s.cannons*1.4+s.hull*0.15,0);
+  const m=enemyArmsMult(f); return ss.reduce((a,s)=>a+(s.crew||0)*m*(1+skillBonus(f.captain||{skills:{boarding:1}},'boarding')*0.08)+s.cannons*1.4+s.hull*0.15,0); }
+function oddsLabel(mine, theirs){ const r=mine/Math.max(1,theirs); return r>=1.6?'<span class="good">You badly outgun them</span>':r>=1.15?'<span class="good">You look stronger</span>':r>=0.87?'An even match':r>=0.6?'<span class="bad">They look stronger</span>':'<span class="bad">They badly outgun you</span>'; }
+
+function navyShipClass(){ const d=G.day; return d<14?'sloop':d<35?'brig':(Math.random()<0.5?'brig':'frigate'); }
+function spawnNavy(nation, hunter){ const ports=G.map.ports.filter(p=>p.nation===nation); if(!ports.length) return null; const pf=playerFleet();
+  const home=hunter&&pf?ports.slice().sort((a,b)=>(Math.abs(a.x-pf.x)+Math.abs(a.y-pf.y))-(Math.abs(b.x-pf.x)+Math.abs(b.y-pf.y)))[0]:pick(ports);
+  const pos=spawnNearbySea(home.x,home.y); const n=hunter&&G.day>18?2:1; const ships=[];
+  for(let i=0;i<n;i++){ const sh=makeShip(i===0?navyShipClass():'sloop',nation); sh.crew=Math.round(sh.crewMax*(hunter?0.75:0.65)); refreshShipDerived(sh,null); ships.push(sh); }
+  const cap={ name:'Captain '+pick(RIVAL_SUR), skills:{ gunnery:2+(hunter?1:0), navigation:2, boarding:2, leadership:1, trade:0 }, perks:[] };
+  const f=makeFleet('ai',nation,pos.x,pos.y,ships,{ role:'navy', home:home.id, personality:'navy', captain:cap, hunter:!!hunter });
+  G.fleets.push(f);
+  if(hunter){ addRumour(`${NATIONS[nation].name} has sent a hunter squadron after you from ${home.name}.`); if(typeof banner==='function') banner(`⚠ ${NATIONS[nation].adj} hunters are at sea`,2400); }
+  return f; }
+function spawnMerchant(){ const ports=G.map.ports.filter(p=>p.nation!=='pirate'); const home=pick(ports); const pos=spawnNearbySea(home.x,home.y);
+  const r=Math.random(); const cls=G.day>40&&r<0.1?'galleon':G.day>18&&r<0.35?'brig':r<0.65?'schooner':'sloop';
+  const sh=makeShip(cls,home.nation); const g1=pick(GOODS); sh.cargo[g1]=Math.round(sh.cargoMax*(0.3+Math.random()*0.35));
+  if(Math.random()<0.5){ const g2=pick(GOODS); sh.cargo[g2]=(sh.cargo[g2]||0)+Math.round(sh.cargoMax*0.15); }
+  merchantRig(sh); sh.crew=Math.round(sh.crewMax*0.28); refreshShipDerived(sh,null);
+  const f=makeFleet('ai',home.nation,pos.x,pos.y,[sh],{ role:'merchant', home:home.id, personality:'merchant' }); G.fleets.push(f); return f; }
+// merchantmen trade guns for cargo space: about 60% of a warship's battery
+function merchantRig(sh){ if(sh._mrig) return; sh._mrig=true; sh.extraGuns=(sh.extraGuns||0)-Math.round(SHIP_CLASSES[sh.cls].cannons*0.4); refreshShipDerived(sh,null); }
+function liveFleets(pred){ return (G.fleets||[]).filter(f=>!f.dead&&f.owner!=='player'&&shipsOf(f).length&&pred(f)); }
+
+function worldDayTick(){ if(!G||G.tutorial) return; ensureWorld(G); const grow=(DIFF[G.difficulty]||DIFF.normal).aiGrow;
+  for(const n of NATION_IDS) G.heat[n]=Math.max(0,(G.heat[n]||0)-(G.player.marque===n?2:1));
+  G.infamy=Math.max(0,G.infamy-0.05);
+  // trade keeps flowing
+  const wantMerch=Math.min(8,4+Math.floor(G.day/25));
+  if(liveFleets(f=>f.role==='merchant').length<wantMerch && Math.random()<0.6) spawnMerchant();
+  // navies answer the heat
+  for(const n of NATION_IDS){ const h=G.heat[n]||0; const pats=liveFleets(f=>f.role==='navy'&&f.nation===n);
+    const want=1+(h>=35?1:0)+(h>=70?1:0);
+    if(pats.length<want && Math.random()<0.18+h/250) spawnNavy(n, h>=45 && !pats.some(f=>f.hunter)); }
+  // rivals come out as your name spreads
+  for(const r of G.rivals){ if(r.status==='waiting' && G.infamy>=r.infamy && G.day>=3){ r.level=Math.max(1,Math.round(1+G.infamy/22)); spawnRival(r); addRumour(`A new name on the Main: ${r.name} (${PERSONALITY[r.pers].name}) sails the ${r.shipName}. Bounty ${rivalBounty(r)} gold.`); }
+    else if(r.status==='active'){ if(!rivalFleetOf(r)){ r.status='waiting'; r.infamy=G.infamy+8; r.level=Math.max(1,r.level-1); } else if(Math.random()<0.05*grow) rivalGain(r, 25); } }
+  // after all named rivals are beaten, the Main breeds new ones
+  if(G.rivals.every(r=>r.status==='defeated') && G.day%12===0){ const r={ id:'r'+uid(), name:pick(RIVAL_GIVEN)+' '+pick(RIVAL_SUR), shipName:pick(RIVAL_SHIPS), pers:pick(Object.keys(PERSONALITY)), home:pick(['nassau','tortuga']), infamy:0, level:Math.min(9,3+Math.floor(G.day/20)), xp:0, status:'waiting', fleetId:null, prizes:0 }; G.rivals.push(r); }
+}
+
+// --- AI: pick fights it can win, run from ones it can't ---
+aiFleetTurn = function(f, you){ f.mp=f.mpMax||fleetSpeed(f);
+  const cap=f.captain||{skills:{navigation:1}};
+  const aggro=(DIFF[G.difficulty]||DIFF.normal).aiAggro;
+  const live=you&&!you.dead&&!G.tutorial;
+  const d=live?Math.abs(you.x-f.x)+Math.abs(you.y-f.y):99;
+  const heat=(G.heat&&G.heat[f.nation])||0;
+  const standing=f.nation==='pirate'?'haven':repStanding(f.nation);
+  const hostile = live && (f.nation==='pirate' || standing==='hostile' || (G.player.marque && NATIONS[G.player.marque].rival===f.nation) || (standing==='unfriendly'&&heat>=30) || (f.hunter&&heat>=20));
+  const away=()=>{ const dx=Math.sign(f.x-you.x)||(Math.random()<0.5?1:-1), dy=Math.sign(f.y-you.y)||(Math.random()<0.5?1:-1); return { x:clamp(f.x+dx*4,1,MAP_W-2), y:clamp(f.y+dy*4,1,MAP_H-2), kind:'flee' }; };
+  let target=null; const myP=live?fleetPower(f):0, yourP=live?fleetPower(you):1;
+  const cool=f.cool&&G.day<f.cool; // after a meeting they give you a few days' grace
+  const huntOK=!cool;
+  if(f.role==='navy' && hostile){ const range=f.hunter?14:Math.round(5+2*aggro+heat/12);
+    if(d<=range){ if(huntOK&&myP>=yourP*(f.hunter?0.6:0.8)&&(f.hunter||Math.random()<0.6)) target={x:you.x,y:you.y,kind:'hunt'}; else if(d<=4&&myP<yourP*0.8) target=away(); } }
+  if(f.role==='pirate' && live){ const P=PERSONALITY[(f.rival&&f.rival.pers)||'bold'];
+    const range=5+P.range+Math.min(6,Math.floor((G.infamy||0)/10));
+    if(d<=range){ if(huntOK && myP*aggro>=yourP*P.attack && Math.random()<(f.rival?0.55:0.3)) target={x:you.x,y:you.y,kind:'hunt'};
+      else if(yourP>myP*P.flee && d<=5) target=away(); } }
+  if(f.role==='merchant' && live && d<=3 && (f.spotted===G.day-1||Math.random()<0.6)){ f.spotted=G.day; target=away(); } // lookouts don't always see you
+  if(!target && f.role==='pirate'){ // rivals prey on merchants and grow
+    const prey=liveFleets(o=>o.role==='merchant').sort((a,b)=>(Math.abs(a.x-f.x)+Math.abs(a.y-f.y))-(Math.abs(b.x-f.x)+Math.abs(b.y-f.y)))[0];
+    if(prey&&Math.abs(prey.x-f.x)+Math.abs(prey.y-f.y)<=10&&Math.random()<0.5) target={x:prey.x,y:prey.y,kind:'prey',prey}; }
+  if(!target){ const home=G.map.ports.find(p=>p.id===f.home)||pick(G.map.ports); let dest=home;
+    if(f.role==='merchant'){ const others=G.map.ports.filter(p=>p.nation===f.nation||p.nation==='pirate'); dest=pick(others.length?others:G.map.ports); if(f.dest){ dest=G.map.ports.find(p=>p.id===f.dest)||dest; } f.dest=dest.id; }
+    if(f.role==='navy'||f.role==='pirate'){ if(Math.random()<0.45) dest=home; else dest={ x:clamp(f.x+irnd(-4,4),1,MAP_W-2), y:clamp(f.y+irnd(-4,4),1,MAP_H-2) }; }
+    target={x:dest.x,y:dest.y,kind:'sail'}; }
+  if(!walkable(G.map,target.x,target.y)){ const s=nearestSea(target.x,target.y); if(s){ target.x=s.x; target.y=s.y; } else return; }
+  const pr=findPath(G.map,f.x,f.y,target.x,target.y,cap,G.wind,80);
+  if(!pr||!pr.path.length){ if(f.role==='merchant') f.dest=null; return; }
+  const seen0=live&&d<=SIGHT; let moved=0;
+  for(const step of pr.path){ const cost=stepCost(G.map,f.x,f.y,step.x,step.y,cap,G.wind); if(f.mp<cost) break;
+    f.mp-=cost; f.x=step.x; f.y=step.y; moved++;
+    if(target.kind==='prey'&&target.prey&&!target.prey.dead&&f.x===target.prey.x&&f.y===target.prey.y){ rivalPlunder(f,target.prey); break; }
+    if(live && f.x===you.x && f.y===you.y){
+      if(f.role==='merchant' || target.kind==='flee' || (target.kind!=='hunt'&&!hostile)){ nudgeFleet(f,you); break; }
+      G.report.push(`${NATIONS[f.nation].adj} ${f.role} ${flagshipOf(f)?flagshipOf(f).name:''} intercepted you!`);
+      window.__aiInit=f.id; beginEncounter(f); window.__aiInit=null; return; } }
+  if(f.role==='merchant' && f.dest){ const p=G.map.ports.find(x=>x.id===f.dest); if(p&&Math.abs(p.x-f.x)+Math.abs(p.y-f.y)<=1) f.dest=null; }
+  const seen1=live&&Math.abs(you.x-f.x)+Math.abs(you.y-f.y)<=SIGHT;
+  if(moved&&(seen0||seen1)){ const sh=flagshipOf(f); G.report.push(f.rival?`${f.rival.name}'s ${sh?sh.name:'ship'} is under sail${target.kind==='hunt'?' — coming for you':''}.`:`A ${NATIONS[f.nation].adj} ${f.role}${f.hunter?' hunter':''}${sh?' “'+sh.name+'”':''} is under sail.`); } };
+
+function rivalPlunder(f, prey){ prey.dead=true; const r=f.rival&&rivalById(f.rival.id);
+  if(r){ r.prizes=(r.prizes||0)+1; rivalGain(r, 30); const sh=flagshipOf(prey); if(Math.abs(f.x-playerFleet().x)+Math.abs(f.y-playerFleet().y)<=SIGHT+4) addRumour(`${r.name} took the ${NATIONS[prey.nation].adj} merchant ${sh?sh.name:''}. Bounty now ${rivalBounty(r)} gold.`); } }
+
+// --- encounters: odds, rival bounty, and the weaker side tries to slip away ---
+(function(){ const base=beginEncounter; beginEncounter=function(other){ if(!other||other.dead) return; const you=playerFleet();
+    if(!G.tutorial && you && window.__aiInit!==other.id && other.role!=='merchant'){ const P=PERSONALITY[(other.rival&&other.rival.pers)||(other.role==='navy'?'cautious':'bold')];
+      if(fleetPower(you)>fleetPower(other)*P.flee && fleetSpeed(other)>=fleetSpeed(you) && Math.random()<0.55){ nudgeFleet(other,you); nudgeFleet(other,you);
+        const sh=flagshipOf(other); toast(`${other.rival?other.rival.name+"'s":'The'} ${sh?sh.name:'ship'} crowds on sail and runs from you!`); addLog(`${otherRoleName(other)} fled from you.`); renderAll(); return; } }
+    other.cool=G.day+(other.hunter?2:4);
+    base(other);
+    const m=[...document.querySelectorAll('.modal-wrap')].reverse().find(w=>w.querySelector('#en-fight')); if(!m||!you) return;
+    const row=m.querySelector('#en-fight').closest('.row'); const div=document.createElement('div'); div.className='enc-odds';
+    let h=`<p>${icon('target','in')} ${oddsLabel(fleetPower(you),fleetPower(other))}.</p>`;
+    if(other.rival){ const r=rivalById(other.rival.id); if(r) h=`<div class="rivalcard">${typeof captainPortraitHtml==='function'?captainPortraitHtml({name:r.name},'spic'):''}<div><b>Rival captain ${escapeHtml(r.name)}</b><div class="dim">${PERSONALITY[r.pers].name} · level ${r.level} · ${PERSONALITY[r.pers].desc}</div><div class="good">Bounty ${rivalBounty(r)} gold if you beat them.</div></div></div>`+h; }
+    if(other.hunter) h+=`<p class="bad">A hunter squadron sent by ${NATIONS[other.nation].name}. They will not let you go easily.</p>`;
+    if(shipsOf(other).length>1) h+=`<p class="dim">${shipsOf(other).length} ships in company.</p>`;
+    div.innerHTML=h; row.parentNode.insertBefore(div,row);
+    if(typeof sfx==='function') sfx('bell',0.5); }; })();
+
+// --- battles change the world ---
+(function(){ const base=afterBattleWorld; afterBattleWorld=function(result, you, foe){ ensureWorld(G);
+    const nat=foe&&foe.nation; const caps=(result.captured||[]).length, sunk=(result.sunk||[]).length;
+    let bountyMsg='';
+    if(result.won && foe){
+      if(nat&&nat!=='pirate'){ G.heat[nat]=clamp((G.heat[nat]||0)+(foe.role==='navy'?24:15)+caps*3,0,100); }
+      G.infamy+=caps*5+sunk*3+(foe.role==='navy'?3:0)+(foe.rival?10:0);
+      if(foe.rival){ const r=rivalById(foe.rival.id); if(r){ const b=rivalBounty(r); G.player.gold+=b; r.status='defeated'; r.defeatedDay=G.day; G.stats.rivals=(G.stats.rivals||0)+1;
+          for(const n of NATION_IDS) adjustRep(n,4,true); bountyMsg=`Bounty for ${r.name}: ${b} gold.`; addLog(`<b class="good">${bountyMsg}</b>`); } }
+      if(G.player.marque && nat && NATIONS[G.player.marque].rival===nat && result.lootGold){ const bonus=Math.round(result.lootGold*0.25); G.player.gold+=bonus; addLog(`Prize court of ${NATIONS[G.player.marque].name} pays ${bonus} gold on the capture.`); }
+    } else if(foe && nat && nat!=='pirate'){ G.heat[nat]=clamp((G.heat[nat]||0)+8,0,100); }
+    base(result, you, foe);
+    if(bountyMsg){ banner('⚑ '+bountyMsg, 2800); if(typeof sfx==='function') sfx('levelup'); } }; })();
+
+(function(){ const base=runAIDay; runAIDay=function(){ base(); try{ worldDayTick(); }catch(e){ console.error('world',e); } }; })();
+
+// --- ports: allied safe harbour, unfriendly fees, hostile bribes ---
+function dockFee(port){ const h=(G.heat&&G.heat[port.nation])||0; return Math.round(15+G.player.level*6+h*0.6); }
+function bribeCost(port){ const h=(G.heat&&G.heat[port.nation])||0; return Math.round(140+G.player.level*30+h*4); }
+function canBribe(port){ const r=G.player.reputation[port.nation]||0; return !(G.player.marque&&NATIONS[G.player.marque].rival===port.nation&&r<-80) && r>-85; }
+canDock = function(port){ if(port.nation==='pirate') return true; if(G.bribes&&G.bribes[port.id]===G.day) return true; return repStanding(port.nation)!=='hostile'; };
+(function(){ const base=dockAt; dockAt=function(port){ ensureWorld(G); const st=port.nation==='pirate'?'haven':repStanding(port.nation);
+    if(G.tutorial||st==='haven'||st==='neutral'||(G.bribes[port.id]===G.day)){ return base(port); }
+    if(st==='allied'||st==='friendly'){ if(st==='allied'){ for(const n of NATION_IDS) G.heat[n]=Math.max(0,(G.heat[n]||0)-6); G.player.morale=clamp(G.player.morale+2,0,100); toast(`Safe harbour under ${NATIONS[port.nation].adj} guns. The hunters lose your scent.`); } return base(port); }
+    if(st==='unfriendly'){ const fee=dockFee(port); const m=modal(`<h2>${escapeHtml(port.name)}</h2><p>The harbourmaster eyes your colours. “Unfriendly to ${NATIONS[port.nation].name}, are we? There's a <b>${fee} gold</b> fee for the likes of you.”</p>
+        <div class="row"><button class="btn primary" id="dk-pay" ${G.player.gold<fee?'disabled':''}>Pay ${fee} gold</button><button class="btn" id="dk-ok">Back to sea</button></div>`,'dockfee');
+      m.querySelector('#dk-pay').onclick=()=>{ G.player.gold-=fee; G.bribes[port.id]=G.day; closeModal(m); sfx('coins'); base(port); };
+      m.querySelector('#dk-ok').onclick=()=>closeModal(m); return; }
+    // hostile
+    const cost=bribeCost(port); const ok=canBribe(port);
+    const m=modal(`<h2>${escapeHtml(port.name)}</h2><p>The ${NATIONS[port.nation].adj} guns would open on you the moment you showed a colour. Hostile ports will not receive you.</p>
+      ${ok?`<p>A boat rows out after dark. For <b>${cost} gold</b> the harbourmaster will look the other way — today only, and prices will be steep.</p>`:'<p class="bad">They hate you too much to take a bribe.</p>'}
+      <div class="row">${ok?`<button class="btn" id="dk-bribe" ${G.player.gold<cost?'disabled':''}>Bribe — ${cost} gold</button>`:''}<button class="btn primary" id="dk-ok">Back to sea</button></div>`,'dockrefuse');
+    const b=m.querySelector('#dk-bribe'); if(b) b.onclick=()=>{ G.player.gold-=cost; G.bribes[port.id]=G.day; closeModal(m); sfx('coins'); addLog(`You bribed the harbourmaster of ${port.name} (${cost} gold).`); base(port); };
+    m.querySelector('#dk-ok').onclick=()=>closeAllModals(); }; })();
+(function(){ const base=goodPrice; goodPrice=function(port, good, buying){ let p=base(port,good,buying); if(!G||!port||port.nation==='pirate'||port.id==='hideout') return p;
+    const st=repStanding(port.nation); let m=1;
+    if(st==='friendly') m=buying?0.96:1.03; else if(st==='unfriendly') m=buying?1.08:0.94; else if(st==='hostile') m=buying?1.18:0.85;
+    return Math.max(4,Math.round(p*m)); }; })();
+
+// --- nations & rivals screen ---
+function openNations(){ if(!G){ toast('Start a voyage first.'); return; } ensureWorld(G); hideFirstTip&&hideFirstTip();
+  const rows=NATION_IDS.map(n=>{ const N=NATIONS[n]; const st=repStanding(n); const r=G.player.reputation[n]||0; const h=G.heat[n]||0;
+    const port=G.map.ports.find(p=>p.nation===n)||{nation:n,id:'x'};
+    const dock=st==='hostile'?(canBribe(port)?`Refused — bribe about ${bribeCost(port)} gold`:'Refused'):st==='unfriendly'?`Fee about ${dockFee(port)} gold`:st==='allied'?'Safe harbour (hunters lose you)':'Free';
+    const prices=st==='allied'?'Buy −10%, sell +8%, repairs −20%':st==='friendly'?'Buy −4%, sell +3%':st==='unfriendly'?'Buy +8%, sell −6%':st==='hostile'?'Bribed: buy +18%, sell −15%':'Normal';
+    const navies=liveFleets(f=>f.role==='navy'&&f.nation===n); const hunters=navies.filter(f=>f.hunter).length;
+    const letter=G.player.marque===n?'<span class="good">You hold their letter of marque</span>':(G.player.marque&&NATIONS[G.player.marque].rival===n?'<span class="bad">Enemy of your letter</span>':'');
+    return `<div class="natcard" data-nat="${n}">
+      <div class="gh"><span class="psflag" style="background:linear-gradient(135deg,${N.color} 0 50%,${N.color2} 50% 100%)"></span><b>${N.name}</b> <span class="rep ${st}">${repLabel(st)}</span> ${letter}</div>
+      <div class="natbars"><span class="dim">Standing ${r>0?'+':''}${r}</span><div class="bar repbar"><i style="left:${r<0?50+r/2:50}%;width:${Math.abs(r)/2}%" class="${r<0?'neg':'pos'}"></i></div>
+      <span class="dim">Navy alert: ${heatLabel(h)}</span><div class="bar heatbar"><i style="width:${h}%"></i></div></div>
+      <div class="dim">Docking: ${dock} · Prices: ${prices}</div>
+      <div class="dim">${navies.length} patrol${navies.length===1?'':'s'} at sea${hunters?` · <span class="bad">${hunters} hunter squadron${hunters>1?'s':''}</span>`:''}</div>
+    </div>`; }).join('');
+  const rv=G.rivals.map(r=>{ const f=rivalFleetOf(r); const sh=f&&flagshipOf(f); const pf=playerFleet(); const dist=f&&pf?Math.abs(f.x-pf.x)+Math.abs(f.y-pf.y):null;
+    const known=r.status!=='waiting';
+    return `<div class="rivalcard ${r.status}">${typeof captainPortraitHtml==='function'?captainPortraitHtml({name:r.name},'spic'):''}<div>
+      <b>${known?escapeHtml(r.name):'An unknown captain'}</b> ${r.status==='defeated'?'<span class="tag">Defeated</span>':''}
+      <div class="dim">${known?`${PERSONALITY[r.pers].name} · level ${r.level}${sh?` · ${SHIP_CLASSES[sh.cls].name} ${escapeHtml(sh.name)}`:''}`:`Appears when your infamy reaches ${r.infamy}`}</div>
+      ${r.status==='active'?`<div class="good">Bounty ${rivalBounty(r)} gold${dist!=null&&dist<=SIGHT+2?` · <b>${dist} leagues away!</b>`:''}</div>`:''}
+      ${r.status==='defeated'?`<div class="dim">Beaten on day ${r.defeatedDay}.</div>`:''}
+    </div></div>`; }).join('');
+  const html=`<h2>⚑ Nations &amp; rivals</h2>
+    <p>Infamy <b>${Math.round(G.infamy)}</b> — ${infamyLabel(G.infamy)}. The more you prey on a nation, the hotter its navy runs; hunter squadrons come out at high alert. Lie low in an allied port to cool off.</p>
+    <div class="natlist">${rows}</div>
+    <h3>Rival captains</h3><div class="natlist">${rv}</div>
+    ${(G.rumours||[]).length?`<h3>Rumours</h3><ul class="hints">${G.rumours.slice(0,5).map(x=>`<li><span class="dim">Day ${x.day}:</span> ${x.t}</li>`).join('')}</ul>`:''}
+    <div class="row"><button class="btn primary" id="na-close">Close</button></div>`;
+  const m=modal(html,'nations'); m.querySelector('#na-close').onclick=()=>closeModal(m); }
+
+// ---- 19_audio.js ----
+// v0.4 — sound & music, all synthesised with Web Audio (no audio files to download or cache)
+const AUD={ ctx:null, master:null, music:null, sfx:null, amb:null, noise:null, unlocked:false, mood:null, want:null, step:0, nextT:0, timer:null, moodTimer:null, ambSrc:null, lastBell:0, lastTap:0, count:{} };
+function audPrefs(){ const n=(k,d)=>{ const v=parseFloat(prefGet(k,d)); return isFinite(v)?clamp(v,0,1):+d; };
+  return { music:n('wm_vol_music','0.5'), sfx:n('wm_vol_sfx','0.8'), mute:prefGet('wm_mute','0')==='1' }; }
+function audMuted(){ return audPrefs().mute; }
+function audInit(){ if(AUD.ctx) return AUD.ctx; const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return null;
+  try{ if(navigator.audioSession) navigator.audioSession.type='ambient'; }catch(e){} // iOS 17+: obey the ring/silent switch and mix with other apps
+  try{ AUD.ctx=new AC(); }catch(e){ return null; }
+  const c=AUD.ctx; AUD.master=c.createGain(); AUD.master.connect(c.destination);
+  AUD.music=c.createGain(); AUD.music.connect(AUD.master); AUD.sfx=c.createGain(); AUD.sfx.connect(AUD.master); AUD.amb=c.createGain(); AUD.amb.gain.value=0; AUD.amb.connect(AUD.sfx);
+  const len=c.sampleRate*2; const buf=c.createBuffer(1,len,c.sampleRate); const d=buf.getChannelData(0); for(let i=0;i<len;i++) d[i]=Math.random()*2-1; AUD.noise=buf;
+  audApplyPrefs(); return c; }
+function audApplyPrefs(){ const p=audPrefs(); const c=AUD.ctx; updateMuteButtons(p.mute);
+  if(!c) return; const t=c.currentTime;
+  AUD.master.gain.setTargetAtTime(p.mute?0:1,t,0.03); AUD.music.gain.setTargetAtTime(p.music*0.32,t,0.1); AUD.sfx.gain.setTargetAtTime(p.sfx,t,0.03);
+  if(p.mute){ if(c.state==='running') c.suspend().catch(()=>{}); } else if(AUD.unlocked&&document.visibilityState!=='hidden'&&c.state!=='running') c.resume().catch(()=>{}); }
+function updateMuteButtons(m){ for(const id of ['z-mute','cb-mute','btn-sound']){ const b=document.getElementById(id); if(b){ b.textContent=id==='btn-sound'?(m?'🔇 Sound off':'🔊 Sound'):(m?'🔇':'🔊'); b.classList.toggle('muted',!!m); b.setAttribute('aria-pressed',m?'true':'false'); } } }
+function audSetMute(m){ prefSet('wm_mute',m?'1':'0'); audApplyPrefs(); if(!m){ audUnlock(); setTimeout(()=>sfx('tap'),60); } toast(m?'Sound off.':'Sound on.'); }
+function audToggleMute(){ audSetMute(!audMuted()); }
+function audSetVol(kind, v){ prefSet(kind==='music'?'wm_vol_music':'wm_vol_sfx', String(clamp(v,0,1))); audApplyPrefs(); }
+function audUnlock(){ if(audMuted()&&AUD.unlocked) return; const c=audInit(); if(!c) return;
+  if(!audMuted()&&c.state!=='running') c.resume().catch(()=>{});
+  if(!AUD.unlocked){ AUD.unlocked=true; try{ const s=c.createBufferSource(); s.buffer=c.createBuffer(1,1,22050); s.connect(c.destination); s.start(0); }catch(e){}
+    audStartLoops(); } }
+['pointerdown','touchend','keydown'].forEach(ev=>document.addEventListener(ev, audUnlock, { capture:true, passive:true }));
+document.addEventListener('visibilitychange',()=>{ const c=AUD.ctx; if(!c) return; if(document.visibilityState==='hidden') c.suspend().catch(()=>{}); else if(AUD.unlocked&&!audMuted()) c.resume().catch(()=>{}); });
+window.addEventListener('pagehide',()=>{ try{ AUD.ctx&&AUD.ctx.suspend(); }catch(e){} });
+
+// ---------- building blocks ----------
+function audOK(){ const c=AUD.ctx; return c&&c.state==='running'&&!audMuted(); }
+function env(g,t,a,peak,dec,end){ g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(Math.max(0.0002,peak),t+a); g.gain.exponentialRampToValueAtTime(Math.max(0.0001,end||0.0001),t+a+dec); }
+function noiseHit(t,{type='lowpass',f=1000,f2=null,q=0.7,a=0.005,dec=0.3,vol=0.5,out}={}){ const c=AUD.ctx; const s=c.createBufferSource(); s.buffer=AUD.noise; s.loop=true;
+  const fl=c.createBiquadFilter(); fl.type=type; fl.frequency.setValueAtTime(f,t); if(f2) fl.frequency.exponentialRampToValueAtTime(f2,t+a+dec); fl.Q.value=q;
+  const g=c.createGain(); env(g,t,a,vol,dec); s.connect(fl); fl.connect(g); g.connect(out||AUD.sfx); s.start(t, Math.random()*1.5); s.stop(t+a+dec+0.05); }
+function tone(t,{type='sine',f=440,f2=null,a=0.005,dec=0.2,vol=0.3,out,detune=0}={}){ const c=AUD.ctx; const o=c.createOscillator(); o.type=type; o.frequency.setValueAtTime(f,t); if(f2) o.frequency.exponentialRampToValueAtTime(f2,t+a+dec); o.detune.value=detune;
+  const g=c.createGain(); env(g,t,a,vol,dec); o.connect(g); g.connect(out||AUD.sfx); o.start(t); o.stop(t+a+dec+0.05); }
+const SFX={
+  cannon(t,v){ noiseHit(t,{f:1400,f2:160,dec:0.9,vol:0.9*v}); tone(t,{f:78+Math.random()*10,f2:34,dec:0.5,vol:0.9*v}); noiseHit(t+0.02,{type:'highpass',f:3000,dec:0.08,vol:0.25*v}); },
+  hit(t,v){ for(let i=0;i<4;i++) noiseHit(t+i*0.03+Math.random()*0.02,{type:'bandpass',f:1800+Math.random()*1800,q:2,dec:0.05,vol:0.45*v}); tone(t,{type:'square',f:160,f2:90,dec:0.12,vol:0.12*v}); noiseHit(t,{f:600,dec:0.25,vol:0.3*v}); },
+  splash(t,v){ noiseHit(t,{type:'bandpass',f:900,f2:400,q:0.6,a:0.03,dec:0.6,vol:0.5*v}); noiseHit(t+0.05,{type:'highpass',f:2500,a:0.02,dec:0.3,vol:0.15*v}); },
+  clash(t,v){ for(let k=0;k<3;k++){ const tt=t+k*0.16+Math.random()*0.05; for(const f of [820,1233,1690,2410]) tone(tt,{type:'square',f:f*(0.95+Math.random()*0.1),dec:0.18,vol:0.05*v}); noiseHit(tt,{type:'highpass',f:4000,dec:0.06,vol:0.2*v}); } noiseHit(t,{f:500,a:0.05,dec:0.5,vol:0.25*v}); },
+  coins(t,v){ for(let i=0;i<3;i++){ tone(t+i*0.06,{f:1900+i*220,dec:0.12,vol:0.12*v}); tone(t+i*0.06,{f:3800+i*300,dec:0.06,vol:0.05*v}); } },
+  tap(t,v){ tone(t,{type:'triangle',f:620,f2:480,dec:0.04,vol:0.07*v}); },
+  levelup(t,v){ [72,76,79,84].forEach((m,i)=>{ tone(t+i*0.09,{type:'triangle',f:mtof(m),dec:0.25,vol:0.18*v}); tone(t+i*0.09,{f:mtof(m+12),dec:0.15,vol:0.05*v}); }); },
+  bell(t,v){ for(const [r,g,d] of [[1,0.25,2.4],[2.76,0.1,1.4],[5.4,0.05,0.8],[0.5,0.08,2.8]]) tone(t,{f:330*r,dec:d,vol:g*v,a:0.004}); },
+  daybell(t,v){ for(let i=0;i<2;i++) for(const [r,g,d] of [[1,0.12,1.2],[2.76,0.05,0.7]]) tone(t+i*0.32,{f:880*r,dec:d,vol:g*v}); }
+};
+function mtof(m){ return 440*Math.pow(2,(m-69)/12); }
+function sfx(name, vol){ if(!AUD.ctx||!audOK()) return; const f=SFX[name]; if(!f) return; const now=performance.now();
+  if(name==='bell'){ if(now-AUD.lastBell<1600) return; AUD.lastBell=now; }
+  if(name==='tap'){ if(now-AUD.lastTap<60) return; AUD.lastTap=now; }
+  AUD.count[name]=(AUD.count[name]||0)+1;
+  try{ f(AUD.ctx.currentTime+0.01, vol==null?1:vol); }catch(e){} }
+
+// ---------- ambient sea ----------
+function audStartLoops(){ const c=AUD.ctx; if(!c||AUD.ambSrc) return;
+  const s=c.createBufferSource(); s.buffer=AUD.noise; s.loop=true; const lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=520;
+  const g=c.createGain(); g.gain.value=0.5; const lfo=c.createOscillator(); lfo.frequency.value=0.11; const lg=c.createGain(); lg.gain.value=0.35; lfo.connect(lg); lg.connect(g.gain);
+  const lfo2=c.createOscillator(); lfo2.frequency.value=0.07; const lg2=c.createGain(); lg2.gain.value=220; lfo2.connect(lg2); lg2.connect(lp.frequency);
+  s.connect(lp); lp.connect(g); g.connect(AUD.amb); s.start(); lfo.start(); lfo2.start(); AUD.ambSrc=s;
+  if(!AUD.timer) AUD.timer=setInterval(audSchedule, 60);
+  if(!AUD.moodTimer) AUD.moodTimer=setInterval(audPickMood, 500); audPickMood(); }
+
+// ---------- shanty sequencer (6/8: six eighth notes per bar) ----------
+const TUNES={
+  sea:{ eighth:0.24, lead:'sawtooth', mel:[[62,2],[62,1],[65,2],[67,1],[69,3],[67,2],[65,1],[64,2],[62,1],[64,2],[65,1],[62,3],[57,3],[62,2],[62,1],[65,2],[69,1],[72,3],[70,2],[69,1],[67,2],[65,1],[64,2],[61,1],[62,6]], bass:[50,48,46,45,50,53,43,50], drum:[0,3] },
+  port:{ eighth:0.2, lead:'triangle', mel:[[67,1],[71,1],[74,1],[72,2],[71,1],[69,2],[67,1],[66,3],[67,1],[69,1],[71,1],[72,2],[74,1],[71,3],[67,3],[76,2],[74,1],[72,2],[71,1],[69,2],[71,1],[72,3],[71,2],[69,1],[66,2],[69,1],[67,6]], bass:[43,38,43,47,48,45,38,43], drum:[0,2,3,5] },
+  battle:{ eighth:0.15, lead:'square', mel:[[69,1],[69,1],[72,1],[69,1],[67,1],[69,1],[76,2],[74,1],[72,3],[69,1],[69,1],[72,1],[76,1],[74,1],[72,1],[71,3],[64,3],[77,2],[76,1],[74,2],[72,1],[71,2],[72,1],[74,3],[76,1],[74,1],[72,1],[71,1],[69,1],[68,1],[69,6]], bass:[45,45,41,40,38,40,45,45], drum:[0,1,3,4] }
+};
+function tuneSteps(tu){ if(tu._steps) return tu._steps; const s=[]; for(const [m,l] of tu.mel){ s.push({m,l}); for(let i=1;i<l;i++) s.push(null); } tu._steps=s; return s; }
+function audPickMood(){ let m=null; try{ if(typeof shown==='function'){ if(shown('combat')) m='battle'; else if(shown('port')||shown('hideout')) m='port'; else if(G&&!G.over) m='sea'; else m='port'; } }catch(e){}
+  if(m!==AUD.mood){ AUD.mood=m; AUD.step=0; if(AUD.ctx) AUD.nextT=AUD.ctx.currentTime+0.15; }
+  if(AUD.ctx&&AUD.amb){ const t=AUD.ctx.currentTime; AUD.amb.gain.setTargetAtTime(m==='sea'?0.22:m==='battle'?0.12:0.05,t,0.6); } }
+function audSchedule(){ const c=AUD.ctx; if(!c||c.state!=='running'||!AUD.mood) return; const tu=TUNES[AUD.mood]; if(!tu) return; const steps=tuneSteps(tu);
+  if(AUD.nextT<c.currentTime-0.5) AUD.nextT=c.currentTime+0.05;
+  while(AUD.nextT<c.currentTime+0.25){ const i=AUD.step%steps.length; const t=AUD.nextT; const st=steps[i]; const e=tu.eighth;
+    if(st){ const f=mtof(st.m); const dur=st.l*e*0.92; leadNote(t,f,dur,tu.lead); }
+    const barPos=i%6; const bar=Math.floor(i/6)%tu.bass.length;
+    if(barPos===0||barPos===3) bassNote(t,mtof(tu.bass[bar]),e*2.6);
+    if(tu.drum.includes(barPos)){ noiseHit(t,{f:barPos===0?180:120,dec:0.12,vol:barPos===0?0.5:0.3,out:AUD.music}); tone(t,{f:barPos===0?90:70,f2:45,dec:0.12,vol:barPos===0?0.45:0.25,out:AUD.music}); }
+    if(AUD.mood==='port'&&(barPos===1||barPos===4)) noiseHit(t,{type:'highpass',f:6000,dec:0.03,vol:0.12,out:AUD.music});
+    AUD.step++; AUD.nextT+=e; } }
+function leadNote(t,f,dur,type){ const c=AUD.ctx; const o=c.createOscillator(); o.type=type; o.frequency.value=f; const vib=c.createOscillator(); vib.frequency.value=5.5; const vg=c.createGain(); vg.gain.value=f*0.006; vib.connect(vg); vg.connect(o.frequency);
+  const lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=type==='square'?1800:2600; const g=c.createGain();
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(type==='sawtooth'?0.16:0.2,t+0.03); g.gain.setValueAtTime(type==='sawtooth'?0.13:0.16,t+Math.max(0.04,dur-0.06)); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(lp); lp.connect(g); g.connect(AUD.music); o.start(t); vib.start(t); o.stop(t+dur+0.02); vib.stop(t+dur+0.02); }
+function bassNote(t,f,dur){ const c=AUD.ctx; const o=c.createOscillator(); o.type='triangle'; o.frequency.value=f; const g=c.createGain(); env(g,t,0.01,0.32,dur); o.connect(g); g.connect(AUD.music); o.start(t); o.stop(t+dur+0.05);
+  const o2=c.createOscillator(); o2.type='sine'; o2.frequency.value=f*1.5; const g2=c.createGain(); env(g2,t,0.02,0.06,dur*0.8); o2.connect(g2); g2.connect(AUD.music); o2.start(t); o2.stop(t+dur+0.05); }
+
+// ---------- hooks into the game ----------
+(function(){
+  const fs=fxShot; fxShot=function(u,t,side,ammo,res){ fs(u,t,side,ammo,res); sfx('cannon', u&&u.side==='player'?1:0.8); setTimeout(()=>sfx(res&&res.hit>0?'hit':'splash', 0.8),260); };
+  const fb=fxBoard; fxBoard=function(u,t){ fb(u,t); sfx('clash'); };
+  const su=sinkUnit; sinkUnit=function(t,by){ su(t,by); sfx('splash',1.3); setTimeout(()=>sfx('splash',0.9),300); };
+  const sg=sellGood; sellGood=function(){ const r=sg.apply(this,arguments); if(r) sfx('coins'); return r; };
+  const bg=buyGood; buyGood=function(){ const r=bg.apply(this,arguments); if(r) sfx('coins',0.7); return r; };
+  const hr=hireRecruit; hireRecruit=function(){ const r=hr.apply(this,arguments); if(r) sfx('coins',0.7); return r; };
+  const ab=afterBattleWorld; afterBattleWorld=function(res){ ab.apply(this,arguments); if(res&&res.won) sfx('coins'); };
+  const gx=gainXP; gainXP=function(n){ const lv=G&&G.player.level; gx(n); if(G&&G.player.level>lv) sfx('levelup'); };
+  const ed=endDay; endDay=function(){ const d=G&&G.day; ed.apply(this,arguments); if(G&&G.day!==d) sfx('daybell',0.6); };
+})();
+document.addEventListener('click',e=>{ const b=e.target&&e.target.closest&&e.target.closest('button'); if(b&&!b.disabled) sfx('tap'); },true);
+
+function soundSettingsHtml(){ const p=audPrefs(); return `<div class="mobset" id="mm-sound"><b>Sound</b>
+    <label><input type="radio" name="msnd" value="on" ${!p.mute?'checked':''}> On</label>
+    <label><input type="radio" name="msnd" value="off" ${p.mute?'checked':''}> Off (mute)</label>
+    <div class="volrow"><span>Music</span><input type="range" id="mm-music" min="0" max="100" step="5" value="${Math.round(p.music*100)}"><output id="mm-music-v">${Math.round(p.music*100)}</output></div>
+    <div class="volrow"><span>Effects</span><input type="range" id="mm-sfx" min="0" max="100" step="5" value="${Math.round(p.sfx*100)}"><output id="mm-sfx-v">${Math.round(p.sfx*100)}</output></div>
+    <div class="dim" style="line-height:1.35">On iPhone the ring/silent switch also silences the game.</div></div>`; }
+function bindSoundSettings(root){ root.querySelectorAll('input[name=msnd]').forEach(r=>r.onchange=()=>{ if(r.checked) audSetMute(r.value==='off'); });
+  const mu=root.querySelector('#mm-music'), fx=root.querySelector('#mm-sfx');
+  if(mu) mu.oninput=()=>{ audSetVol('music',mu.value/100); root.querySelector('#mm-music-v').textContent=mu.value; };
+  if(fx){ fx.oninput=()=>{ audSetVol('sfx',fx.value/100); root.querySelector('#mm-sfx-v').textContent=fx.value; }; fx.onchange=()=>sfx('cannon',0.6); } }
+function openSoundSettings(){ const m=modal(`<h2>🔊 Sound &amp; music</h2>${soundSettingsHtml()}<div class="row"><button class="btn primary" id="snd-close">Close</button></div>`,'soundmodal'); bindSoundSettings(m); m.querySelector('#snd-close').onclick=()=>closeModal(m); }
+
+// ---- 20_v04.js ----
+// v0.4 glue: new-game kit, buttons, side panel, goals
+(function(){ const base=startGame; startGame=function(opts){ const r=base(opts); if(!G) return r;
+    ensureArms(G); G.stash.cutlass+=6; G.stash.pistol+=2; G.stash.jerkin+=2; G.stash.grenade+=3;
+    ensureWorld(G);
+    for(const f of G.fleets) if(f.role==='merchant') for(const sh of shipsOf(f)) merchantRig(sh);
+    if(!G.tutorial && !(opts&&opts.tutorial)){ try{ autoEquipFleet(true); }catch(e){} try{ autoSave(); }catch(e){} } // the tutorial teaches the Arm button instead
+    renderAll(); return r; }; })();
+function bindV04Buttons(){
+  const on=(id,fn)=>{ const b=document.getElementById(id); if(b&&!b.dataset.v4){ b.dataset.v4='1'; b.onclick=fn; } };
+  on('btn-nations',()=>openNations()); on('btn-nations2',()=>openNations()); on('z-nat',()=>openNations());
+  on('btn-sound',()=>openSoundSettings()); on('z-mute',()=>audToggleMute());
+  updateMuteButtons(audMuted()); }
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', bindV04Buttons); else bindV04Buttons();
+window.addEventListener('load', bindV04Buttons);
+(function(){ const base=renderSide; renderSide=function(){ base(); if(!G) return; const reps=document.querySelector('#side-hero .reps');
+    if(reps&&!reps.dataset.v4){ reps.dataset.v4='1'; reps.style.cursor='pointer'; reps.onclick=()=>openNations(); }
+    const box=document.getElementById('side-hero'); if(box&&G.infamy!=null&&!box.querySelector('.infamy')){ const d=document.createElement('div'); d.className='infamy dim'; d.textContent=`Infamy ${Math.round(G.infamy)} — ${infamyLabel(G.infamy)}`; box.appendChild(d); } }; })();
+(function(){ const base=goalsList; goalsList=function(){ const out=base(); if(!G) return out; ensureArms(G);
+    const boarders=livingPlayerCrew().filter(s=>s.station==='boarding'&&s.shipId!=='hideout');
+    const unarmed=boarders.filter(s=>!s.gear||!s.gear.melee).length;
+    const spare=Object.keys(ARMS).some(k=>ARMS[k].slot==='melee'&&stashCount(k)>0);
+    const ins=(i,g)=>out.splice(Math.min(i,out.length),0,g);
+    if(unarmed>=2) ins(spare?0:2,{ id:'arm', title:'Arm your boarders', hint:spare?'Open <b>Crew</b> → <b>Auto-equip best</b>. Blades and pistols in the stores do nothing until someone carries them.':'Dock and open the <b>Armory</b> tab: cutlasses for everyone in the boarding party.', prog:`${boarders.length-unarmed} / ${boarders.length} armed`, pct:boarders.length?(boarders.length-unarmed)/boarders.length:0 });
+    const fav=NATION_IDS.some(n=>['friendly','allied'].includes(repStanding(n)));
+    if(!fav&&(G.stats.captures||0)>=1) ins(4,{ id:'friend', title:'Win a nation\'s favour', hint:'Sign a letter of marque, finish missions, or only prey on one nation\'s rivals. Allied ports give discounts and safe harbour.', prog:'', pct:0 });
+    const act=(G.rivals||[]).filter(r=>r.status==='active'); const beaten=(G.stats.rivals||0);
+    if(act.length&&beaten<1&&(G.stats.captures||0)>=2){ const r=act.slice().sort((a,b)=>a.level-b.level)[0]; ins(3,{ id:'rival', title:`Defeat rival captain ${r.name}`, hint:`${PERSONALITY[r.pers].name}, level ${r.level}. Bounty ${rivalBounty(r)} gold. See <b>⚑ Nations</b> for where they were last seen.`, prog:'', pct:0 }); }
+    return out; }; })();
+(function(){ const base=goalHints; goalHints=function(){ const h=base(); if(!G||!G.heat) return h;
+    const hot=NATION_IDS.filter(n=>(G.heat[n]||0)>=45); if(hot.length) h.push(`<b class="bad">${hot.map(n=>NATIONS[n].name).join(' and ')} ${hot.length>1?'are':'is'} hunting you.</b> Lie low in an allied port or a haven to cool off.`);
+    const near=(G.rivals||[]).map(r=>({r,f:rivalFleetOf(r)})).filter(x=>x.f&&playerFleet()&&Math.abs(x.f.x-playerFleet().x)+Math.abs(x.f.y-playerFleet().y)<=SIGHT);
+    for(const x of near) h.push(`Rival <b>${escapeHtml(x.r.name)}</b> is in sight (level ${x.r.level}, bounty ${rivalBounty(x.r)}).`);
+    return h; }; })();
+(function(){ const base=openGoals; openGoals=function(){ base(); const m=[...document.querySelectorAll('.modal-wrap')].reverse().find(w=>w.querySelector('#gl-ok')); if(!m) return;
+    const b=document.createElement('button'); b.className='btn'; b.id='gl-nat'; b.textContent='⚑ Nations'; b.onclick=()=>{ closeModal(m); openNations(); };
+    m.querySelector('#gl-ok').parentNode.insertBefore(b, m.querySelector('#gl-ok')); }; })();
+
+// ---- v0.4 economy safety valves: sell a ship at any yard; a loyal skeleton crew never deserts ----
+function shipSaleValue(s){ const def=SHIP_CLASSES[s.cls]; if(!def) return 0; const up=Object.values(s.upgrades||{}).reduce((a,b)=>a+b,0);
+  return Math.round(def.cost*0.45*(0.4+0.6*(s.hull/Math.max(1,s.hullMax))) + up*25); }
+function sellShip(shipId, port){ const f=playerFleet(); const ss=shipsOf(f); const s=ss.find(x=>x.id===shipId);
+  if(!s||ss.length<2){ toast('You cannot sell your last ship.'); return false; }
+  const val=shipSaleValue(s); let goodsGold=0;
+  f.ships=f.ships.filter(id=>id!==shipId);
+  for(const g of GOODS){ const q=s.cargo[g]||0; if(!q) continue; const moved=addCargoToFleet(f,g,q); const rest=q-moved; if(rest>0) goodsGold+=rest*goodPrice(port,g,false); s.cargo[g]=0; }
+  let paidOff=0; for(const c of sailorsOnShip(s)){ const to=shipsOf(f).find(x=>sailorsOnShip(x).length<x.crewMax); if(to) c.shipId=to.id; else { G.crew=G.crew.filter(x=>x.id!==c.id); paidOff++; } }
+  G.ships=G.ships.filter(x=>x.id!==shipId);
+  G.player.gold+=val+goodsGold; restockDerived(); sfx('coins');
+  addLog(`Sold the ${SHIP_CLASSES[s.cls].name.toLowerCase()} ${escapeHtml(s.name)} in ${port.name} for ${val} gold${goodsGold?` (+${goodsGold} for cargo that would not fit)`:''}.${paidOff?` ${paidOff} hands without a hammock were paid off.`:''}`);
+  toast(`Sold ${s.name} for ${val+goodsGold} gold.`); renderAll(); if(typeof renderPort==='function') renderPort(); return true; }
+function askSellShip(shipId, port){ const f=playerFleet(); const s=shipsOf(f).find(x=>x.id===shipId); if(!s) return;
+  const room=shipsOf(f).filter(x=>x.id!==shipId).reduce((a,x)=>a+Math.max(0,x.crewMax-sailorsOnShip(x).length),0); const aboard=sailorsOnShip(s).length; const off=Math.max(0,aboard-room);
+  const m=modal(`<h2>Sell ${escapeHtml(s.name)}?</h2><p>The yard pays <b>${shipSaleValue(s)} gold</b> (less if she is battered). Her cargo moves to your other ships.</p>
+    <p>${aboard} sailors aboard${off?` — <b class="bad">${off} have no hammock elsewhere and will be paid off</b>`:' will move to your other ships'}.</p>
+    <div class="row"><button class="btn primary" id="ss-yes">Sell her</button><button class="btn" id="ss-no">Keep her</button></div>`,'sellship');
+  m.querySelector('#ss-yes').onclick=()=>{ closeModal(m); sellShip(shipId, port); };
+  m.querySelector('#ss-no').onclick=()=>closeModal(m); }
+(function(){
+  const ye=yardExtrasHtml; yardExtrasHtml=function(port){ const f=playerFleet(); const ss=shipsOf(f);
+    const sell=ss.length>1?`<h3>Sell a ship</h3><p class="dim">Too many mouths? A yard will buy a hull you no longer need.</p><div class="ups">${ss.map(s=>`<button class="btn upbtn" data-sellship="${s.id}"><b>Sell ${escapeHtml(s.name)}</b><span>${SHIP_CLASSES[s.cls].name} · about ${shipSaleValue(s)} gold · ${sailorsOnShip(s).length} aboard</span></button>`).join('')}</div>`:'';
+    return ye.apply(this,arguments)+sell; };
+  const rp=renderPort; renderPort=function(){ const r=rp.apply(this,arguments); const port=CUR_PORT; if(port) document.querySelectorAll('#port [data-sellship]').forEach(b=>b.onclick=()=>askSellShip(b.dataset.sellship,port)); return r; };
+})();
+(function(){ const ed=endDay; endDay=function(){ const r=ed.apply(this,arguments); // die-hards: a skeleton crew never falls into total despair
+    if(G&&G.player&&livingPlayerCrew().length<=8&&G.player.morale<15) G.player.morale=15; return r; }; })();
 
 
 </script>
